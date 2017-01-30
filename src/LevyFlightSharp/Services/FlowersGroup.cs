@@ -1,6 +1,8 @@
 ﻿using System;
 
-namespace LevyFlightSharp
+using LevyFlightSharp.Domain;
+
+namespace LevyFlightSharp.Services
 {
     public class FlowersGroup
     {

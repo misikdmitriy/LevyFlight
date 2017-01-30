@@ -1,26 +1,32 @@
 ﻿using System;
 using System.Linq;
+
+using LevyFlightSharp.Domain;
+using LevyFlightSharp.Extensions;
+using LevyFlightSharp.Services;
+
 using Microsoft.Extensions.Configuration;
 
-namespace LevyFlightSharp
+namespace LevyFlightSharp.Algorithms
 {
     public class LevyFlightAlgorithm
     {
         private Settings Settings { get; }
         private FlowersGroup[] Groups { get; }
 
-        public LevyFlightAlgorithm()
+        public LevyFlightAlgorithm(Func<double[], double> function)
         {
             Settings = new Settings();
             ConfigurationService.Configuration
-                .GetSection("Settings:AlgorithmSettings")
+                .GetSection("AlgorithmSettings")
                 .Bind(Settings);
 
             Groups = new FlowersGroup[Settings.GroupsCount];
 
             for (var i = 0; i < Settings.GroupsCount; i++)
             {
-                Groups[i] = new FlowersGroup(Settings.FlowersCount, Settings.VariablesCount, RastriginFunction);
+                Groups[i] = new FlowersGroup(Settings.FlowersCount, Settings.VariablesCount,
+                    function);
             }
         }
 
@@ -30,7 +36,7 @@ namespace LevyFlightSharp
 
             while (t < Settings.MaxGeneration)
             {
-                PolinateOnce(Groups);
+                PolinateOnce();
 
                 ++t;
             }
@@ -38,9 +44,9 @@ namespace LevyFlightSharp
             return Groups.FindGlobalBest(Settings.IsMin);
         }
 
-        protected virtual void PolinateOnce(FlowersGroup[] groups)
+        protected virtual void PolinateOnce()
         {
-            foreach (var group in groups)
+            foreach (var group in Groups)
             {
                 foreach (var flower in @group.Flowers)
                 {
@@ -89,32 +95,6 @@ namespace LevyFlightSharp
                 .ToArray();
 
             return new[] { new FlowersGroup(localBestFlowers) };
-        }
-
-        private static double GriewankFunction(double[] flowers)
-        {
-            var sum1 = 0.0;
-            var sum2 = 1.0;
-
-            var num = 1;
-            foreach (var x in flowers)
-            {
-                sum1 += x * x / 4000.0;
-                sum2 *= Math.Cos(x / Math.Sqrt(num));
-                ++num;
-            }
-
-            return sum1 - sum2 + 1.0;
-        }
-
-        private static double RastriginFunction(double[] flowers)
-        {
-            var a = 10.0;
-            var an = flowers.Length * a;
-
-            var sum1 = flowers.Sum(x => x * x - a * Math.Cos(2 * Math.PI * x));
-
-            return an + sum1;
         }
     }
 }

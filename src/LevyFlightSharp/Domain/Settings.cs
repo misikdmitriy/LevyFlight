@@ -1,4 +1,4 @@
-﻿namespace LevyFlightSharp
+﻿namespace LevyFlightSharp.Domain
 {
     public class Settings
     {

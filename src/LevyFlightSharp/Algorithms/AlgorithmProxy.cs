@@ -1,17 +1,24 @@
 ﻿using System;
+
+using LevyFlightSharp.Domain;
+using LevyFlightSharp.Extensions;
+using LevyFlightSharp.Services;
+
 using Microsoft.Extensions.Logging;
 
-namespace LevyFlightSharp
+namespace LevyFlightSharp.Algorithms
 {
     public class AlgorithmProxy : LevyFlightAlgorithm
     {
         private readonly ILogger _logger;
         private int _step;
 
-        public AlgorithmProxy()
+        public AlgorithmProxy(Func<double[], double> function)
+            : base(function)
         {
-            var config = new ConfigurationService();
-            _logger = config.LoggerFactory.CreateLogger(GetType().FullName);
+            _logger = ConfigurationService
+                .LoggerFactory
+                .CreateLogger(GetType().FullName);
         }
 
         public override Flower Polinate()
@@ -25,10 +32,10 @@ namespace LevyFlightSharp
             return result;
         }
 
-        protected override void PolinateOnce(FlowersGroup[] groups)
+        protected override void PolinateOnce()
         {
             _logger.LogDebug("Start new step " + _step);
-            base.PolinateOnce(groups);
+            base.PolinateOnce();
             ++_step;
         }
 

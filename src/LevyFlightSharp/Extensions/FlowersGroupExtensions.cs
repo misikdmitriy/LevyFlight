@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Linq;
 
-namespace LevyFlightSharp
+using LevyFlightSharp.Domain;
+using LevyFlightSharp.Services;
+
+namespace LevyFlightSharp.Extensions
 {
     public static class FlowersGroupExtensions
     {

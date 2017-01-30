@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Numerics;
 
-namespace LevyFlightSharp
+namespace LevyFlightSharp.Domain
 {
     public class Flower
     {

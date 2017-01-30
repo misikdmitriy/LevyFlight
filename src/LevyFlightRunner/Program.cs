@@ -1,17 +1,35 @@
 ﻿using System.Diagnostics;
+using System.IO;
 using System.Threading;
+
+using Microsoft.Extensions.Configuration;
 
 namespace LevyFlightRunner
 {
     public class Program
     {
-        private const string WorkingDirectory = @"C:\Users\dmmisik\Downloads\Diploma\LevyFlightSharp\src\LevyFlightSharp";
-        private const int ProcessNumber = 10;
-        private static string _configuration = "Release";
+        private static IConfigurationRoot ConfigurationRoot { get; }
+
+        private static string WorkingDirectory { get; }
+        private static int ProcessNumber { get; }
+        private static string Configuration { get; }
+
+        static Program()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
+
+            ConfigurationRoot = builder.Build();
+
+            WorkingDirectory = ConfigurationRoot.GetSection("Settings")["WorkingDirectory"];
+            ProcessNumber = int.Parse(ConfigurationRoot.GetSection("Settings")["WorkingDirectory"]);
+            Configuration = ConfigurationRoot.GetSection("Settings")["Configuration"];
+        }
+
 
         public static void Main(string[] args)
         {
-            SetDebug();
             Compile();
 
             for (var i = 0; i < ProcessNumber; i++)
@@ -29,18 +47,12 @@ namespace LevyFlightRunner
                 {
                     FileName = "cmd.exe",
                     WorkingDirectory = WorkingDirectory,
-                    Arguments = @"/c start dotnet run -c " + _configuration,
+                    Arguments = @"/c start dotnet run -c " + Configuration,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                 }
             };
             process.Start();
-        }
-
-        [Conditional("DEBUG")]
-        private static void SetDebug()
-        {
-            _configuration = "Debug";
         }
 
         private static void Compile()

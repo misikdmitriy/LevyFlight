@@ -1,39 +1,37 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-using NLog;
 using NLog.Config;
 using NLog.Extensions.Logging;
 using NLog.Targets;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
-using System;
 
-namespace LevyFlightSharp
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
+
+namespace LevyFlightSharp.Services
 {
-    public class ConfigurationService
+    public static class ConfigurationService
     {
         public static IConfigurationRoot Configuration { get; private set; }
+        public static ILoggerFactory LoggerFactory { get; private set; }
+        private static bool _isDebug;
 
         static ConfigurationService()
         {
+            SetupDebug();
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
             Configuration = builder.Build();
-        }
-
-        public ILoggerFactory LoggerFactory { get; private set; }
-
-        public ConfigurationService()
-        {
-            SetupDebug();
             ConfigureLogger();
         }
 
-        private void ConfigureLogger()
+        private static void ConfigureLogger()
         {
             LoggerFactory = new LoggerFactory()
                 .AddConsole(LogLevel.Information)
@@ -44,9 +42,8 @@ namespace LevyFlightSharp
             LoggerFactory.ConfigureNLog(logConfig);
         }
 
-        private bool _isDebug;
 
-        private LoggingConfiguration CreateLogConfiguration()
+        private static LoggingConfiguration CreateLogConfiguration()
         {
             var logConfig = new LoggingConfiguration();
 
@@ -70,7 +67,7 @@ namespace LevyFlightSharp
         }
 
         [Conditional("DEBUG")]
-        private void SetupDebug()
+        private static void SetupDebug()
         {
             _isDebug = true;
         }
