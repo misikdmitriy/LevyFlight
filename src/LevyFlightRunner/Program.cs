@@ -5,11 +5,13 @@ namespace LevyFlightRunner
 {
     public class Program
     {
-        private static string WorkingDirectory => @"C:\Users\dmmisik\Downloads\Diploma\LevyFlightSharp\src\LevyFlightSharp";
+        private const string WorkingDirectory = @"C:\Users\dmmisik\Downloads\Diploma\LevyFlightSharp\src\LevyFlightSharp";
         private const int ProcessNumber = 10;
+        private static string _configuration = "Release";
 
         public static void Main(string[] args)
         {
+            SetDebug();
             Compile();
 
             for (var i = 0; i < ProcessNumber; i++)
@@ -27,12 +29,18 @@ namespace LevyFlightRunner
                 {
                     FileName = "cmd.exe",
                     WorkingDirectory = WorkingDirectory,
-                    Arguments = @"/c start dotnet run -c Release",
+                    Arguments = @"/c start dotnet run -c " + _configuration,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                 }
             };
             process.Start();
+        }
+
+        [Conditional("DEBUG")]
+        private static void SetDebug()
+        {
+            _configuration = "Debug";
         }
 
         private static void Compile()
