@@ -73,10 +73,15 @@ namespace LevyFlightSharp
         public bool TryExchange(bool isMin = true)
         {
             if (isMin && CountFunction(Solution.Current) > CountFunction(Solution.NewSolution)
-                || !isMin && CountFunction(Solution.Current) < CountFunction(Solution.NewSolution)
-                || RandomGenerator.Random.NextDouble() < P)
+                || !isMin && CountFunction(Solution.Current) < CountFunction(Solution.NewSolution))
             {
                 CurrentFlower = NewFlower;
+                return true;
+            }
+            if (RandomGenerator.Random.NextDouble() < P)
+            {
+                var i = RandomGenerator.Random.Next() % CurrentFlower.Length;
+                CurrentFlower[i] = RandomGenerator.Random.NextDouble();
                 return true;
             }
             return false;
