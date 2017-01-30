@@ -74,7 +74,7 @@ namespace LevyFlightSharp
         {
             if (isMin && CountFunction(Solution.Current) > CountFunction(Solution.NewSolution)
                 || !isMin && CountFunction(Solution.Current) < CountFunction(Solution.NewSolution)
-                /*|| RandomGenerator.Random.NextDouble() < P*/)
+                || RandomGenerator.Random.NextDouble() < P)
             {
                 CurrentFlower = NewFlower;
                 return true;

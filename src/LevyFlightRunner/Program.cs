@@ -27,7 +27,7 @@ namespace LevyFlightRunner
                 {
                     FileName = "cmd.exe",
                     WorkingDirectory = WorkingDirectory,
-                    Arguments = @"/c start dotnet run -c Debug",
+                    Arguments = @"/c start dotnet run -c Release",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                 }
