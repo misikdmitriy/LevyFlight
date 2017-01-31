@@ -13,7 +13,9 @@ namespace LevyFlightTests
         }
 
         [Theory]
-        [InlineData(5000, 0.0, 1e-1)]
+        [InlineData(0, 0.0, 1e-1)]
+        [InlineData(0, 0.0, 1e-2)]
+        [InlineData(0, 0.0, 1e-3)]
         public override void CheckMethod(int steps, double expected, double eps)
         {
             base.CheckMethod(steps, expected, eps);

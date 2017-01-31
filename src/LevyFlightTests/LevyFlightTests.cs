@@ -5,7 +5,9 @@ using LevyFlightSharp.Domain;
 using LevyFlightSharp.Services;
 
 using Microsoft.Extensions.Logging;
-
+using NLog.Config;
+using NLog.Extensions.Logging;
+using NLog.Targets;
 using Xunit;
 
 namespace LevyFlightTests
@@ -20,18 +22,30 @@ namespace LevyFlightTests
         {
             _algorithm = new LevyFlightAlgorithm(testFunction);
             _timer = new TimeCounter();
-            _logger = ConfigurationService
-                .LoggerFactory
-                .CreateLogger(GetType().FullName);
 
-            _logger.LogInformation("Tests started");
+            var loggerFactory = new LoggerFactory()
+                .AddConsole(LogLevel.Information)
+                .AddNLog();
+
+            var logConfig = CreateLogConfiguration();
+
+            loggerFactory.ConfigureNLog(logConfig);
+
+            _logger = loggerFactory.CreateLogger(GetType().FullName);
         }
 
         public virtual void CheckMethod(int steps, double expected, double eps)
         {
             var solutionFounded = false;
 
+            _logger.LogInformation("Test information:");
+            _logger.LogInformation("Class name - " + GetType().FullName);
+            _logger.LogInformation("Eps - " + eps);
+            _logger.LogInformation("Max step number - " + steps);
+
             _timer.Start();
+
+            steps = steps == 0 ? int.MaxValue : steps;
 
             for (var i = 0; i < steps; i++)
             {
@@ -62,7 +76,27 @@ namespace LevyFlightTests
 
         public void Dispose()
         {
-            _logger.LogInformation("Tests finished");
+        }
+
+        private LoggingConfiguration CreateLogConfiguration()
+        {
+            var logConfig = new LoggingConfiguration();
+
+            // config target
+            var fileTarget = new FileTarget
+            {
+                Name = "logFile",
+                FileName = "${basedir}/logs/" + GetType().Name + "-" + Guid.NewGuid() + ".log",
+                DeleteOldFileOnStartup = true
+            };
+
+            // config rule
+
+            var rule = new LoggingRule("*", NLog.LogLevel.Info, fileTarget);
+
+            logConfig.AddTarget(fileTarget);
+            logConfig.LoggingRules.Add(rule);
+            return logConfig;
         }
     }
 }
