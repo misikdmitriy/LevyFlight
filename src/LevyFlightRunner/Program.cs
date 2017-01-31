@@ -23,7 +23,7 @@ namespace LevyFlightRunner
             ConfigurationRoot = builder.Build();
 
             WorkingDirectory = ConfigurationRoot.GetSection("Settings")["WorkingDirectory"];
-            ProcessNumber = int.Parse(ConfigurationRoot.GetSection("Settings")["WorkingDirectory"]);
+            ProcessNumber = int.Parse(ConfigurationRoot.GetSection("Settings")["ProcessNumber"]);
             Configuration = ConfigurationRoot.GetSection("Settings")["Configuration"];
         }
 
@@ -63,7 +63,7 @@ namespace LevyFlightRunner
                 {
                     WorkingDirectory = WorkingDirectory,
                     FileName = "dotnet",
-                    Arguments = "build"
+                    Arguments = "build -c " + Configuration
                 }
             };
             process.Start();
