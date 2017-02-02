@@ -274,4 +274,4 @@ __pycache__/
 # tools/**
 # !tools/packages.config
 /nuget.exe
-/src/LevyFlightAutoTests/result.csv
+*.csv

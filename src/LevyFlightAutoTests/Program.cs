@@ -5,11 +5,15 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+
 using LevyFlightSharp.Algorithms;
 using LevyFlightSharp.Domain;
 using LevyFlightSharp.Services;
+
 using Microsoft.Extensions.Logging;
+
 using Newtonsoft.Json.Linq;
+
 using NLog.Config;
 using NLog.Extensions.Logging;
 using NLog.Targets;
@@ -20,10 +24,10 @@ namespace LevyFlightAutoTests
     {
         private static readonly IntSettingsFields VariablesCount = new IntSettingsFields(2, 30, 2, 30, true);
 
-        private static readonly IntSettingsFields FlowersCount = new IntSettingsFields(2, 30, 2, 5, true);
-        private static readonly IntSettingsFields GroupsCount = new IntSettingsFields(2, 30, 2, 5, true);
+        private static readonly IntSettingsFields FlowersCount = new IntSettingsFields(2, 30, 2, 15, true);
+        private static readonly IntSettingsFields GroupsCount = new IntSettingsFields(2, 30, 2, 15, true);
 
-        private static readonly IntSettingsFields MaxGeneration = new IntSettingsFields(100, 4000, 100, 2000, false);
+        private static readonly IntSettingsFields MaxGeneration = new IntSettingsFields(100, 3000, 100, 2000, false);
 
         private static readonly DoubleSettingsFields P = new DoubleSettingsFields(0.85);
 
