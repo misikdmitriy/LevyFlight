@@ -1,46 +1,36 @@
-﻿namespace LevyFlightAutoTests
+﻿using System;
+
+namespace LevyFlightAutoTests
 {
-    public class SettingFields
+    public abstract class SettingFields<T>
     {
-        public int Start { get; }
-        public int End { get; }
-        public int Step { get; }
-        public int Default { get; }
+        public T Start { get; }
+        public T End { get; }
+        public T Step { get; }
+        public T Default { get; }
         public bool IsFixed { get; }
-        public int Next
-        {
-            get
-            {
-                if (IsFixed)
-                {
-                    return Default;
-                }
-                var returnValue = _current;
-                _current += Step;
-                return returnValue;
-            }
-        }
 
-        public SettingFields(int @default)
-            : this(0, 0, 0, @default, true)
+        public abstract T Current { get; protected set; }
+
+        public abstract T Value { get; }
+
+        protected SettingFields(T @default)
+            : this(default(T), default(T), default(T), @default, true)
         {
         }
 
-        public SettingFields(int start, int end, int step)
-            : this(start, end, step, 0, false)
+        protected SettingFields(T start, T end, T step)
+            : this(start, end, step, default(T), false)
         {
         }
 
-        public SettingFields(int start, int end, int step, int @default, bool isFixed)
+        protected SettingFields(T start, T end, T step, T @default, bool isFixed)
         {
             Start = start;
             End = end;
             Step = step;
             Default = @default;
             IsFixed = isFixed;
-            _current = start;
         }
-
-        private int _current;
     }
 }

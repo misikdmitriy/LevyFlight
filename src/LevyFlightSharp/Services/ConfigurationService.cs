@@ -21,14 +21,18 @@ namespace LevyFlightSharp.Services
 
         static ConfigurationService()
         {
+            ReconfigureApp();
             SetupDebug();
+            ConfigureLogger();
+        }
 
+        public static void ReconfigureApp()
+        {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
             Configuration = builder.Build();
-            ConfigureLogger();
         }
 
         private static void ConfigureLogger()
