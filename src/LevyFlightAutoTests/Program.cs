@@ -22,24 +22,24 @@ namespace LevyFlightAutoTests
 {
     public class Program
     {
-        private static readonly IntSettingsFields VariablesCount = new IntSettingsFields(2, 30, 2, 30, true);
+        private static readonly NumericSettingsFields VariablesCount = new NumericSettingsFields(2, 30, 2, 30, true);
 
-        private static readonly IntSettingsFields FlowersCount = new IntSettingsFields(2, 30, 2, 15, true);
-        private static readonly IntSettingsFields GroupsCount = new IntSettingsFields(2, 30, 2, 15, true);
+        private static readonly NumericSettingsFields FlowersCount = new NumericSettingsFields(2, 30, 2, 15, true);
+        private static readonly NumericSettingsFields GroupsCount = new NumericSettingsFields(2, 30, 2, 15, true);
 
-        private static readonly IntSettingsFields MaxGeneration = new IntSettingsFields(100, 3000, 100, 2000, false);
+        private static readonly NumericSettingsFields MaxGeneration = new NumericSettingsFields(100, 3000, 100, 2000, false);
 
-        private static readonly DoubleSettingsFields P = new DoubleSettingsFields(0.85);
+        private static readonly NumericSettingsFields P = new NumericSettingsFields(0.85);
 
         private static readonly int RepeatNumbers = 5;
 
         private static IEnumerable<FieldInfo> IntSettings => typeof(Program)
             .GetFields(BindingFlags.Static | BindingFlags.NonPublic)
-            .Where(p => p.FieldType.IsAssignableFrom(typeof(IntSettingsFields)));
+            .Where(p => p.FieldType.IsAssignableFrom(typeof(NumericSettingsFields)));
 
         private static IEnumerable<FieldInfo> DoubleSettings => typeof(Program)
             .GetFields(BindingFlags.Static | BindingFlags.NonPublic)
-            .Where(p => p.FieldType.IsAssignableFrom(typeof(DoubleSettingsFields)));
+            .Where(p => p.FieldType.IsAssignableFrom(typeof(NumericSettingsFields)));
 
         private static IEnumerable<FieldInfo> Settings => IntSettings.Union(DoubleSettings);
 
@@ -115,21 +115,19 @@ namespace LevyFlightAutoTests
 
             foreach (var property in Settings)
             {
-                jObject.Add(property.Name,
-                    property.FieldType == typeof(IntSettingsFields)
-                        ? ((IntSettingsFields)property.GetValue(null)).Value.ToString()
-                        : ((DoubleSettingsFields)property.GetValue(null)).Value.ToString("F2", CultureInfo.InvariantCulture));
+                jObject.Add(property.Name, ((NumericSettingsFields)property.GetValue(null)).Value
+                    .ToString(CultureInfo.InvariantCulture));
             }
 
             jObject.Add("IsMin", true);
             return new JObject(new JProperty("AlgorithmSettings", jObject)).ToString();
         }
 
-        private static SettingFields<int> GetChangableSetting()
+        private static SettingFields<double> GetChangableSetting()
         {
             foreach (var property in Settings)
             {
-                var setting = property.GetValue(null) as IntSettingsFields;
+                var setting = property.GetValue(null) as NumericSettingsFields;
                 if (setting != null && !setting.IsFixed)
                 {
                     return setting;
@@ -146,14 +144,7 @@ namespace LevyFlightAutoTests
 
             foreach (var property in Settings)
             {
-                if (property.FieldType == typeof(DoubleSettingsFields))
-                {
-                    sb.AppendLine(property.Name + " = " + ((DoubleSettingsFields)property.GetValue(null)).Current);
-                }
-                else
-                {
-                    sb.AppendLine(property.Name + " = " + ((IntSettingsFields)property.GetValue(null)).Current);
-                }
+                sb.AppendLine(property.Name + " = " + ((NumericSettingsFields)property.GetValue(null)).Current);
             }
 
             return sb.ToString().TrimEnd();

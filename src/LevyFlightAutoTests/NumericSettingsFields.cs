@@ -1,6 +1,6 @@
 ﻿namespace LevyFlightAutoTests
 {
-    public class DoubleSettingsFields : SettingFields<double>
+    public class NumericSettingsFields : SettingFields<double>
     {
         public override double Current
         {
@@ -27,17 +27,17 @@
             }
         }
 
-        public DoubleSettingsFields(double @default) 
+        public NumericSettingsFields(double @default) 
             : base(@default)
         {
         }
 
-        public DoubleSettingsFields(double start, double end, double step) 
+        public NumericSettingsFields(double start, double end, double step) 
             : base(start, end, step)
         {
         }
 
-        public DoubleSettingsFields(double start, double end, double step, double @default, bool isFixed) 
+        public NumericSettingsFields(double start, double end, double step, double @default, bool isFixed) 
             : base(start, end, step, @default, isFixed)
         {
             _next = start;
