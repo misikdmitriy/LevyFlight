@@ -7,9 +7,9 @@ using System.Reflection;
 using System.Text;
 
 using LevyFlightSharp.Algorithms;
-using LevyFlightSharp.Domain;
+using LevyFlightSharp.Entities;
 using LevyFlightSharp.Services;
-
+using LevyFlightSharp.Strategies;
 using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json.Linq;
@@ -33,6 +33,8 @@ namespace LevyFlightAutoTests
 
         private static readonly int RepeatNumbers = 5;
 
+        private static IFunctionStrategy<double, double[]> FunctionStrategy { get; } = new RastriginFunctionStrategy();
+
         private static IEnumerable<FieldInfo> IntSettings => typeof(Program)
             .GetFields(BindingFlags.Static | BindingFlags.NonPublic)
             .Where(p => p.FieldType.IsAssignableFrom(typeof(NumericSettingsFields)));
@@ -46,7 +48,7 @@ namespace LevyFlightAutoTests
         public static void Main(string[] args)
         {
             var changableSetting = GetChangableSetting();
-            var testedFunctionName = nameof(RastriginFunction);
+            var testedFunctionName = nameof(RastriginFunctionStrategy);
             var expectedResult = 0.0;
             var loggerFactory = new LoggerFactory()
                 .AddConsole()
@@ -74,7 +76,7 @@ namespace LevyFlightAutoTests
                     var sum = 0.0;
                     for (var i = 0; i < RepeatNumbers; i++)
                     {
-                        var algorithm = new LevyFlightAlgorithm(RastriginFunction);
+                        var algorithm = new LevyFlightAlgorithm(FunctionStrategy, new MantegnaFunctionStrategy());
                         var result = algorithm.Polinate();
 
                         sum += result.CountFunction(Solution.Current);
@@ -148,32 +150,6 @@ namespace LevyFlightAutoTests
             }
 
             return sb.ToString().TrimEnd();
-        }
-
-        private static double GriewankFunction(double[] flowers)
-        {
-            var sum1 = 0.0;
-            var sum2 = 1.0;
-
-            var num = 1;
-            foreach (var x in flowers)
-            {
-                sum1 += x * x / 4000.0;
-                sum2 *= Math.Cos(x / Math.Sqrt(num));
-                ++num;
-            }
-
-            return sum1 - sum2 + 1.0;
-        }
-
-        private static double RastriginFunction(double[] flowers)
-        {
-            var a = 10.0;
-            var an = flowers.Length * a;
-
-            var sum1 = flowers.Sum(x => x * x - a * Math.Cos(2 * Math.PI * x));
-
-            return an + sum1;
         }
     }
 }

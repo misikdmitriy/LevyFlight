@@ -1,8 +1,9 @@
 ﻿using System;
 
-using LevyFlightSharp.Domain;
+using LevyFlightSharp.Entities;
 using LevyFlightSharp.Extensions;
 using LevyFlightSharp.Services;
+using LevyFlightSharp.Strategies;
 
 using Microsoft.Extensions.Logging;
 
@@ -13,8 +14,9 @@ namespace LevyFlightSharp.Algorithms
         private readonly ILogger _logger;
         private int _step;
 
-        public AlgorithmProxy(Func<double[], double> function)
-            : base(function)
+        public AlgorithmProxy(IFunctionStrategy<double, double[]> mainFunctionStrategy, 
+            IFunctionStrategy<double, double> mantegnaFunctionStrategy)
+            : base(mainFunctionStrategy, mantegnaFunctionStrategy)
         {
             _logger = ConfigurationService
                 .LoggerFactory

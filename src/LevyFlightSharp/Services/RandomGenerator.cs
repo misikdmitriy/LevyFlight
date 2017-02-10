@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LevyFlightSharp
+namespace LevyFlightSharp.Services
 {
     public class RandomGenerator
     {

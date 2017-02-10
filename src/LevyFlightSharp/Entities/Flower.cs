@@ -1,7 +1,9 @@
 ﻿using System;
-using System.Numerics;
 
-namespace LevyFlightSharp.Domain
+using LevyFlightSharp.Services;
+using LevyFlightSharp.Strategies;
+
+namespace LevyFlightSharp.Entities
 {
     public class Flower
     {
@@ -9,20 +11,23 @@ namespace LevyFlightSharp.Domain
         private const double P = 0.01;
 
         private int Size { get; }
-        private Func<double[], double> Function { get; }
+        private IFunctionStrategy<double, double[]> FunctionStrategy { get; }
+        private IFunctionStrategy<double, double> MantegnaFunctionStrategy { get; }
 
         private double[] CurrentFlower { get; set; }
         private double[] NewFlower { get; set; }
 
-        public Flower(int size, Func<double[], double> function)
+        public Flower(int size, IFunctionStrategy<double, double[]> mainFunctionStrategy, 
+            IFunctionStrategy<double, double> mantegnaFunctionStrategy)
         {
             if (size <= 0)
             {
                 throw new ArgumentException(nameof(size));
             }
 
-            Function = function;
+            FunctionStrategy = mainFunctionStrategy;
             Size = size;
+            MantegnaFunctionStrategy = mantegnaFunctionStrategy;
 
             CurrentFlower = new double[Size];
             NewFlower = null;
@@ -39,7 +44,7 @@ namespace LevyFlightSharp.Domain
 
             for (var i = 0; i < Size; i++)
             {
-                var rand = MantegnaRandom(Lambda);
+                var rand = MantegnaFunctionStrategy.Function(Lambda);
 
                 NewFlower[i] = CurrentFlower[i] + rand * (solution.CurrentFlower[i] - CurrentFlower[i]);
             }
@@ -62,9 +67,9 @@ namespace LevyFlightSharp.Domain
             switch (solution)
             {
                 case Solution.Current:
-                    return Function(CurrentFlower);
+                    return FunctionStrategy.Function(CurrentFlower);
                 case Solution.NewSolution:
-                    return Function(NewFlower);
+                    return FunctionStrategy.Function(NewFlower);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(solution), solution, null);
             }
@@ -123,63 +128,6 @@ namespace LevyFlightSharp.Domain
                 result += $"{i}): {flower[i]:e2}; ";
             }
             return result;
-        }
-
-        private double MantegnaRandom(double lambda)
-        {
-            Complex sigmaX;
-            double x, y;
-
-            sigmaX = Gamma(lambda + 1) * Math.Sin(Math.PI * lambda / 2);
-            var divider = Gamma(lambda / 2) * lambda * Math.Pow(2.0, (lambda - 1) / 2);
-            sigmaX /= divider;
-            sigmaX = Math.Pow(sigmaX.Magnitude, 1.0 / lambda);
-
-            x = GaussianRandom(0, sigmaX.Magnitude);
-            y = Math.Abs(GaussianRandom(0, 1.0));
-
-            return x / Math.Pow(y, 1.0 / lambda);
-        }
-
-        private double GaussianRandom(double mue, double sigma)
-        {
-            double x1;
-            double w, y;
-
-            do
-            {
-                x1 = 2.0 * RandomGenerator.Random.NextDouble() - 1.0;
-                var x2 = 2.0 * RandomGenerator.Random.NextDouble() - 1.0;
-                w = x1 * x1 + x2 * x2;
-            } while (w >= 1.0);
-
-            var llog = Math.Log(w, Math.E);
-            w = Math.Sqrt(-2.0 * llog / w);
-            y = x1 * w;
-
-            return mue + sigma * y;
-        }
-
-        private Complex Gamma(Complex z)
-        {
-            if (z.Real < 0.5)
-            {
-                return Math.PI / (Complex.Sin(Math.PI * z) * Gamma(1 - z));
-            }
-
-            var g = 7;
-            double[] p = { 0.99999999999980993, 676.5203681218851, -1259.1392167224028,
-                 771.32342877765313, -176.61502916214059, 12.507343278686905,
-                 -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7 };
-
-            z -= 1;
-            Complex x = p[0];
-            for (var i = 1; i < g + 2; i++)
-            {
-                x += p[i] / (z + i);
-            }
-            var t = z + g + 0.5;
-            return Complex.Sqrt(2 * Math.PI) * (Complex.Pow(t, z + 0.5)) * Complex.Exp(-t) * x;
         }
     }
 

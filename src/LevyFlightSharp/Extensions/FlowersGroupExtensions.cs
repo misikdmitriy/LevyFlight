@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-using LevyFlightSharp.Domain;
+using LevyFlightSharp.Entities;
 using LevyFlightSharp.Services;
 
 namespace LevyFlightSharp.Extensions

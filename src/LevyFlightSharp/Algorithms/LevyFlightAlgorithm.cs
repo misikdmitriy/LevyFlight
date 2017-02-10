@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
-using LevyFlightSharp.Domain;
+using LevyFlightSharp.Entities;
 using LevyFlightSharp.Extensions;
 using LevyFlightSharp.Services;
+using LevyFlightSharp.Strategies;
 
 using Microsoft.Extensions.Configuration;
 
@@ -14,7 +14,8 @@ namespace LevyFlightSharp.Algorithms
         private Settings Settings { get; }
         private FlowersGroup[] Groups { get; }
 
-        public LevyFlightAlgorithm(Func<double[], double> function)
+        public LevyFlightAlgorithm(IFunctionStrategy<double, double[]> mainFunctionStrategy, 
+            IFunctionStrategy<double, double> mantegnaFunctionStrategy)
         {
             Settings = new Settings();
             ConfigurationService.Configuration
@@ -26,7 +27,7 @@ namespace LevyFlightSharp.Algorithms
             for (var i = 0; i < Settings.GroupsCount; i++)
             {
                 Groups[i] = new FlowersGroup(Settings.FlowersCount, Settings.VariablesCount,
-                    function);
+                    mainFunctionStrategy, mantegnaFunctionStrategy);
             }
         }
 
