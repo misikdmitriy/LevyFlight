@@ -19,6 +19,8 @@ using NLog.Config;
 using NLog.Extensions.Logging;
 using NLog.Targets;
 
+// ReSharper disable UnusedMember.Local
+
 namespace LevyFlightAutoTests
 {
     public class Program
@@ -28,14 +30,14 @@ namespace LevyFlightAutoTests
         private static readonly NumericSettingsFields FlowersCount = new NumericSettingsFields(2, 30, 2, 15, true);
         private static readonly NumericSettingsFields GroupsCount = new NumericSettingsFields(2, 30, 2, 15, true);
 
-        private static readonly NumericSettingsFields MaxGeneration = new NumericSettingsFields(100, 3000, 100, 2000, false);
+        private static readonly NumericSettingsFields MaxGeneration = new NumericSettingsFields(100, 1000, 100, 2000, false);
 
         private static readonly NumericSettingsFields P = new NumericSettingsFields(0.85);
 
         private static readonly int RepeatNumbers = 5;
 
-        private static FunctionFacade FunctionFacade { get; } = new RastriginFunctionFacade();
-        private static string TestedFunction = nameof(RastriginFunctionStrategy);
+        private static FunctionFacade FunctionFacade { get; } = new GriewankFunctionFacade();
+        private static string TestedFunction = nameof(GriewankFunctionStrategy);
 
         private static IEnumerable<FieldInfo> IntSettings => typeof(Program)
             .GetFields(BindingFlags.Static | BindingFlags.NonPublic)

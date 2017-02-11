@@ -4,7 +4,7 @@ namespace LevyFlightSharp.Strategies
 {
     public class GriewankFunctionStrategy : IFunctionStrategy<double, double[]>
     {
-        public double Function(double[] arguments)
+        public double Apply(double[] arguments)
         {
             var sum1 = 0.0;
             var sum2 = 1.0;

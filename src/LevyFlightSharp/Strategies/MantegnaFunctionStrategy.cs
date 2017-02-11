@@ -7,7 +7,7 @@ namespace LevyFlightSharp.Strategies
 {
     public class MantegnaFunctionStrategy : IFunctionStrategy<double, double>
     {
-        public double Function(double arguments)
+        public double Apply(double arguments)
         {
             Complex sigmaX;
             double x, y;

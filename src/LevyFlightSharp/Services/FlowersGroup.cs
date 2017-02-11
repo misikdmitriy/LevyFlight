@@ -1,18 +1,18 @@
-﻿using LevyFlightSharp.Entities;
+﻿using System.Collections;
+using System.Collections.Generic;
+
+using LevyFlightSharp.Entities;
 using LevyFlightSharp.Facade;
 
 namespace LevyFlightSharp.Services
 {
-    public class FlowersGroup
+    public class FlowersGroup : IEnumerable<Flower>
     {
-        public Flower[] Flowers { get; }
-        public Flower BestSolution { get; private set; }
+        private Flower[] Flowers { get; }
 
         public FlowersGroup(Flower[] flowers)
         {
             Flowers = flowers;
-
-            BestSolution = Flowers[0];
         }
 
         public FlowersGroup(int sizeOfGroup, int sizeOfFlower,
@@ -23,30 +23,21 @@ namespace LevyFlightSharp.Services
             {
                 Flowers[i] = new Flower(sizeOfFlower, functionFacade);
             }
-
-            BestSolution = Flowers[0];
         }
 
-        public bool TryRefindBestSolution(bool isMin = true)
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            var bestFunc = BestSolution.CountFunction(Solution.Current);
-            var founded = false;
+            return GetEnumerator();
+        }
 
-            foreach (var flower in Flowers)
+        public IEnumerator<Flower> GetEnumerator()
+        {
+            var iterator = Flowers.GetEnumerator();
+
+            while (iterator.MoveNext())
             {
-                var func = flower.CountFunction(Solution.Current);
-
-                if (isMin && bestFunc > func
-                    || !isMin && bestFunc < func)
-                {
-                    founded = true;
-
-                    bestFunc = func;
-                    BestSolution = flower;
-                }
+                yield return (Flower)iterator.Current;
             }
-
-            return founded;
         }
     }
 }

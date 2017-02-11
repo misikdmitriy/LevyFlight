@@ -7,7 +7,7 @@ namespace LevyFlightSharp.Entities
 {
     public class Flower
     {
-        private FlowerSettings FlowerSettings { get; } = new FlowerSettings(1.5, 0.01);
+        public const double P = 0.01;
 
         private int Size { get; }
         private FunctionFacade FunctionFacade { get; }
@@ -34,15 +34,20 @@ namespace LevyFlightSharp.Entities
             }
         }
 
-        public void RecountByFirstBranch(Flower solution)
+        public void RecountByFirstBranch(Flower solution1, Flower solution2)
         {
             NewFlower = new double[Size];
 
             for (var i = 0; i < Size; i++)
             {
-                var rand = FunctionFacade.MantegnaFunctionStrategy.Function(FlowerSettings.Lambda);
+                var distanceDifference = FunctionFacade.DistanceFunctionStrategy.Apply(solution2.CurrentFlower) -
+                                         FunctionFacade.DistanceFunctionStrategy.Apply(CurrentFlower);
 
-                NewFlower[i] = CurrentFlower[i] + rand * (solution.CurrentFlower[i] - CurrentFlower[i]);
+                var lambda = FunctionFacade.LambdaFunctionStrategy.Apply(distanceDifference);
+
+                var rand = FunctionFacade.MantegnaFunctionStrategy.Apply(lambda);
+
+                NewFlower[i] = CurrentFlower[i] + rand * (solution1.CurrentFlower[i] - CurrentFlower[i]);
             }
         }
 
@@ -63,9 +68,9 @@ namespace LevyFlightSharp.Entities
             switch (solution)
             {
                 case Solution.Current:
-                    return FunctionFacade.MainFunctionStrategy.Function(CurrentFlower);
+                    return FunctionFacade.MainFunctionStrategy.Apply(CurrentFlower);
                 case Solution.NewSolution:
-                    return FunctionFacade.MainFunctionStrategy.Function(NewFlower);
+                    return FunctionFacade.MainFunctionStrategy.Apply(NewFlower);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(solution), solution, null);
             }
@@ -79,7 +84,7 @@ namespace LevyFlightSharp.Entities
                 CurrentFlower = NewFlower;
                 return true;
             }
-            if (RandomGenerator.Random.NextDouble() < FlowerSettings.P)
+            if (RandomGenerator.Random.NextDouble() < P)
             {
                 var i = RandomGenerator.Random.Next() % CurrentFlower.Length;
                 CurrentFlower[i] = RandomGenerator.Random.NextDouble();

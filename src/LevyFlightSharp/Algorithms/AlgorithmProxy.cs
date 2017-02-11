@@ -3,6 +3,7 @@
 using LevyFlightSharp.Entities;
 using LevyFlightSharp.Extensions;
 using LevyFlightSharp.Facade;
+using LevyFlightSharp.Mediator;
 using LevyFlightSharp.Services;
 
 using Microsoft.Extensions.Logging;
@@ -36,7 +37,13 @@ namespace LevyFlightSharp.Algorithms
         protected override void PolinateOnce()
         {
             _logger.LogDebug("Start new step " + _step);
+
             base.PolinateOnce();
+
+            foreach (var group in Groups)
+            {
+                FindBestSolution(group);
+            }
             ++_step;
         }
 
@@ -69,19 +76,14 @@ namespace LevyFlightSharp.Algorithms
             _logger.LogTrace("Func = " + flower.CountFunction(Solution.NewSolution));
         }
 
-        protected override bool TryRefindBestSolution(FlowersGroup group)
+        protected void FindBestSolution(FlowersGroup group)
         {
-            var result = base.TryRefindBestSolution(group);
+            var result = Mediator.Send(new BestSolutionRequest(new[] { group }, Settings.IsMin));
 
-            if (result)
-            {
-                _logger.LogDebug("Group. New local minimum. Func = " 
-                    + group.BestSolution.CountFunction(Solution.Current));
+            _logger.LogDebug("Group. Local minimum. Func = "
+                + result.CountFunction(Solution.Current));
 
-                _logger.LogDebug("Values = " + group.BestSolution.ToString(Solution.Current));
-            }
-
-            return result;
+            _logger.LogDebug("Values = " + result.ToString(Solution.Current));
         }
     }
 }

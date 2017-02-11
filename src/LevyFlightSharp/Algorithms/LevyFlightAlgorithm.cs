@@ -1,6 +1,8 @@
-﻿using LevyFlightSharp.Entities;
-using LevyFlightSharp.Extensions;
+﻿using System.Linq;
+
+using LevyFlightSharp.Entities;
 using LevyFlightSharp.Facade;
+using LevyFlightSharp.Mediator;
 using LevyFlightSharp.Services;
 
 using Microsoft.Extensions.Configuration;
@@ -9,8 +11,9 @@ namespace LevyFlightSharp.Algorithms
 {
     public class LevyFlightAlgorithm
     {
-        private Settings Settings { get; }
-        private FlowersGroup[] Groups { get; }
+        protected FlowersGroup[] Groups { get; }
+        protected Settings Settings { get; }
+        protected Mediator.Mediator Mediator { get; } = LevyFlightSharp.Mediator.Mediator.Instance;
 
         public LevyFlightAlgorithm(FunctionFacade functionFacade)
         {
@@ -39,14 +42,14 @@ namespace LevyFlightSharp.Algorithms
                 ++t;
             }
 
-            return Groups.FindGlobalBest(Settings.IsMin);
+            return Mediator.Send(new BestSolutionRequest(Groups, Settings.IsMin));
         }
 
         protected virtual void PolinateOnce()
         {
             foreach (var group in Groups)
             {
-                foreach (var flower in @group.Flowers)
+                foreach (var flower in @group)
                 {
                     if (RandomGenerator.Random.NextDouble() < Settings.P)
                     {
@@ -59,8 +62,6 @@ namespace LevyFlightSharp.Algorithms
 
                     PostOperationAction(flower);
                 }
-
-                TryRefindBestSolution(@group);
             }
         }
 
@@ -72,18 +73,15 @@ namespace LevyFlightSharp.Algorithms
 
         protected virtual void GoFirstBranch(FlowersGroup group, Flower flower)
         {
-            flower.RecountByFirstBranch(group.BestSolution);
+            var bestSolution = Mediator.Send(new BestSolutionRequest(new[] { group }, Settings.IsMin));
+            var worstSolution = Mediator.Send(new BestSolutionRequest(new[] { group }, !Settings.IsMin));
+            flower.RecountByFirstBranch(bestSolution, worstSolution);
         }
 
         protected virtual void GoSecondBranch(FlowersGroup group, Flower flower)
         {
-            var i = RandomGenerator.Random.Next() % group.Flowers.Length;
-            flower.RecountBySecondBranch(group.Flowers[i]);
-        }
-
-        protected virtual bool TryRefindBestSolution(FlowersGroup group)
-        {
-            return group.TryRefindBestSolution(Settings.IsMin);
+            var i = RandomGenerator.Random.Next() % group.Count();
+            flower.RecountBySecondBranch(group.ElementAt(i));
         }
     }
 }

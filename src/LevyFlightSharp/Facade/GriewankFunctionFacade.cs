@@ -2,10 +2,10 @@
 
 namespace LevyFlightSharp.Facade
 {
-    public class GriewankFunctionFacade : FunctionFacade
+    public class GriewankFunctionFacade : CommonFunctionFacade
     {
         public GriewankFunctionFacade() 
-            : base(new GriewankFunctionStrategy(), new MantegnaFunctionStrategy())
+            : base(new GriewankFunctionStrategy())
         {
         }
     }

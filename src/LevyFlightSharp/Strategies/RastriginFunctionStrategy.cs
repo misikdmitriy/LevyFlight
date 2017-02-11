@@ -5,7 +5,7 @@ namespace LevyFlightSharp.Strategies
 {
     public class RastriginFunctionStrategy : IFunctionStrategy<double, double[]>
     {
-        public double Function(double[] arguments)
+        public double Apply(double[] arguments)
         {
             var a = 10.0;
             var an = arguments.Length * a;

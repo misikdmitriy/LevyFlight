@@ -2,10 +2,10 @@
 
 namespace LevyFlightSharp.Facade
 {
-    public class RastriginFunctionFacade : FunctionFacade
+    public class RastriginFunctionFacade : CommonFunctionFacade
     {
         public RastriginFunctionFacade() 
-            : base(new RastriginFunctionStrategy(), new MantegnaFunctionStrategy())
+            : base(new RastriginFunctionStrategy())
         {
         }
     }
