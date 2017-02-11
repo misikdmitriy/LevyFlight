@@ -1,9 +1,7 @@
-﻿using System.Linq;
-
-using LevyFlightSharp.Entities;
+﻿using LevyFlightSharp.Entities;
 using LevyFlightSharp.Extensions;
+using LevyFlightSharp.Facade;
 using LevyFlightSharp.Services;
-using LevyFlightSharp.Strategies;
 
 using Microsoft.Extensions.Configuration;
 
@@ -14,8 +12,7 @@ namespace LevyFlightSharp.Algorithms
         private Settings Settings { get; }
         private FlowersGroup[] Groups { get; }
 
-        public LevyFlightAlgorithm(IFunctionStrategy<double, double[]> mainFunctionStrategy, 
-            IFunctionStrategy<double, double> mantegnaFunctionStrategy)
+        public LevyFlightAlgorithm(FunctionFacade functionFacade)
         {
             Settings = new Settings();
             ConfigurationService.Configuration
@@ -27,7 +24,7 @@ namespace LevyFlightSharp.Algorithms
             for (var i = 0; i < Settings.GroupsCount; i++)
             {
                 Groups[i] = new FlowersGroup(Settings.FlowersCount, Settings.VariablesCount,
-                    mainFunctionStrategy, mantegnaFunctionStrategy);
+                    functionFacade);
             }
         }
 
@@ -87,15 +84,6 @@ namespace LevyFlightSharp.Algorithms
         protected virtual bool TryRefindBestSolution(FlowersGroup group)
         {
             return group.TryRefindBestSolution(Settings.IsMin);
-        }
-
-        protected virtual FlowersGroup[] CreateLocalBestGroup()
-        {
-            var localBestFlowers = Groups
-                .Select(g => g.BestSolution)
-                .ToArray();
-
-            return new[] { new FlowersGroup(localBestFlowers) };
         }
     }
 }

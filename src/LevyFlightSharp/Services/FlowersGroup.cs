@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-using LevyFlightSharp.Entities;
-using LevyFlightSharp.Strategies;
+﻿using LevyFlightSharp.Entities;
+using LevyFlightSharp.Facade;
 
 namespace LevyFlightSharp.Services
 {
-    public class FlowersGroup : IEnumerable<Flower>
+    public class FlowersGroup
     {
         public Flower[] Flowers { get; }
         public Flower BestSolution { get; private set; }
@@ -19,13 +16,12 @@ namespace LevyFlightSharp.Services
         }
 
         public FlowersGroup(int sizeOfGroup, int sizeOfFlower,
-            IFunctionStrategy<double, double[]> mainFunction, 
-            IFunctionStrategy<double, double> mantegnaFunctionStrategy)
+            FunctionFacade functionFacade)
         {
             Flowers = new Flower[sizeOfGroup];
             for (var i = 0; i < sizeOfGroup; i++)
             {
-                Flowers[i] = new Flower(sizeOfFlower, mainFunction, mantegnaFunctionStrategy);
+                Flowers[i] = new Flower(sizeOfFlower, functionFacade);
             }
 
             BestSolution = Flowers[0];
@@ -51,16 +47,6 @@ namespace LevyFlightSharp.Services
             }
 
             return founded;
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return Flowers.GetEnumerator();
-        }
-
-        public IEnumerator<Flower> GetEnumerator()
-        {
-            return (IEnumerator<Flower>)Flowers.GetEnumerator();
         }
     }
 }

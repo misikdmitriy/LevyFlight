@@ -1,33 +1,29 @@
 ﻿using System;
 
+using LevyFlightSharp.Facade;
 using LevyFlightSharp.Services;
-using LevyFlightSharp.Strategies;
 
 namespace LevyFlightSharp.Entities
 {
     public class Flower
     {
-        private const double Lambda = 1.5;
-        private const double P = 0.01;
+        private FlowerSettings FlowerSettings { get; } = new FlowerSettings(1.5, 0.01);
 
         private int Size { get; }
-        private IFunctionStrategy<double, double[]> FunctionStrategy { get; }
-        private IFunctionStrategy<double, double> MantegnaFunctionStrategy { get; }
+        private FunctionFacade FunctionFacade { get; }
 
         private double[] CurrentFlower { get; set; }
         private double[] NewFlower { get; set; }
 
-        public Flower(int size, IFunctionStrategy<double, double[]> mainFunctionStrategy, 
-            IFunctionStrategy<double, double> mantegnaFunctionStrategy)
+        public Flower(int size, FunctionFacade functionFacade)
         {
             if (size <= 0)
             {
                 throw new ArgumentException(nameof(size));
             }
 
-            FunctionStrategy = mainFunctionStrategy;
+            FunctionFacade = functionFacade;
             Size = size;
-            MantegnaFunctionStrategy = mantegnaFunctionStrategy;
 
             CurrentFlower = new double[Size];
             NewFlower = null;
@@ -44,7 +40,7 @@ namespace LevyFlightSharp.Entities
 
             for (var i = 0; i < Size; i++)
             {
-                var rand = MantegnaFunctionStrategy.Function(Lambda);
+                var rand = FunctionFacade.MantegnaFunctionStrategy.Function(FlowerSettings.Lambda);
 
                 NewFlower[i] = CurrentFlower[i] + rand * (solution.CurrentFlower[i] - CurrentFlower[i]);
             }
@@ -67,9 +63,9 @@ namespace LevyFlightSharp.Entities
             switch (solution)
             {
                 case Solution.Current:
-                    return FunctionStrategy.Function(CurrentFlower);
+                    return FunctionFacade.MainFunctionStrategy.Function(CurrentFlower);
                 case Solution.NewSolution:
-                    return FunctionStrategy.Function(NewFlower);
+                    return FunctionFacade.MainFunctionStrategy.Function(NewFlower);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(solution), solution, null);
             }
@@ -83,7 +79,7 @@ namespace LevyFlightSharp.Entities
                 CurrentFlower = NewFlower;
                 return true;
             }
-            if (RandomGenerator.Random.NextDouble() < P)
+            if (RandomGenerator.Random.NextDouble() < FlowerSettings.P)
             {
                 var i = RandomGenerator.Random.Next() % CurrentFlower.Length;
                 CurrentFlower[i] = RandomGenerator.Random.NextDouble();

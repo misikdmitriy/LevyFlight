@@ -8,6 +8,7 @@ using System.Text;
 
 using LevyFlightSharp.Algorithms;
 using LevyFlightSharp.Entities;
+using LevyFlightSharp.Facade;
 using LevyFlightSharp.Services;
 using LevyFlightSharp.Strategies;
 using Microsoft.Extensions.Logging;
@@ -33,7 +34,8 @@ namespace LevyFlightAutoTests
 
         private static readonly int RepeatNumbers = 5;
 
-        private static IFunctionStrategy<double, double[]> FunctionStrategy { get; } = new RastriginFunctionStrategy();
+        private static FunctionFacade FunctionFacade { get; } = new RastriginFunctionFacade();
+        private static string TestedFunction = nameof(RastriginFunctionStrategy);
 
         private static IEnumerable<FieldInfo> IntSettings => typeof(Program)
             .GetFields(BindingFlags.Static | BindingFlags.NonPublic)
@@ -48,7 +50,7 @@ namespace LevyFlightAutoTests
         public static void Main(string[] args)
         {
             var changableSetting = GetChangableSetting();
-            var testedFunctionName = nameof(RastriginFunctionStrategy);
+            var testedFunctionName = TestedFunction;
             var expectedResult = 0.0;
             var loggerFactory = new LoggerFactory()
                 .AddConsole()
@@ -76,7 +78,7 @@ namespace LevyFlightAutoTests
                     var sum = 0.0;
                     for (var i = 0; i < RepeatNumbers; i++)
                     {
-                        var algorithm = new LevyFlightAlgorithm(FunctionStrategy, new MantegnaFunctionStrategy());
+                        var algorithm = new LevyFlightAlgorithm(FunctionFacade);
                         var result = algorithm.Polinate();
 
                         sum += result.CountFunction(Solution.Current);

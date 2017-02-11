@@ -2,8 +2,8 @@
 
 using LevyFlightSharp.Entities;
 using LevyFlightSharp.Extensions;
+using LevyFlightSharp.Facade;
 using LevyFlightSharp.Services;
-using LevyFlightSharp.Strategies;
 
 using Microsoft.Extensions.Logging;
 
@@ -14,9 +14,8 @@ namespace LevyFlightSharp.Algorithms
         private readonly ILogger _logger;
         private int _step;
 
-        public AlgorithmProxy(IFunctionStrategy<double, double[]> mainFunctionStrategy, 
-            IFunctionStrategy<double, double> mantegnaFunctionStrategy)
-            : base(mainFunctionStrategy, mantegnaFunctionStrategy)
+        public AlgorithmProxy(FunctionFacade functionFacade)
+            : base(functionFacade)
         {
             _logger = ConfigurationService
                 .LoggerFactory
@@ -83,13 +82,6 @@ namespace LevyFlightSharp.Algorithms
             }
 
             return result;
-        }
-
-        protected override FlowersGroup[] CreateLocalBestGroup()
-        {
-            _logger.LogTrace("Create group of local best's");
-            _step = 0;
-            return base.CreateLocalBestGroup();
         }
     }
 }
