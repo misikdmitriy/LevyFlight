@@ -9,6 +9,7 @@ using System.Text;
 using LevyFlightSharp.Algorithms;
 using LevyFlightSharp.Entities;
 using LevyFlightSharp.Facade;
+using LevyFlightSharp.Mediator;
 using LevyFlightSharp.Services;
 using LevyFlightSharp.Strategies;
 using Microsoft.Extensions.Logging;
@@ -30,14 +31,14 @@ namespace LevyFlightAutoTests
         private static readonly NumericSettingsFields FlowersCount = new NumericSettingsFields(2, 30, 2, 15, true);
         private static readonly NumericSettingsFields GroupsCount = new NumericSettingsFields(2, 30, 2, 15, true);
 
-        private static readonly NumericSettingsFields MaxGeneration = new NumericSettingsFields(100, 1000, 100, 2000, false);
+        private static readonly NumericSettingsFields MaxGeneration = new NumericSettingsFields(100, 3000, 100, 2000, false);
 
         private static readonly NumericSettingsFields P = new NumericSettingsFields(0.85);
 
         private static readonly int RepeatNumbers = 5;
 
-        private static FunctionFacade FunctionFacade { get; } = new GriewankFunctionFacade();
-        private static string TestedFunction = nameof(GriewankFunctionStrategy);
+        private static FunctionFacade FunctionFacade { get; } = new RastriginFunctionFacade();
+        private static string TestedFunction = nameof(RastriginFunctionStrategy);
 
         private static IEnumerable<FieldInfo> IntSettings => typeof(Program)
             .GetFields(BindingFlags.Static | BindingFlags.NonPublic)
@@ -51,6 +52,8 @@ namespace LevyFlightAutoTests
 
         public static void Main(string[] args)
         {
+            Mediator.Register();
+
             var changableSetting = GetChangableSetting();
             var testedFunctionName = TestedFunction;
             var expectedResult = 0.0;

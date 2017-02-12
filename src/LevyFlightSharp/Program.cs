@@ -1,6 +1,5 @@
 ﻿using LevyFlightSharp.Algorithms;
 using LevyFlightSharp.Facade;
-using LevyFlightSharp.Mediator;
 using LevyFlightSharp.Services;
 
 namespace LevyFlightSharp
@@ -9,11 +8,11 @@ namespace LevyFlightSharp
     {
         public static void Main(string[] args)
         {
-            Mediator.Mediator.Register(typeof(BestSolutionRequestHandler));
+            Mediator.Mediator.Register();
 
             var functionFacade = new GriewankFunctionFacade();
 
-            var algorithm = new AlgorithmProxy(functionFacade);
+            var algorithm = new LevyFlightAlgorithmLogger(functionFacade);
             var timer = new TimeCounter();
 
             timer.Start();

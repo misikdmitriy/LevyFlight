@@ -37,6 +37,11 @@ namespace LevyFlightSharp.Mediator
                 .Single(i => i.GetGenericTypeDefinition() == typeof(IRequestHandler<,>))
                 .GetGenericArguments().First()] = requestHandlerType;
         }
+
+        public static void Register()
+        {
+            Register(typeof(BestSolutionRequestHandler));
+        }
     }
 
     public interface IRequest<TResponse>

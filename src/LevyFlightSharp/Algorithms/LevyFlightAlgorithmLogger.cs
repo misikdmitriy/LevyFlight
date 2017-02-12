@@ -10,12 +10,12 @@ using Microsoft.Extensions.Logging;
 
 namespace LevyFlightSharp.Algorithms
 {
-    public class AlgorithmProxy : LevyFlightAlgorithm
+    public class LevyFlightAlgorithmLogger : LevyFlightAlgorithm
     {
         private readonly ILogger _logger;
         private int _step;
 
-        public AlgorithmProxy(FunctionFacade functionFacade)
+        public LevyFlightAlgorithmLogger(FunctionFacade functionFacade)
             : base(functionFacade)
         {
             _logger = ConfigurationService
