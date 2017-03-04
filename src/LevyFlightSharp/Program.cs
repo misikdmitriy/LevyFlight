@@ -10,7 +10,7 @@ namespace LevyFlightSharp
         {
             Mediator.Mediator.Register();
 
-            var functionFacade = new RastriginFunctionFacade();
+            var functionFacade = new AckleyFunctionFacade();
 
             var algorithm = new LevyFlightAlgorithmLogger(functionFacade);
             var timer = new TimeCounter();

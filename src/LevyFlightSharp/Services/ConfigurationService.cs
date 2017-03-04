@@ -55,7 +55,7 @@ namespace LevyFlightSharp.Services
             var fileTarget = new FileTarget
             {
                 Name = "logFile",
-                FileName = "${basedir}/logs/" + Guid.NewGuid() + ".log",
+                FileName = "${basedir}/logs/" + DateTime.Now.ToString("MMddyyyyhhmmss") + ".log",
                 DeleteOldFileOnStartup = true
             };
 

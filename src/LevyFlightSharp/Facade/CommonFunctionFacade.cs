@@ -2,9 +2,9 @@
 
 namespace LevyFlightSharp.Facade
 {
-    public class CommonFunctionFacade : FunctionFacade
+    public abstract class CommonFunctionFacade : FunctionFacade
     {
-        public CommonFunctionFacade(IFunctionStrategy<double, double[]> mainFunctionStrategy) 
+        protected CommonFunctionFacade(IFunctionStrategy<double, double[]> mainFunctionStrategy) 
             : base(mainFunctionStrategy, 
                   new MantegnaFunctionStrategy(), 
                   new LambdaFunctionStrategy(), 

@@ -11,7 +11,7 @@ namespace LevyFlightSharp.Algorithms
 {
     public class LevyFlightAlgorithm
     {
-        protected FlowersGroup[] Groups { get; }
+        protected PollinatorsGroup[] Groups { get; }
         protected Settings Settings { get; }
         protected Mediator.Mediator Mediator { get; } = LevyFlightSharp.Mediator.Mediator.Instance;
 
@@ -22,16 +22,16 @@ namespace LevyFlightSharp.Algorithms
                 .GetSection("AlgorithmSettings")
                 .Bind(Settings);
 
-            Groups = new FlowersGroup[Settings.GroupsCount];
+            Groups = new PollinatorsGroup[Settings.GroupsCount];
 
             for (var i = 0; i < Settings.GroupsCount; i++)
             {
-                Groups[i] = new FlowersGroup(Settings.FlowersCount, Settings.VariablesCount,
+                Groups[i] = new PollinatorsGroup(Settings.PollinatorsCount, Settings.VariablesCount,
                     functionFacade);
             }
         }
 
-        public virtual Flower Polinate()
+        public virtual Pollinator Polinate()
         {
             var t = 0;
 
@@ -49,39 +49,39 @@ namespace LevyFlightSharp.Algorithms
         {
             foreach (var group in Groups)
             {
-                foreach (var flower in @group)
+                foreach (var pollinator in @group)
                 {
                     if (RandomGenerator.Random.NextDouble() < Settings.P)
                     {
-                        GoFirstBranch(@group, flower);
+                        GoFirstBranch(@group, pollinator);
                     }
                     else
                     {
-                        GoSecondBranch(@group, flower);
+                        GoSecondBranch(@group, pollinator);
                     }
 
-                    PostOperationAction(flower);
+                    PostOperationAction(pollinator);
                 }
             }
         }
 
-        protected virtual void PostOperationAction(Flower flower)
+        protected virtual void PostOperationAction(Pollinator pollinator)
         {
-            flower.TryExchange(Settings.IsMin);
-            flower.Check();
+            pollinator.TryExchange(Settings.IsMin);
+            pollinator.Check();
         }
 
-        protected virtual void GoFirstBranch(FlowersGroup group, Flower flower)
+        protected virtual void GoFirstBranch(PollinatorsGroup group, Pollinator pollinator)
         {
             var bestSolution = Mediator.Send(new BestSolutionRequest(new[] { group }, Settings.IsMin));
             var worstSolution = Mediator.Send(new BestSolutionRequest(new[] { group }, !Settings.IsMin));
-            flower.RecountByFirstBranch(bestSolution, worstSolution);
+            pollinator.RecountByFirstBranch(bestSolution, worstSolution);
         }
 
-        protected virtual void GoSecondBranch(FlowersGroup group, Flower flower)
+        protected virtual void GoSecondBranch(PollinatorsGroup group, Pollinator pollinator)
         {
             var i = RandomGenerator.Random.Next() % group.Count();
-            flower.RecountBySecondBranch(group.ElementAt(i));
+            pollinator.RecountBySecondBranch(group.ElementAt(i));
         }
     }
 }

@@ -5,17 +5,17 @@ using LevyFlightSharp.Services;
 
 namespace LevyFlightSharp.Entities
 {
-    public class Flower
+    public class Pollinator
     {
         public const double P = 0.01;
 
         private int Size { get; }
         private FunctionFacade FunctionFacade { get; }
 
-        private double[] CurrentFlower { get; set; }
-        private double[] NewFlower { get; set; }
+        private double[] CurrentPollinators { get; set; }
+        private double[] NewPollinators { get; set; }
 
-        public Flower(int size, FunctionFacade functionFacade)
+        public Pollinator(int size, FunctionFacade functionFacade)
         {
             if (size <= 0)
             {
@@ -25,41 +25,41 @@ namespace LevyFlightSharp.Entities
             FunctionFacade = functionFacade;
             Size = size;
 
-            CurrentFlower = new double[Size];
-            NewFlower = null;
+            CurrentPollinators = new double[Size];
+            NewPollinators = null;
 
             for (var i = 0; i < size; i++)
             {
-                CurrentFlower[i] = RandomGenerator.Random.NextDouble();
+                CurrentPollinators[i] = RandomGenerator.Random.NextDouble();
             }
         }
 
-        public void RecountByFirstBranch(Flower solution1, Flower solution2)
+        public void RecountByFirstBranch(Pollinator solution1, Pollinator solution2)
         {
-            NewFlower = new double[Size];
+            NewPollinators = new double[Size];
 
             for (var i = 0; i < Size; i++)
             {
-                var distanceDifference = FunctionFacade.DistanceFunctionStrategy.Apply(solution2.CurrentFlower) -
-                                         FunctionFacade.DistanceFunctionStrategy.Apply(CurrentFlower);
+                var distanceDifference = FunctionFacade.DistanceFunctionStrategy.Apply(solution2.CurrentPollinators) -
+                                         FunctionFacade.DistanceFunctionStrategy.Apply(CurrentPollinators);
 
                 var lambda = FunctionFacade.LambdaFunctionStrategy.Apply(distanceDifference);
 
                 var rand = FunctionFacade.MantegnaFunctionStrategy.Apply(lambda);
 
-                NewFlower[i] = CurrentFlower[i] + rand * (solution1.CurrentFlower[i] - CurrentFlower[i]);
+                NewPollinators[i] = CurrentPollinators[i] + rand * (solution1.CurrentPollinators[i] - CurrentPollinators[i]);
             }
         }
 
-        public void RecountBySecondBranch(Flower solution)
+        public void RecountBySecondBranch(Pollinator solution)
         {
-            NewFlower = new double[Size];
+            NewPollinators = new double[Size];
 
             for (var i = 0; i < Size; i++)
             {
                 var rand = RandomGenerator.Random.NextDouble();
 
-                NewFlower[i] = CurrentFlower[i] + rand * (solution.CurrentFlower[i] - CurrentFlower[i]);
+                NewPollinators[i] = CurrentPollinators[i] + rand * (solution.CurrentPollinators[i] - CurrentPollinators[i]);
             }
         }
 
@@ -68,9 +68,9 @@ namespace LevyFlightSharp.Entities
             switch (solution)
             {
                 case Solution.Current:
-                    return FunctionFacade.MainFunctionStrategy.Apply(CurrentFlower);
+                    return FunctionFacade.MainFunctionStrategy.Apply(CurrentPollinators);
                 case Solution.NewSolution:
-                    return FunctionFacade.MainFunctionStrategy.Apply(NewFlower);
+                    return FunctionFacade.MainFunctionStrategy.Apply(NewPollinators);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(solution), solution, null);
             }
@@ -81,13 +81,13 @@ namespace LevyFlightSharp.Entities
             if (isMin && CountFunction(Solution.Current) > CountFunction(Solution.NewSolution)
                 || !isMin && CountFunction(Solution.Current) < CountFunction(Solution.NewSolution))
             {
-                CurrentFlower = NewFlower;
+                CurrentPollinators = NewPollinators;
                 return true;
             }
             if (RandomGenerator.Random.NextDouble() < P)
             {
-                var i = RandomGenerator.Random.Next() % CurrentFlower.Length;
-                CurrentFlower[i] = RandomGenerator.Random.NextDouble();
+                var i = RandomGenerator.Random.Next() % CurrentPollinators.Length;
+                CurrentPollinators[i] = RandomGenerator.Random.NextDouble();
                 return true;
             }
             return false;
@@ -95,7 +95,7 @@ namespace LevyFlightSharp.Entities
 
         public void Check()
         {
-            foreach (var element in CurrentFlower)
+            foreach (var element in CurrentPollinators)
             {
                 if (double.IsNaN(element))
                 {
@@ -113,20 +113,20 @@ namespace LevyFlightSharp.Entities
             switch (solution)
             {
                 case Solution.Current:
-                    return ToString(CurrentFlower);
+                    return ToString(CurrentPollinators);
                 case Solution.NewSolution:
-                    return ToString(NewFlower);
+                    return ToString(NewPollinators);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(solution), solution, null);
             }
         }
 
-        private string ToString(double[] flower)
+        private string ToString(double[] pollinator)
         {
             var result = "";
             for (var i = 0; i < Size; i++)
             {
-                result += $"{i}): {flower[i]:e2}; ";
+                result += $"{i}): {pollinator[i]:e2}; ";
             }
             return result;
         }

@@ -23,7 +23,7 @@ namespace LevyFlightSharp.Algorithms
                 .CreateLogger(GetType().FullName);
         }
 
-        public override Flower Polinate()
+        public override Pollinator Polinate()
         {
             _step = 0;
             var result = base.Polinate();
@@ -47,11 +47,11 @@ namespace LevyFlightSharp.Algorithms
             ++_step;
         }
 
-        protected override void PostOperationAction(Flower flower)
+        protected override void PostOperationAction(Pollinator pollinator)
         {
             try
             {
-                base.PostOperationAction(flower);
+                base.PostOperationAction(pollinator);
             }
             catch (ArithmeticException e)
             {
@@ -60,23 +60,23 @@ namespace LevyFlightSharp.Algorithms
             }
         }
 
-        protected override void GoFirstBranch(FlowersGroup group, Flower flower)
+        protected override void GoFirstBranch(PollinatorsGroup group, Pollinator pollinator)
         {
-            _logger.LogTrace("Flower " + group.IndexOf(flower) + " goes first branch");
-            base.GoFirstBranch(group, flower);
-            _logger.LogTrace("New values = " + flower.ToString(Solution.NewSolution));
-            _logger.LogTrace("Func = " + flower.CountFunction(Solution.NewSolution));
+            _logger.LogTrace("Pollinator " + group.IndexOf(pollinator) + " goes first branch");
+            base.GoFirstBranch(group, pollinator);
+            _logger.LogTrace("New values = " + pollinator.ToString(Solution.NewSolution));
+            _logger.LogTrace("Func = " + pollinator.CountFunction(Solution.NewSolution));
         }
 
-        protected override void GoSecondBranch(FlowersGroup group, Flower flower)
+        protected override void GoSecondBranch(PollinatorsGroup group, Pollinator pollinator)
         {
-            _logger.LogTrace("Flower " + group.IndexOf(flower) + " goes second branch");
-            base.GoSecondBranch(group, flower);
-            _logger.LogTrace("New values = " + flower.ToString(Solution.NewSolution));
-            _logger.LogTrace("Func = " + flower.CountFunction(Solution.NewSolution));
+            _logger.LogTrace("Pollinator " + group.IndexOf(pollinator) + " goes second branch");
+            base.GoSecondBranch(group, pollinator);
+            _logger.LogTrace("New values = " + pollinator.ToString(Solution.NewSolution));
+            _logger.LogTrace("Func = " + pollinator.CountFunction(Solution.NewSolution));
         }
 
-        protected void FindBestSolution(FlowersGroup group)
+        protected void FindBestSolution(PollinatorsGroup group)
         {
             var result = Mediator.Send(new BestSolutionRequest(new[] { group }, Settings.IsMin));
 
