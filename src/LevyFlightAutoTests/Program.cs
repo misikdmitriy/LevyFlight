@@ -29,13 +29,11 @@ namespace LevyFlightAutoTests
     public class Program
     {
         private static readonly NumericSettingsFields VariablesCount = new NumericSettingsFields(2, 30, 2, 30, true);
-
         private static readonly NumericSettingsFields PollinatorsCount = new NumericSettingsFields(2, 30, 2, 15, true);
         private static readonly NumericSettingsFields GroupsCount = new NumericSettingsFields(2, 30, 2, 15, true);
-
         private static readonly NumericSettingsFields MaxGeneration = new NumericSettingsFields(100, 100, 100, 2000, false);
-
         private static readonly NumericSettingsFields P = new NumericSettingsFields(0.85);
+        private static readonly bool IsMin = true;
 
         private static readonly int RepeatNumbers = 5;
 
@@ -135,7 +133,7 @@ namespace LevyFlightAutoTests
                     .ToString(CultureInfo.InvariantCulture));
             }
 
-            jObject.Add("IsMin", true);
+            jObject.Add("IsMin", IsMin);
             return new JObject(new JProperty("AlgorithmSettings", jObject)).ToString();
         }
 
