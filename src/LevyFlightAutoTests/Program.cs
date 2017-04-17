@@ -6,12 +6,13 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
+using Autofac;
+
 using LevyFlightSharp.Algorithms;
+using LevyFlightSharp.DependencyInjection;
 using LevyFlightSharp.Entities;
 using LevyFlightSharp.Facade;
-using LevyFlightSharp.Mediator;
 using LevyFlightSharp.Services;
-using LevyFlightSharp.Strategies;
 
 using Microsoft.Extensions.Logging;
 
@@ -38,8 +39,10 @@ namespace LevyFlightAutoTests
 
         private static readonly int RepeatNumbers = 5;
 
-        private static FunctionFacade FunctionFacade { get; } = new RosenbrockFunctionFacade();
-        private static string TestedFunction = nameof(RosenbrockFunctionStrategy);
+        private static FunctionFacade FunctionFacade { get; } = DependencyRegistration.Container
+            .ResolveNamed<FunctionFacade>(InjectionNames.MainFunctionFacadeName);
+
+        private static string TestedFunction = InjectionNames.MainFunctionFacadeName;
 
         private static IEnumerable<FieldInfo> IntSettings => typeof(Program)
             .GetFields(BindingFlags.Static | BindingFlags.NonPublic)
@@ -53,7 +56,7 @@ namespace LevyFlightAutoTests
 
         public static void Main(string[] args)
         {
-            Mediator.Register();
+            DependencyRegistration.Register();
 
             var changableSetting = GetChangableSetting();
             var testedFunctionName = TestedFunction;
@@ -84,8 +87,11 @@ namespace LevyFlightAutoTests
                     var sum = 0.0;
                     for (var i = 0; i < RepeatNumbers; i++)
                     {
-                        var algorithm = new LevyFlightAlgorithm(FunctionFacade);
-                        var result = algorithm.Polinate();
+                        var algorithm = DependencyRegistration.Container
+                            .ResolveNamed<LevyFlightAlgorithm>(InjectionNames.LevyFlightAlgorithmName,
+                                new NamedParameter("functionFacade", FunctionFacade));
+
+                        var result = algorithm.PolinateAsync().Result;
 
                         sum += result.CountFunction(Solution.Current);
                     }

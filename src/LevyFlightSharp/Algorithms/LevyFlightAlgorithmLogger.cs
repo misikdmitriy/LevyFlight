@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using LevyFlightSharp.Entities;
 using LevyFlightSharp.Extensions;
 using LevyFlightSharp.Facade;
-using LevyFlightSharp.Mediator;
+using LevyFlightSharp.MediatorRequests;
 using LevyFlightSharp.Services;
 
 using Microsoft.Extensions.Logging;
@@ -23,10 +24,10 @@ namespace LevyFlightSharp.Algorithms
                 .CreateLogger(GetType().FullName);
         }
 
-        public override Pollinator Polinate()
+        public override async Task<Pollinator> PolinateAsync()
         {
             _step = 0;
-            var result = base.Polinate();
+            var result = await base.PolinateAsync();
 
             _logger.LogInformation("Best solution. Func = " + result.CountFunction(Solution.Current));
             _logger.LogInformation("Values = " + result.ToString(Solution.Current));
@@ -34,15 +35,15 @@ namespace LevyFlightSharp.Algorithms
             return result;
         }
 
-        protected override void PolinateOnce()
+        protected override async Task PolinateOnceAsync()
         {
             _logger.LogDebug("Start new step " + _step);
 
-            base.PolinateOnce();
+            await base.PolinateOnceAsync();
 
             foreach (var group in Groups)
             {
-                FindBestSolution(group);
+                await FindBestSolutionAsync(group);
             }
             ++_step;
         }
@@ -60,10 +61,10 @@ namespace LevyFlightSharp.Algorithms
             }
         }
 
-        protected override void GoFirstBranch(PollinatorsGroup group, Pollinator pollinator)
+        protected override async Task GoFirstBranchAsync(PollinatorsGroup group, Pollinator pollinator)
         {
             _logger.LogTrace("Pollinator " + group.IndexOf(pollinator) + " goes first branch");
-            base.GoFirstBranch(group, pollinator);
+            await base.GoFirstBranchAsync(group, pollinator);
             _logger.LogTrace("New values = " + pollinator.ToString(Solution.NewSolution));
             _logger.LogTrace("Func = " + pollinator.CountFunction(Solution.NewSolution));
         }
@@ -76,9 +77,9 @@ namespace LevyFlightSharp.Algorithms
             _logger.LogTrace("Func = " + pollinator.CountFunction(Solution.NewSolution));
         }
 
-        protected void FindBestSolution(PollinatorsGroup group)
+        protected async Task FindBestSolutionAsync(PollinatorsGroup group)
         {
-            var result = Mediator.Send(new BestSolutionRequest(new[] { group }, Settings.IsMin));
+            var result = await Mediator.Send(new BestSolutionRequest(new[] { group }, Settings.IsMin));
 
             _logger.LogDebug("Group. Local minimum. Func = "
                 + result.CountFunction(Solution.Current));

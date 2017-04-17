@@ -1,4 +1,7 @@
-﻿using LevyFlightSharp.Algorithms;
+﻿using Autofac;
+
+using LevyFlightSharp.Algorithms;
+using LevyFlightSharp.DependencyInjection;
 using LevyFlightSharp.Facade;
 using LevyFlightSharp.Services;
 
@@ -8,15 +11,19 @@ namespace LevyFlightSharp
     {
         public static void Main(string[] args)
         {
-            Mediator.Mediator.Register();
+            DependencyRegistration.Register();
 
-            var functionFacade = new AckleyFunctionFacade();
+            var facade = DependencyRegistration.Container
+                .ResolveNamed<FunctionFacade>(InjectionNames.MainFunctionFacadeName);
 
-            var algorithm = new LevyFlightAlgorithmLogger(functionFacade);
+            var algorithm = DependencyRegistration.Container
+                .ResolveNamed<LevyFlightAlgorithm>(InjectionNames.LevyFlightAlgorithmMainName,
+                    new NamedParameter("functionFacade", facade));
+
             var timer = new TimeCounter();
 
             timer.Start();
-            algorithm.Polinate();
+            algorithm.PolinateAsync().Wait();
             timer.End();
         }
     }

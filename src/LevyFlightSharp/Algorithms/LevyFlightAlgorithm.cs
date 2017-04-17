@@ -1,9 +1,15 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 
+using Autofac;
+
+using LevyFlightSharp.DependencyInjection;
 using LevyFlightSharp.Entities;
 using LevyFlightSharp.Facade;
-using LevyFlightSharp.Mediator;
+using LevyFlightSharp.MediatorRequests;
 using LevyFlightSharp.Services;
+
+using MediatR;
 
 using Microsoft.Extensions.Configuration;
 
@@ -13,7 +19,7 @@ namespace LevyFlightSharp.Algorithms
     {
         protected PollinatorsGroup[] Groups { get; }
         protected Settings Settings { get; }
-        protected Mediator.Mediator Mediator { get; } = LevyFlightSharp.Mediator.Mediator.Instance;
+        protected IMediator Mediator { get; } = DependencyRegistration.Container.Resolve<IMediator>();
 
         public LevyFlightAlgorithm(FunctionFacade functionFacade)
         {
@@ -31,21 +37,21 @@ namespace LevyFlightSharp.Algorithms
             }
         }
 
-        public virtual Pollinator Polinate()
+        public virtual async Task<Pollinator> PolinateAsync()
         {
             var t = 0;
 
             while (t < Settings.MaxGeneration)
             {
-                PolinateOnce();
+                await PolinateOnceAsync();
 
                 ++t;
             }
 
-            return Mediator.Send(new BestSolutionRequest(Groups, Settings.IsMin));
+            return await Mediator.Send(new BestSolutionRequest(Groups, Settings.IsMin));
         }
 
-        protected virtual void PolinateOnce()
+        protected virtual async Task PolinateOnceAsync()
         {
             foreach (var group in Groups)
             {
@@ -53,7 +59,7 @@ namespace LevyFlightSharp.Algorithms
                 {
                     if (RandomGenerator.Random.NextDouble() < Settings.P)
                     {
-                        GoFirstBranch(@group, pollinator);
+                        await GoFirstBranchAsync(@group, pollinator);
                     }
                     else
                     {
@@ -71,11 +77,13 @@ namespace LevyFlightSharp.Algorithms
             pollinator.Check();
         }
 
-        protected virtual void GoFirstBranch(PollinatorsGroup group, Pollinator pollinator)
+        protected virtual async Task GoFirstBranchAsync(PollinatorsGroup group, Pollinator pollinator)
         {
-            var bestSolution = Mediator.Send(new BestSolutionRequest(new[] { group }, Settings.IsMin));
-            var worstSolution = Mediator.Send(new BestSolutionRequest(new[] { group }, !Settings.IsMin));
-            pollinator.RecountByFirstBranch(bestSolution, worstSolution);
+            var bestSolutionTask = Mediator.Send(new BestSolutionRequest(new[] { group }, Settings.IsMin));
+            var worstSolutionTask = Mediator.Send(new BestSolutionRequest(new[] { group }, !Settings.IsMin));
+            await Task.WhenAll(bestSolutionTask, worstSolutionTask);
+
+            pollinator.RecountByFirstBranch(bestSolutionTask.Result, worstSolutionTask.Result);
         }
 
         protected virtual void GoSecondBranch(PollinatorsGroup group, Pollinator pollinator)

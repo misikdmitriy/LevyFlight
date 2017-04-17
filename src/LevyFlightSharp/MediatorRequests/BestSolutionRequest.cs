@@ -2,7 +2,9 @@
 using LevyFlightSharp.Entities;
 using LevyFlightSharp.Services;
 
-namespace LevyFlightSharp.Mediator
+using MediatR;
+
+namespace LevyFlightSharp.MediatorRequests
 {
     public class BestSolutionRequest : IRequest<Pollinator>
     {
