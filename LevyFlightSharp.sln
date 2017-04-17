@@ -1,20 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C0A77922-0D13-4F50-8DDA-691AF2A9D937}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2524C50A-CB08-4F6A-9913-707819DAA564}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LevyFlightSharp", "src\LevyFlightSharp\LevyFlightSharp.xproj", "{EE99AED5-9A92-4045-AC27-61FAD920F321}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevyFlightSharp", "src\LevyFlightSharp\LevyFlightSharp.csproj", "{EE99AED5-9A92-4045-AC27-61FAD920F321}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LevyFlightRunner", "src\LevyFlightRunner\LevyFlightRunner.xproj", "{AD2415BD-512C-42EF-BEB8-37EA6F913346}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevyFlightRunner", "src\LevyFlightRunner\LevyFlightRunner.csproj", "{AD2415BD-512C-42EF-BEB8-37EA6F913346}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LevyFlightAutoTests", "src\LevyFlightAutoTests\LevyFlightAutoTests.xproj", "{B5CB1590-781E-4850-90B6-5D724C228D55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevyFlightAutoTests", "src\LevyFlightAutoTests\LevyFlightAutoTests.csproj", "{B5CB1590-781E-4850-90B6-5D724C228D55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
