@@ -7,12 +7,13 @@ using Autofac.Features.Variance;
 
 using LevyFlight.Algorithms;
 using LevyFlight.Facade;
+using LevyFlight.MediatorRequests;
 using LevyFlight.Services;
 using LevyFlight.Strategies;
 
 using MediatR;
 
-namespace LevyFlight.DependencyInjection
+namespace LevyFlight.ConsoleApp.DependencyInjection
 {
     public class DependencyRegistration
     {
@@ -37,45 +38,56 @@ namespace LevyFlight.DependencyInjection
             {
                 var c = ctx.Resolve<IComponentContext>();
                 return t => { object o; return c.TryResolve(t, out o) ? o : null; };
-            }).InstancePerLifetimeScope();
+            });
 
             // notification handlers
             builder.Register<MultiInstanceFactory>(ctx =>
             {
                 var c = ctx.Resolve<IComponentContext>();
                 return t => (IEnumerable<object>)c.Resolve(typeof(IEnumerable<>).MakeGenericType(t));
-            }).InstancePerLifetimeScope();
+            });
 
             // Register custom code
-            builder.RegisterAssemblyTypes(typeof(DependencyRegistration).GetTypeInfo().Assembly)
+            builder.RegisterAssemblyTypes(typeof(BestSolutionRequestHandler).GetTypeInfo().Assembly)
+                .Where(t => t.IsClosedTypeOf(typeof(IRequestHandler<,>)))
                 .AsImplementedInterfaces(); // via assembly scan
 
             // Facades registration
 
             builder.RegisterType<FunctionFacade>()
+                .Named<FunctionFacade>(InjectionNames.AckleyFunctionFacadeName)
+                .WithParameter("mainFunctionStrategy", new AckleyFunctionStrategy())
                 .WithParameter("mantegnaFunctionStrategy", new MantegnaFunctionStrategy())
                 .WithParameter("lambdaFunctionStrategy", new LambdaFunctionStrategy())
                 .WithParameter("distanceFunctionStrategy", new DistanceFunctionStrategy());
 
             builder.RegisterType<FunctionFacade>()
-                .Named<FunctionFacade>(InjectionNames.AckleyFunctionFacadeName)
-                .WithParameter("mainFunctionStrategy", new AckleyFunctionStrategy());
-
-            builder.RegisterType<FunctionFacade>()
                 .Named<FunctionFacade>(InjectionNames.GriewankFunctionFacadeName)
-                .WithParameter("mainFunctionStrategy", new GriewankFunctionStrategy());
+                .WithParameter("mainFunctionStrategy", new GriewankFunctionStrategy())
+                .WithParameter("mantegnaFunctionStrategy", new MantegnaFunctionStrategy())
+                .WithParameter("lambdaFunctionStrategy", new LambdaFunctionStrategy())
+                .WithParameter("distanceFunctionStrategy", new DistanceFunctionStrategy());
 
             builder.RegisterType<FunctionFacade>()
                 .Named<FunctionFacade>(InjectionNames.RastriginFunctionFacadeName)
-                .WithParameter("mainFunctionStrategy", new RastriginFunctionStrategy());
+                .WithParameter("mainFunctionStrategy", new RastriginFunctionStrategy())
+                .WithParameter("mantegnaFunctionStrategy", new MantegnaFunctionStrategy())
+                .WithParameter("lambdaFunctionStrategy", new LambdaFunctionStrategy())
+                .WithParameter("distanceFunctionStrategy", new DistanceFunctionStrategy());
 
             builder.RegisterType<FunctionFacade>()
                 .Named<FunctionFacade>(InjectionNames.RosenbrockFunctionFacadeName)
-                .WithParameter("mainFunctionStrategy", new RosenbrockFunctionStrategy());
+                .WithParameter("mainFunctionStrategy", new RosenbrockFunctionStrategy())
+                .WithParameter("mantegnaFunctionStrategy", new MantegnaFunctionStrategy())
+                .WithParameter("lambdaFunctionStrategy", new LambdaFunctionStrategy())
+                .WithParameter("distanceFunctionStrategy", new DistanceFunctionStrategy());
 
             builder.RegisterType<FunctionFacade>()
                 .Named<FunctionFacade>(InjectionNames.SphereFunctionFacadeName)
-                .WithParameter("mainFunctionStrategy", new SphereFunctionStrategy());
+                .WithParameter("mainFunctionStrategy", new SphereFunctionStrategy())
+                .WithParameter("mantegnaFunctionStrategy", new MantegnaFunctionStrategy())
+                .WithParameter("lambdaFunctionStrategy", new LambdaFunctionStrategy())
+                .WithParameter("distanceFunctionStrategy", new DistanceFunctionStrategy());
 
             // Algorithms registrations
 

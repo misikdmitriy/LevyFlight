@@ -1,4 +1,4 @@
-﻿namespace LevyFlight.DependencyInjection
+﻿namespace LevyFlight.ConsoleApp.DependencyInjection
 {
     public class InjectionNames
     {

@@ -9,7 +9,7 @@ using System.Text;
 using Autofac;
 
 using LevyFlight.Algorithms;
-using LevyFlight.DependencyInjection;
+using LevyFlight.ConsoleApp.DependencyInjection;
 using LevyFlight.Entities;
 using LevyFlight.Facade;
 using LevyFlight.Services;
@@ -35,7 +35,7 @@ namespace LevyFlight.AutoTests
         private static readonly NumericSettingsFields P = new NumericSettingsFields(0.85);
         private static readonly bool IsMin = true;
 
-        private static readonly int RepeatNumbers = 5;
+        private static readonly int RepeatNumbers = 1;
 
         private static FunctionFacade FunctionFacade { get; set; }
 

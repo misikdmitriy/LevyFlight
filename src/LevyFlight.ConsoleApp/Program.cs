@@ -1,7 +1,7 @@
-﻿using LevyFlight.DependencyInjection;
+﻿using LevyFlight.ConsoleApp.DependencyInjection;
 using LevyFlight.Services;
 
-namespace LevyFlight
+namespace LevyFlight.ConsoleApp
 {
     public class Program
     {

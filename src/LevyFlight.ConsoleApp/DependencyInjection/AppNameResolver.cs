@@ -1,10 +1,9 @@
 ﻿using Autofac;
 
 using LevyFlight.Algorithms;
-using LevyFlight.DependencyInjection;
 using LevyFlight.Facade;
 
-namespace LevyFlight.Services
+namespace LevyFlight.ConsoleApp.DependencyInjection
 {
     public class AppNameResolver
     {
