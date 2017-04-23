@@ -1,8 +1,4 @@
-﻿using Autofac;
-
-using LevyFlightSharp.Algorithms;
-using LevyFlightSharp.DependencyInjection;
-using LevyFlightSharp.Facade;
+﻿using LevyFlightSharp.DependencyInjection;
 using LevyFlightSharp.Services;
 
 namespace LevyFlightSharp
@@ -13,12 +9,8 @@ namespace LevyFlightSharp
         {
             DependencyRegistration.Register();
 
-            var facade = DependencyRegistration.Container
-                .ResolveNamed<FunctionFacade>(InjectionNames.MainFunctionFacadeName);
-
-            var algorithm = DependencyRegistration.Container
-                .ResolveNamed<LevyFlightAlgorithm>(InjectionNames.LevyFlightAlgorithmMainName,
-                    new NamedParameter("functionFacade", facade));
+            var algorithm = AppNameResolver.ToAlgorithm(ConfigurationService.AppSettings.UseLogger,
+                ConfigurationService.AppSettings.TestedFunction);
 
             var timer = new TimeCounter();
 

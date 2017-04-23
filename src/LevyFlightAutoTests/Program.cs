@@ -37,10 +37,9 @@ namespace LevyFlightAutoTests
 
         private static readonly int RepeatNumbers = 5;
 
-        private static FunctionFacade FunctionFacade { get; } = DependencyRegistration.Container
-            .ResolveNamed<FunctionFacade>(InjectionNames.MainFunctionFacadeName);
+        private static FunctionFacade FunctionFacade { get; set; }
 
-        private static string TestedFunction = InjectionNames.MainFunctionFacadeName;
+        private static string _testedFunction;
 
         private static IEnumerable<FieldInfo> IntSettings => typeof(Program)
             .GetFields(BindingFlags.Static | BindingFlags.NonPublic)
@@ -55,9 +54,9 @@ namespace LevyFlightAutoTests
         public static void Main(string[] args)
         {
             DependencyRegistration.Register();
+            InitializeFunction();
 
             var changableSetting = GetChangableSetting();
-            var testedFunctionName = TestedFunction;
             var expectedResult = 0.0;
             var loggerFactory = new LoggerFactory()
                 .AddConsole()
@@ -66,7 +65,7 @@ namespace LevyFlightAutoTests
 
             loggerFactory.ConfigureNLog(logConfig);
 
-            var logger = loggerFactory.CreateLogger(testedFunctionName);
+            var logger = loggerFactory.CreateLogger(_testedFunction);
 
             using (var resultFile = new StreamWriter(File.Create("result.csv")))
             {
@@ -94,12 +93,21 @@ namespace LevyFlightAutoTests
                         sum += result.CountFunction(Solution.Current);
                     }
 
-                    logger.LogInformation($"{testedFunctionName} tested with parameters:{GetParameters()}");
+                    logger.LogInformation($"{_testedFunction} tested with parameters:{GetParameters()}");
                     logger.LogInformation($"Difference = {sum / RepeatNumbers - expectedResult}\n");
 
                     resultFile.WriteLine($"{changableSetting.Current};{sum / RepeatNumbers};");
                 } while (changableSetting.Current < changableSetting.End);
             }
+        }
+
+        private static void InitializeFunction()
+        {
+            var jObject = JObject.Parse(File.ReadAllText("functionName.json"));
+
+            _testedFunction = jObject["TestedFunction"].ToObject<string>();
+
+            FunctionFacade = AppNameResolver.ToFunctionFacade(_testedFunction);
         }
 
         private static LoggingConfiguration CreateLogConfiguration()

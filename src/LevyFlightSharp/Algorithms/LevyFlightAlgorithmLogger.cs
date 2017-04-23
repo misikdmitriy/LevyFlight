@@ -7,6 +7,8 @@ using LevyFlightSharp.Facade;
 using LevyFlightSharp.MediatorRequests;
 using LevyFlightSharp.Services;
 
+using MediatR;
+
 using Microsoft.Extensions.Logging;
 
 namespace LevyFlightSharp.Algorithms
@@ -16,8 +18,9 @@ namespace LevyFlightSharp.Algorithms
         private readonly ILogger _logger;
         private int _step;
 
-        public LevyFlightAlgorithmLogger(FunctionFacade functionFacade)
-            : base(functionFacade)
+        public LevyFlightAlgorithmLogger(FunctionFacade functionFacade, AlgorithmSettings algorithmSettings,
+            IMediator mediator)
+            : base(functionFacade, algorithmSettings, mediator)
         {
             _logger = ConfigurationService
                 .LoggerFactory
@@ -79,7 +82,7 @@ namespace LevyFlightSharp.Algorithms
 
         protected async Task FindBestSolutionAsync(PollinatorsGroup group)
         {
-            var result = await Mediator.Send(new BestSolutionRequest(new[] { group }, Settings.IsMin));
+            var result = await Mediator.Send(new BestSolutionRequest(new[] { group }, AlgorithmSettings.IsMin));
 
             _logger.LogDebug("Group. Local minimum. Func = "
                 + result.CountFunction(Solution.Current));

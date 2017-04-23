@@ -1,6 +1,6 @@
 ﻿namespace LevyFlightSharp.Entities
 {
-    public class Settings
+    public class AlgorithmSettings
     {
         public bool IsMin { get; set; }
         public int VariablesCount { get; set; }

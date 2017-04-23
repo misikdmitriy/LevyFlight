@@ -2,10 +2,12 @@
 using System.Reflection;
 
 using Autofac;
+using Autofac.Core;
 using Autofac.Features.Variance;
 
 using LevyFlightSharp.Algorithms;
 using LevyFlightSharp.Facade;
+using LevyFlightSharp.Services;
 using LevyFlightSharp.Strategies;
 
 using MediatR;
@@ -78,10 +80,18 @@ namespace LevyFlightSharp.DependencyInjection
             // Algorithms registrations
 
             builder.RegisterType<LevyFlightAlgorithm>()
-                .Named<LevyFlightAlgorithm>(InjectionNames.LevyFlightAlgorithmName);
+                .Named<LevyFlightAlgorithm>(InjectionNames.LevyFlightAlgorithmName)
+                .WithParameter("algorithmSettings", ConfigurationService.AppSettings.AlgorithmSettings)
+                .WithParameter(new ResolvedParameter(
+                    (info, context) => info.Name == "mediator", 
+                    (info, context) => context.Resolve<IMediator>()));
 
             builder.RegisterType<LevyFlightAlgorithmLogger>()
-                .Named<LevyFlightAlgorithm>(InjectionNames.LevyFlightAlgorithmLoggerName);
+                .Named<LevyFlightAlgorithm>(InjectionNames.LevyFlightAlgorithmLoggerName)
+                .WithParameter("algorithmSettings", ConfigurationService.AppSettings.AlgorithmSettings)
+                .WithParameter(new ResolvedParameter(
+                    (info, context) => info.Name == "mediator",
+                    (info, context) => context.Resolve<IMediator>()));
 
             builder.RegisterType<PollinatorAnalyzer>()
                 .AsSelf();

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-
+using LevyFlightSharp.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -16,6 +16,7 @@ namespace LevyFlightSharp.Services
     public static class ConfigurationService
     {
         public static IConfigurationRoot Configuration { get; private set; }
+        public static AppSettings AppSettings { get; private set; }
         public static ILoggerFactory LoggerFactory { get; private set; }
         private static bool _isDebug;
 
@@ -33,6 +34,9 @@ namespace LevyFlightSharp.Services
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
             Configuration = builder.Build();
+
+            AppSettings = new AppSettings();
+            Configuration.Bind(AppSettings);
         }
 
         private static void ConfigureLogger()
@@ -62,7 +66,7 @@ namespace LevyFlightSharp.Services
             // config rule
 
             var rule = _isDebug
-                ? new LoggingRule("*", NLog.LogLevel.Debug, fileTarget) 
+                ? new LoggingRule("*", NLog.LogLevel.Debug, fileTarget)
                 : new LoggingRule("*", NLog.LogLevel.Info, fileTarget);
 
             logConfig.AddTarget(fileTarget);

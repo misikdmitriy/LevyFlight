@@ -1,9 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 
-using Autofac;
-
-using LevyFlightSharp.DependencyInjection;
 using LevyFlightSharp.Entities;
 using LevyFlightSharp.Facade;
 using LevyFlightSharp.MediatorRequests;
@@ -11,28 +8,25 @@ using LevyFlightSharp.Services;
 
 using MediatR;
 
-using Microsoft.Extensions.Configuration;
-
 namespace LevyFlightSharp.Algorithms
 {
     public class LevyFlightAlgorithm
     {
         protected PollinatorsGroup[] Groups { get; }
-        protected Settings Settings { get; }
-        protected IMediator Mediator { get; } = DependencyRegistration.Container.Resolve<IMediator>();
+        protected AlgorithmSettings AlgorithmSettings { get; }
+        protected IMediator Mediator { get; }
 
-        public LevyFlightAlgorithm(FunctionFacade functionFacade)
+        public LevyFlightAlgorithm(FunctionFacade functionFacade, AlgorithmSettings algorithmSettings,
+            IMediator mediator)
         {
-            Settings = new Settings();
-            ConfigurationService.Configuration
-                .GetSection("AlgorithmSettings")
-                .Bind(Settings);
+            AlgorithmSettings = algorithmSettings;
+            Mediator = mediator;
 
-            Groups = new PollinatorsGroup[Settings.GroupsCount];
+            Groups = new PollinatorsGroup[AlgorithmSettings.GroupsCount];
 
-            for (var i = 0; i < Settings.GroupsCount; i++)
+            for (var i = 0; i < AlgorithmSettings.GroupsCount; i++)
             {
-                Groups[i] = new PollinatorsGroup(Settings.PollinatorsCount, Settings.VariablesCount,
+                Groups[i] = new PollinatorsGroup(AlgorithmSettings.PollinatorsCount, AlgorithmSettings.VariablesCount,
                     functionFacade);
             }
         }
@@ -41,14 +35,14 @@ namespace LevyFlightSharp.Algorithms
         {
             var t = 0;
 
-            while (t < Settings.MaxGeneration)
+            while (t < AlgorithmSettings.MaxGeneration)
             {
                 await PolinateOnceAsync();
 
                 ++t;
             }
 
-            return await Mediator.Send(new BestSolutionRequest(Groups, Settings.IsMin));
+            return await Mediator.Send(new BestSolutionRequest(Groups, AlgorithmSettings.IsMin));
         }
 
         protected virtual async Task PolinateOnceAsync()
@@ -57,7 +51,7 @@ namespace LevyFlightSharp.Algorithms
             {
                 foreach (var pollinator in @group)
                 {
-                    if (RandomGenerator.Random.NextDouble() < Settings.P)
+                    if (RandomGenerator.Random.NextDouble() < AlgorithmSettings.P)
                     {
                         await GoFirstBranchAsync(@group, pollinator);
                     }
@@ -73,14 +67,14 @@ namespace LevyFlightSharp.Algorithms
 
         protected virtual void PostOperationAction(Pollinator pollinator)
         {
-            pollinator.TryExchange(Settings.IsMin);
+            pollinator.TryExchange(AlgorithmSettings.IsMin);
             pollinator.Check();
         }
 
         protected virtual async Task GoFirstBranchAsync(PollinatorsGroup group, Pollinator pollinator)
         {
-            var bestSolutionTask = Mediator.Send(new BestSolutionRequest(new[] { group }, Settings.IsMin));
-            var worstSolutionTask = Mediator.Send(new BestSolutionRequest(new[] { group }, !Settings.IsMin));
+            var bestSolutionTask = Mediator.Send(new BestSolutionRequest(new[] { group }, AlgorithmSettings.IsMin));
+            var worstSolutionTask = Mediator.Send(new BestSolutionRequest(new[] { group }, !AlgorithmSettings.IsMin));
             await Task.WhenAll(bestSolutionTask, worstSolutionTask);
 
             pollinator.RecountByFirstBranch(bestSolutionTask.Result, worstSolutionTask.Result);

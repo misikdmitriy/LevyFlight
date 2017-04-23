@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-using LevyFlightSharp.Entities;
 using LevyFlightSharp.Facade;
 
-namespace LevyFlightSharp.Services
+namespace LevyFlightSharp.Entities
 {
     public class PollinatorsGroup : IEnumerable<Pollinator>
     {
