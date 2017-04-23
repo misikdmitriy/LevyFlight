@@ -1,4 +1,4 @@
-cd LevyFlightSharp
+cd LevyFlight
 start cmd /c dotnet run
 start cmd /c dotnet run
 start cmd /c dotnet run

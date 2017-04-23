@@ -1,17 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C0A77922-0D13-4F50-8DDA-691AF2A9D937}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2524C50A-CB08-4F6A-9913-707819DAA564}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevyFlightSharp", "src\LevyFlightSharp\LevyFlightSharp.csproj", "{EE99AED5-9A92-4045-AC27-61FAD920F321}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevyFlight", "src\LevyFlight\LevyFlight.csproj", "{EE99AED5-9A92-4045-AC27-61FAD920F321}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevyFlightRunner", "src\LevyFlightRunner\LevyFlightRunner.csproj", "{AD2415BD-512C-42EF-BEB8-37EA6F913346}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevyFlightAutoTests", "src\LevyFlightAutoTests\LevyFlightAutoTests.csproj", "{B5CB1590-781E-4850-90B6-5D724C228D55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevyFlight.AutoTests", "src\LevyFlight.AutoTests\LevyFlight.AutoTests.csproj", "{B5CB1590-781E-4850-90B6-5D724C228D55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +21,6 @@ Global
 		{EE99AED5-9A92-4045-AC27-61FAD920F321}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE99AED5-9A92-4045-AC27-61FAD920F321}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE99AED5-9A92-4045-AC27-61FAD920F321}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AD2415BD-512C-42EF-BEB8-37EA6F913346}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD2415BD-512C-42EF-BEB8-37EA6F913346}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD2415BD-512C-42EF-BEB8-37EA6F913346}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD2415BD-512C-42EF-BEB8-37EA6F913346}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B5CB1590-781E-4850-90B6-5D724C228D55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B5CB1590-781E-4850-90B6-5D724C228D55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5CB1590-781E-4850-90B6-5D724C228D55}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -37,7 +31,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EE99AED5-9A92-4045-AC27-61FAD920F321} = {C0A77922-0D13-4F50-8DDA-691AF2A9D937}
-		{AD2415BD-512C-42EF-BEB8-37EA6F913346} = {C0A77922-0D13-4F50-8DDA-691AF2A9D937}
 		{B5CB1590-781E-4850-90B6-5D724C228D55} = {C0A77922-0D13-4F50-8DDA-691AF2A9D937}
 	EndGlobalSection
 EndGlobal
