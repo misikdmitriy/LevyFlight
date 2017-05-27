@@ -28,14 +28,14 @@ namespace LevyFlight.AutoTests
 {
     public class Program
     {
-        private static readonly NumericSettingsFields VariablesCount = new NumericSettingsFields(2, 30, 2, 30, true);
-        private static readonly NumericSettingsFields PollinatorsCount = new NumericSettingsFields(2, 30, 2, 15, true);
-        private static readonly NumericSettingsFields GroupsCount = new NumericSettingsFields(2, 30, 2, 15, true);
-        private static readonly NumericSettingsFields MaxGeneration = new NumericSettingsFields(100, 100, 100, 2000, false);
-        private static readonly NumericSettingsFields P = new NumericSettingsFields(0.85);
+        private static readonly NumericSettingField VariablesCount = new NumericSettingField(2, 30, 2, 10, true);
+        private static readonly NumericSettingField PollinatorsCount = new NumericSettingField(5, 20, 5, 5, false);
+        private static readonly NumericSettingField GroupsCount = new NumericSettingField(2, 30, 2, 15, true);
+        private static readonly NumericSettingField MaxGeneration = new NumericSettingField(100, 100, 100, 1000, true);
+        private static readonly NumericSettingField P = new NumericSettingField(0.8, 0.9, 0.05, 0.85, true);
         private static readonly bool IsMin = true;
 
-        private static readonly int RepeatNumbers = 1;
+        private static readonly int RepeatNumbers = 5;
 
         private static FunctionFacade FunctionFacade { get; set; }
 
@@ -43,11 +43,11 @@ namespace LevyFlight.AutoTests
 
         private static IEnumerable<FieldInfo> IntSettings => typeof(Program)
             .GetFields(BindingFlags.Static | BindingFlags.NonPublic)
-            .Where(p => p.FieldType.IsAssignableFrom(typeof(NumericSettingsFields)));
+            .Where(p => p.FieldType.IsAssignableFrom(typeof(NumericSettingField)));
 
         private static IEnumerable<FieldInfo> DoubleSettings => typeof(Program)
             .GetFields(BindingFlags.Static | BindingFlags.NonPublic)
-            .Where(p => p.FieldType.IsAssignableFrom(typeof(NumericSettingsFields)));
+            .Where(p => p.FieldType.IsAssignableFrom(typeof(NumericSettingField)));
 
         private static IEnumerable<FieldInfo> Settings => IntSettings.Union(DoubleSettings);
 
@@ -137,7 +137,7 @@ namespace LevyFlight.AutoTests
 
             foreach (var property in Settings)
             {
-                jObject.Add(property.Name, ((NumericSettingsFields)property.GetValue(null)).Value
+                jObject.Add(property.Name, ((NumericSettingField)property.GetValue(null)).Value
                     .ToString(CultureInfo.InvariantCulture));
             }
 
@@ -149,7 +149,7 @@ namespace LevyFlight.AutoTests
         {
             foreach (var property in Settings)
             {
-                var setting = property.GetValue(null) as NumericSettingsFields;
+                var setting = property.GetValue(null) as NumericSettingField;
                 if (setting != null && !setting.IsFixed)
                 {
                     return setting;
@@ -166,7 +166,7 @@ namespace LevyFlight.AutoTests
 
             foreach (var property in Settings)
             {
-                sb.AppendLine(property.Name + " = " + ((NumericSettingsFields)property.GetValue(null)).Current);
+                sb.AppendLine(property.Name + " = " + ((NumericSettingField)property.GetValue(null)).Current);
             }
 
             return sb.ToString().TrimEnd();
