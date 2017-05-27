@@ -1,5 +1,7 @@
 ﻿using LevyFlight.ConsoleApp.DependencyInjection;
+using LevyFlight.Entities;
 using LevyFlight.Services;
+using Microsoft.Extensions.Logging;
 
 namespace LevyFlight.ConsoleApp
 {
@@ -15,8 +17,17 @@ namespace LevyFlight.ConsoleApp
             var timer = new TimeCounter();
 
             timer.Start();
-            algorithm.PolinateAsync().Wait();
+            var result = algorithm.PolinateAsync().Result;
             timer.End();
+
+            var logger = ConfigurationService
+                .LoggerFactory
+                .CreateLogger("Main");
+
+            logger.LogInformation("Result Func = "
+                + result.CountFunction(Solution.Current));
+
+            logger.LogInformation("Values = " + result.ToString(Solution.Current));
         }
     }
 }

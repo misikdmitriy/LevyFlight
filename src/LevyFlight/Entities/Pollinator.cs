@@ -12,8 +12,8 @@ namespace LevyFlight.Entities
         private int Size { get; }
         private FunctionFacade FunctionFacade { get; }
 
-        private double[] CurrentPollinators { get; set; }
-        private double[] NewPollinators { get; set; }
+        private double[] CurrentSolution { get; set; }
+        private double[] NewSolution { get; set; }
 
         public Pollinator(int size, FunctionFacade functionFacade)
         {
@@ -25,41 +25,41 @@ namespace LevyFlight.Entities
             FunctionFacade = functionFacade;
             Size = size;
 
-            CurrentPollinators = new double[Size];
-            NewPollinators = null;
+            CurrentSolution = new double[Size];
+            NewSolution = null;
 
             for (var i = 0; i < size; i++)
             {
-                CurrentPollinators[i] = RandomGenerator.Random.NextDouble();
+                CurrentSolution[i] = RandomGenerator.Random.NextDouble();
             }
         }
 
         public void RecountByFirstBranch(Pollinator solution1, Pollinator solution2)
         {
-            NewPollinators = new double[Size];
+            NewSolution = new double[Size];
 
             for (var i = 0; i < Size; i++)
             {
-                var distanceDifference = FunctionFacade.DistanceFunctionStrategy.Apply(solution2.CurrentPollinators) -
-                                         FunctionFacade.DistanceFunctionStrategy.Apply(CurrentPollinators);
+                var distanceDifference = FunctionFacade.DistanceFunctionStrategy.Apply(solution2.CurrentSolution) -
+                                         FunctionFacade.DistanceFunctionStrategy.Apply(CurrentSolution);
 
                 var lambda = FunctionFacade.LambdaFunctionStrategy.Apply(distanceDifference);
 
                 var rand = FunctionFacade.MantegnaFunctionStrategy.Apply(lambda);
 
-                NewPollinators[i] = CurrentPollinators[i] + rand * (solution1.CurrentPollinators[i] - CurrentPollinators[i]);
+                NewSolution[i] = CurrentSolution[i] + rand * (solution1.CurrentSolution[i] - CurrentSolution[i]);
             }
         }
 
         public void RecountBySecondBranch(Pollinator solution)
         {
-            NewPollinators = new double[Size];
+            NewSolution = new double[Size];
 
             for (var i = 0; i < Size; i++)
             {
                 var rand = RandomGenerator.Random.NextDouble();
 
-                NewPollinators[i] = CurrentPollinators[i] + rand * (solution.CurrentPollinators[i] - CurrentPollinators[i]);
+                NewSolution[i] = CurrentSolution[i] + rand * (solution.CurrentSolution[i] - CurrentSolution[i]);
             }
         }
 
@@ -68,9 +68,9 @@ namespace LevyFlight.Entities
             switch (solution)
             {
                 case Solution.Current:
-                    return FunctionFacade.MainFunctionStrategy.Apply(CurrentPollinators);
+                    return FunctionFacade.MainFunctionStrategy.Apply(CurrentSolution);
                 case Solution.NewSolution:
-                    return FunctionFacade.MainFunctionStrategy.Apply(NewPollinators);
+                    return FunctionFacade.MainFunctionStrategy.Apply(NewSolution);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(solution), solution, null);
             }
@@ -81,13 +81,13 @@ namespace LevyFlight.Entities
             if (isMin && CountFunction(Solution.Current) > CountFunction(Solution.NewSolution)
                 || !isMin && CountFunction(Solution.Current) < CountFunction(Solution.NewSolution))
             {
-                CurrentPollinators = NewPollinators;
+                CurrentSolution = NewSolution;
                 return true;
             }
             if (RandomGenerator.Random.NextDouble() < P)
             {
-                var i = RandomGenerator.Random.Next() % CurrentPollinators.Length;
-                CurrentPollinators[i] = RandomGenerator.Random.NextDouble();
+                var i = RandomGenerator.Random.Next() % CurrentSolution.Length;
+                CurrentSolution[i] = RandomGenerator.Random.NextDouble();
                 return true;
             }
             return false;
@@ -95,7 +95,7 @@ namespace LevyFlight.Entities
 
         public void Check()
         {
-            foreach (var element in CurrentPollinators)
+            foreach (var element in CurrentSolution)
             {
                 if (double.IsNaN(element))
                 {
@@ -113,9 +113,9 @@ namespace LevyFlight.Entities
             switch (solution)
             {
                 case Solution.Current:
-                    return ToString(CurrentPollinators);
+                    return ToString(CurrentSolution);
                 case Solution.NewSolution:
-                    return ToString(NewPollinators);
+                    return ToString(NewSolution);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(solution), solution, null);
             }
