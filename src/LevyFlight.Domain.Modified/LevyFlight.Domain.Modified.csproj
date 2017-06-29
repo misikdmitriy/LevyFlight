@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LevyFlight.Common\LevyFlight.Common.csproj" />
+    <ProjectReference Include="..\LevyFlight.Domain\LevyFlight.Domain.csproj" />
+    <ProjectReference Include="..\LevyFlight.Entities\LevyFlight.Entities.csproj" />
+    <ProjectReference Include="..\LevyFlight.Strategies\LevyFlight.Strategies.csproj" />
+  </ItemGroup>
+
+</Project>
