@@ -2,7 +2,7 @@
 
 namespace LevyFlight.Strategies
 {
-    public class LambdaFunctionStrategy : IFunctionStrategy
+    public sealed class LambdaFunctionStrategy : IFunctionStrategy
     {
         private const double T = 0.73;
         private const double Y = 1.0;

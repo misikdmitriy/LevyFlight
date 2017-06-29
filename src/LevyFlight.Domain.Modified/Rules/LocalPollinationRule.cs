@@ -5,9 +5,9 @@ using LevyFlight.Entities;
 
 namespace LevyFlight.Domain.Modified.Rules
 {
-    public class LocalPollinationRule : IRule<LocalPollinationRuleArgument>
+    public class LocalPollinationRule : Rule<LocalPollinationRuleArgument>
     {
-        public void RecountPollinator(Pollinator pollinator, LocalPollinationRuleArgument ruleArgument)
+        public override void RecountPollinator(Pollinator pollinator, LocalPollinationRuleArgument ruleArgument)
         {
             var randomPollinator = ruleArgument.RandomPollinator;
 

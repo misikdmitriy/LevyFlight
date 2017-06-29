@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace LevyFlight.Strategies
 {
-    public class DistanceFunctionStrategy : IFunctionStrategy
+    public sealed class DistanceFunctionStrategy : IFunctionStrategy
     {
         public double Apply(double[] arguments)
         {

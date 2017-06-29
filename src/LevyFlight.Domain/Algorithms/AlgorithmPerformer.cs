@@ -13,12 +13,12 @@ namespace LevyFlight.Domain.Algorithms
         protected AlgorithmSettings AlgorithmSettings { get; }
         protected IFunctionStrategy FunctionStrategy { get; }
 
-        protected IRule<TGpArgument> GlobalPollinationRule { get; }
-        protected IRule<TLpArgument> LocalPollinationRule { get; }
+        protected Rule<TGpArgument> GlobalPollinationRule { get; }
+        protected Rule<TLpArgument> LocalPollinationRule { get; }
 
         protected AlgorithmPerformer(AlgorithmSettings algorithmSettings, PollinatorsGroup[] groups, 
-            IFunctionStrategy functionStrategy, IRule<TGpArgument> globalPollinationRule, 
-            IRule<TLpArgument> localPollinationRule)
+            IFunctionStrategy functionStrategy, Rule<TGpArgument> globalPollinationRule, 
+            Rule<TLpArgument> localPollinationRule)
         {
             AlgorithmSettings = algorithmSettings;
             Groups = groups;

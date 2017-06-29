@@ -4,7 +4,7 @@ using LevyFlight.Common.Misc;
 
 namespace LevyFlight.Strategies
 {
-    public class MantegnaFunctionStrategy : IFunctionStrategy
+    public sealed class MantegnaFunctionStrategy : IFunctionStrategy
     {
         public double Apply(double[] arguments)
         {

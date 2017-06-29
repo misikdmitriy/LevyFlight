@@ -18,10 +18,10 @@ namespace LevyFlight.Domain.Factories
             IFunctionStrategy functionStrategy);
 
         internal abstract AlgorithmPerformer<TGpArgument, TLpArgument> Create(AlgorithmSettings algorithmSettings,
-            IFunctionStrategy functionStrategy, IRule<TGpArgument> globalRule, IRule<TLpArgument> localRule);
+            IFunctionStrategy functionStrategy, Rule<TGpArgument> globalRule, Rule<TLpArgument> localRule);
 
         internal abstract AlgorithmPerformer<TGpArgument, TLpArgument> Create(AlgorithmSettings algorithmSettings,
             PollinatorsGroup[] groups,
-            IFunctionStrategy functionStrategy, IRule<TGpArgument> globalRule, IRule<TLpArgument> localRule);
+            IFunctionStrategy functionStrategy, Rule<TGpArgument> globalRule, Rule<TLpArgument> localRule);
     }
 }

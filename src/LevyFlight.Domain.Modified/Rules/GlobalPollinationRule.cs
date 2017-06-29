@@ -5,7 +5,7 @@ using LevyFlight.Strategies;
 
 namespace LevyFlight.Domain.Modified.Rules
 {
-    public class GlobalPollinationRule : IRule<GlobalPollinationRuleArgument>
+    public class GlobalPollinationRule : Rule<GlobalPollinationRuleArgument>
     {
         private readonly IFunctionStrategy _distanceFunctionStrategy;
         private readonly IFunctionStrategy _lambdaFunctionStrategy;
@@ -20,7 +20,7 @@ namespace LevyFlight.Domain.Modified.Rules
             _mantegnaFunctionStrategy = mantegnaFunctionStrategy;
         }
 
-        public void RecountPollinator(Pollinator pollinator, GlobalPollinationRuleArgument ruleArgument)
+        public override void RecountPollinator(Pollinator pollinator, GlobalPollinationRuleArgument ruleArgument)
         {
             var bestPollinator = ruleArgument.BestPollinator;
             var worstPollinator = ruleArgument.WorstPollinator;

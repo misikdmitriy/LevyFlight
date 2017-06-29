@@ -1,5 +1,6 @@
 ﻿using System;
 using LevyFlight.Common.Check;
+using LevyFlight.Common.Misc;
 
 namespace LevyFlight.Entities
 {
@@ -17,6 +18,14 @@ namespace LevyFlight.Entities
             ExceptionHandler.ThrowExceptionIfNegativeOrZero(size, nameof(size));
 
             Size = size;
+
+            CurrentSolution = new double[size];
+            NewSolution = new double[size];
+
+            for (var i = 0; i < size; i++)
+            {
+                CurrentSolution[i] = RandomGenerator.Random.NextDouble();
+            }
         }
 
         public string ToString(Solution solution)

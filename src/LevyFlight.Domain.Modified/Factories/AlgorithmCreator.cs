@@ -33,8 +33,8 @@ namespace LevyFlight.Domain.Modified.Factories
 
         internal override AlgorithmPerformer<GlobalPollinationRuleArgument, LocalPollinationRuleArgument> Create(
             AlgorithmSettings algorithmSettings, IFunctionStrategy functionStrategy, 
-            IRule<GlobalPollinationRuleArgument> globalRule,
-            IRule<LocalPollinationRuleArgument> localRule)
+            Rule<GlobalPollinationRuleArgument> globalRule,
+            Rule<LocalPollinationRuleArgument> localRule)
         {
             var groups = new List<PollinatorsGroup>();
 
@@ -50,8 +50,8 @@ namespace LevyFlight.Domain.Modified.Factories
 
         internal override AlgorithmPerformer<GlobalPollinationRuleArgument, LocalPollinationRuleArgument> Create(
             AlgorithmSettings algorithmSettings, PollinatorsGroup[] groups,
-            IFunctionStrategy functionStrategy, IRule<GlobalPollinationRuleArgument> globalRule, 
-            IRule<LocalPollinationRuleArgument> localRule)
+            IFunctionStrategy functionStrategy, Rule<GlobalPollinationRuleArgument> globalRule, 
+            Rule<LocalPollinationRuleArgument> localRule)
         {
             var settings = new ModifiedAlgorithmSettings
             {
