@@ -5,11 +5,12 @@ using LevyFlight.Domain.Modified.Entities;
 using LevyFlight.Domain.Modified.RuleArguments;
 using LevyFlight.Domain.Modified.Rules;
 using LevyFlight.Entities;
-using LevyFlight.Strategies;
+using LevyFlight.Extensions;
+using LevyFlight.FunctionStrategies;
 
 namespace LevyFlight.Domain.Modified.Algorithms
 {
-    public class AlgorithmPerformer : AlgorithmPerformer<GlobalPollinationRuleArgument, LocalPollinationRuleArgument>
+    internal sealed class AlgorithmPerformer : AlgorithmPerformer<GlobalPollinationRuleArgument, LocalPollinationRuleArgument>
     {
         private readonly double _pReset;
 
@@ -21,6 +22,11 @@ namespace LevyFlight.Domain.Modified.Algorithms
             : base(algorithmSettings, groups, functionStrategy, globalPollinationRule, localPollinationRule)
         {
             _pReset = algorithmSettings.PReset;
+        }
+
+        public override Pollinator Polinate()
+        {
+            return base.Polinate();
         }
 
         protected override void GoFirstBranch(PollinatorsGroup @group, Pollinator pollinator)

@@ -8,7 +8,6 @@
     <ProjectReference Include="..\LevyFlight.Common\LevyFlight.Common.csproj" />
     <ProjectReference Include="..\LevyFlight.Entities\LevyFlight.Entities.csproj" />
     <ProjectReference Include="..\LevyFlight.Extensions\LevyFlight.Extensions.csproj" />
-    <ProjectReference Include="..\LevyFlight.Strategies\LevyFlight.Strategies.csproj" />
   </ItemGroup>
 
 </Project>

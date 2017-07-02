@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Numerics;
 using LevyFlight.Common.Misc;
+using LevyFlight.FunctionStrategies;
 
-namespace LevyFlight.Strategies
+namespace LevyFlight.Domain.Modified.FunctionStrategies
 {
-    public sealed class MantegnaFunctionStrategy : IFunctionStrategy
+    internal sealed class MantegnaFunctionStrategy : IFunctionStrategy
     {
         public double Apply(double[] arguments)
         {

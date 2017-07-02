@@ -2,7 +2,7 @@
 
 namespace LevyFlight.Domain.Modified.Entities
 {
-    public class ModifiedAlgorithmSettings : AlgorithmSettings
+    internal class ModifiedAlgorithmSettings : AlgorithmSettings
     {
         public double PReset { get; set; }
 
@@ -13,7 +13,6 @@ namespace LevyFlight.Domain.Modified.Entities
             MaxGeneration = 1000,
             P = 0.85,
             PollinatorsCount = 10,
-            VariablesCount = 30,
             PReset = 0.01
         };
     }

@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LevyFlight.Domain\LevyFlight.Domain.csproj" />
-    <ProjectReference Include="..\LevyFlight.Strategies\LevyFlight.Strategies.csproj" />
   </ItemGroup>
 
 </Project>

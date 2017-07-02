@@ -15,7 +15,7 @@ namespace LevyFlight.Entities
 
         public Pollinator(int size)
         {
-            ExceptionHandler.ThrowExceptionIfNegativeOrZero(size, nameof(size));
+            ExceptionHelper.ThrowExceptionIfNegativeOrZero(size, nameof(size));
 
             Size = size;
 

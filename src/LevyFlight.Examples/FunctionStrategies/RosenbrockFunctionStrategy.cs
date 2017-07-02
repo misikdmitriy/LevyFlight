@@ -1,4 +1,4 @@
-﻿using LevyFlight.Strategies;
+﻿using LevyFlight.FunctionStrategies;
 
 namespace LevyFlight.Examples.FunctionStrategies
 {

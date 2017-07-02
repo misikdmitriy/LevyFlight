@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
+using LevyFlight.FunctionStrategies;
 
-namespace LevyFlight.Strategies
+namespace LevyFlight.Domain.Modified.FunctionStrategies
 {
-    public sealed class DistanceFunctionStrategy : IFunctionStrategy
+    internal sealed class DistanceFunctionStrategy : IFunctionStrategy
     {
         public double Apply(double[] arguments)
         {

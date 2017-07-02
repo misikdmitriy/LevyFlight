@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using LevyFlight.Strategies;
 using LevyFlight.Entities;
+using LevyFlight.FunctionStrategies;
 
-namespace LevyFlight.Domain
+namespace LevyFlight.Extensions
 {
     public static class PollinatorsGroupExtensions
     {

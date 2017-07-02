@@ -1,6 +1,6 @@
 ﻿namespace LevyFlight.Domain.RuleArguments
 {
-    public class RuleArgument
+    internal class RuleArgument
     {
     }
 }

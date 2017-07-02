@@ -5,7 +5,7 @@ using LevyFlight.Entities;
 
 namespace LevyFlight.Domain.Modified.Rules
 {
-    public class LocalPollinationRule : Rule<LocalPollinationRuleArgument>
+    internal sealed class LocalPollinationRule : Rule<LocalPollinationRuleArgument>
     {
         public override void RecountPollinator(Pollinator pollinator, LocalPollinationRuleArgument ruleArgument)
         {

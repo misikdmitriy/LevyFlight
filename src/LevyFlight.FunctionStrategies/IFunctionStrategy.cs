@@ -1,4 +1,4 @@
-﻿namespace LevyFlight.Strategies
+﻿namespace LevyFlight.FunctionStrategies
 {
     public interface IFunctionStrategy
     {

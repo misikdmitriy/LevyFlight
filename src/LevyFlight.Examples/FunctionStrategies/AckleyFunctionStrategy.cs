@@ -1,5 +1,5 @@
-﻿using LevyFlight.Strategies;
-using System;
+﻿using System;
+using LevyFlight.FunctionStrategies;
 
 namespace LevyFlight.Examples.FunctionStrategies
 {

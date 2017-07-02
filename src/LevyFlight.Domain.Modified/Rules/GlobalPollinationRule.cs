@@ -1,11 +1,11 @@
 ﻿using LevyFlight.Domain.Modified.RuleArguments;
 using LevyFlight.Domain.Rules;
 using LevyFlight.Entities;
-using LevyFlight.Strategies;
+using LevyFlight.FunctionStrategies;
 
 namespace LevyFlight.Domain.Modified.Rules
 {
-    public class GlobalPollinationRule : Rule<GlobalPollinationRuleArgument>
+    internal sealed class GlobalPollinationRule : Rule<GlobalPollinationRuleArgument>
     {
         private readonly IFunctionStrategy _distanceFunctionStrategy;
         private readonly IFunctionStrategy _lambdaFunctionStrategy;

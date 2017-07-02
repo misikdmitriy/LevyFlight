@@ -2,7 +2,7 @@
 
 namespace LevyFlight.Common.Check
 {
-    public class ExceptionHandler
+    public class ExceptionHelper
     {
         public static void ThrowExceptionIfNull(object argument, string @nameof)
         {

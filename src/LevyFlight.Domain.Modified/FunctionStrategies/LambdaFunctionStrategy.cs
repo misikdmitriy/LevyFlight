@@ -1,8 +1,9 @@
 ﻿using System;
+using LevyFlight.FunctionStrategies;
 
-namespace LevyFlight.Strategies
+namespace LevyFlight.Domain.Modified.FunctionStrategies
 {
-    public sealed class LambdaFunctionStrategy : IFunctionStrategy
+    internal sealed class LambdaFunctionStrategy : IFunctionStrategy
     {
         private const double T = 0.73;
         private const double Y = 1.0;

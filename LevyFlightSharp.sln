@@ -15,11 +15,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevyFlight.Domain", "src\Le
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevyFlight.Domain.Modified", "src\LevyFlight.Domain.Modified\LevyFlight.Domain.Modified.csproj", "{BAE73A08-4FF8-48AB-8736-B316FFC56D74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevyFlight.Examples", "src\LevyFlight.Examples\LevyFlight.Examples.csproj", "{7C8B5D4B-9FF3-4E8F-9D38-377D5262695D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevyFlight.Examples", "src\LevyFlight.Examples\LevyFlight.Examples.csproj", "{7C8B5D4B-9FF3-4E8F-9D38-377D5262695D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevyFlight.Extensions", "src\LevyFlight.Extensions\LevyFlight.Extensions.csproj", "{9B8610FD-AD4D-401A-B615-6F9CDF6E7F6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevyFlight.Extensions", "src\LevyFlight.Extensions\LevyFlight.Extensions.csproj", "{9B8610FD-AD4D-401A-B615-6F9CDF6E7F6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevyFlight.Strategies", "src\LevyFlight.Strategies\LevyFlight.Strategies.csproj", "{85F39529-40CF-423B-A0AF-B3CDC557AA90}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevyFlight.FunctionStrategies", "src\LevyFlight.FunctionStrategies\LevyFlight.FunctionStrategies.csproj", "{2454960D-3FB7-4B0D-8268-A16EDA563930}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevyFlight.Business", "src\LevyFlight.Business\LevyFlight.Business.csproj", "{2E5B1AAC-7109-48DB-8557-6C5223CC7D38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,10 +53,14 @@ Global
 		{9B8610FD-AD4D-401A-B615-6F9CDF6E7F6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B8610FD-AD4D-401A-B615-6F9CDF6E7F6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B8610FD-AD4D-401A-B615-6F9CDF6E7F6A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{85F39529-40CF-423B-A0AF-B3CDC557AA90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{85F39529-40CF-423B-A0AF-B3CDC557AA90}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{85F39529-40CF-423B-A0AF-B3CDC557AA90}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{85F39529-40CF-423B-A0AF-B3CDC557AA90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2454960D-3FB7-4B0D-8268-A16EDA563930}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2454960D-3FB7-4B0D-8268-A16EDA563930}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2454960D-3FB7-4B0D-8268-A16EDA563930}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2454960D-3FB7-4B0D-8268-A16EDA563930}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E5B1AAC-7109-48DB-8557-6C5223CC7D38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E5B1AAC-7109-48DB-8557-6C5223CC7D38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E5B1AAC-7109-48DB-8557-6C5223CC7D38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E5B1AAC-7109-48DB-8557-6C5223CC7D38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +72,7 @@ Global
 		{BAE73A08-4FF8-48AB-8736-B316FFC56D74} = {C0A77922-0D13-4F50-8DDA-691AF2A9D937}
 		{7C8B5D4B-9FF3-4E8F-9D38-377D5262695D} = {C0A77922-0D13-4F50-8DDA-691AF2A9D937}
 		{9B8610FD-AD4D-401A-B615-6F9CDF6E7F6A} = {C0A77922-0D13-4F50-8DDA-691AF2A9D937}
-		{85F39529-40CF-423B-A0AF-B3CDC557AA90} = {C0A77922-0D13-4F50-8DDA-691AF2A9D937}
+		{2454960D-3FB7-4B0D-8268-A16EDA563930} = {C0A77922-0D13-4F50-8DDA-691AF2A9D937}
+		{2E5B1AAC-7109-48DB-8557-6C5223CC7D38} = {C0A77922-0D13-4F50-8DDA-691AF2A9D937}
 	EndGlobalSection
 EndGlobal

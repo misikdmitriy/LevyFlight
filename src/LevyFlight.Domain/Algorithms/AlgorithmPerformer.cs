@@ -1,12 +1,13 @@
 ﻿using LevyFlight.Common.Misc;
 using LevyFlight.Domain.RuleArguments;
 using LevyFlight.Domain.Rules;
-using LevyFlight.Strategies;
 using LevyFlight.Entities;
+using LevyFlight.Extensions;
+using LevyFlight.FunctionStrategies;
 
 namespace LevyFlight.Domain.Algorithms
 {
-    public abstract class AlgorithmPerformer<TGpArgument, TLpArgument> where TGpArgument : RuleArgument
+    internal abstract class AlgorithmPerformer<TGpArgument, TLpArgument> where TGpArgument : RuleArgument
         where TLpArgument : RuleArgument
     {
         protected PollinatorsGroup[] Groups { get; }

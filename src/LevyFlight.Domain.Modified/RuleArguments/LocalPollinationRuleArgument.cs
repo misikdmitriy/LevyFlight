@@ -4,13 +4,13 @@ using LevyFlight.Entities;
 
 namespace LevyFlight.Domain.Modified.RuleArguments
 {
-    public class LocalPollinationRuleArgument : RuleArgument
+    internal sealed class LocalPollinationRuleArgument : RuleArgument
     {
         public Pollinator RandomPollinator { get; }
 
         public LocalPollinationRuleArgument(Pollinator randomPollinator)
         {
-            ExceptionHandler.ThrowExceptionIfNull(randomPollinator, nameof(randomPollinator));
+            ExceptionHelper.ThrowExceptionIfNull(randomPollinator, nameof(randomPollinator));
 
             RandomPollinator = randomPollinator;
         }
