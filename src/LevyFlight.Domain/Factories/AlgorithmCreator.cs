@@ -1,13 +1,10 @@
-﻿using LevyFlight.Domain.Algorithms;
-using LevyFlight.Domain.RuleArguments;
-using LevyFlight.FunctionStrategies;
+﻿using System;
+using LevyFlight.Domain.Algorithms;
 
 namespace LevyFlight.Domain.Factories
 {
-    internal abstract class AlgorithmCreator<TAlgorithm, TGpArgument, TLpArgument> where TGpArgument : RuleArgument
-        where TLpArgument : RuleArgument
-        where TAlgorithm : AlgorithmPerformer<TGpArgument, TLpArgument>
+    internal abstract class AlgorithmCreator
     {
-        public abstract TAlgorithm Create(IFunctionStrategy functionStrategy, int variablesCount);
+        public abstract AlgorithmPerformer Create(Func<double[], double> functionStrategy, int variablesCount);
     }
 }

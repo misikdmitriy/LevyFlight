@@ -1,10 +1,9 @@
 ﻿using LevyFlight.Common.Check;
-using LevyFlight.Domain.RuleArguments;
 using LevyFlight.Entities;
 
 namespace LevyFlight.Domain.Modified.RuleArguments
 {
-    internal sealed class LocalPollinationRuleArgument : RuleArgument
+    internal sealed class LocalPollinationRuleArgument
     {
         public Pollinator RandomPollinator { get; }
 

@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
-using LevyFlight.Domain.Modified.Algorithms;
-using LevyFlight.Domain.Modified.Entities;
-using LevyFlight.Entities;
-using LevyFlight.Examples.FunctionStrategies;
+using System.Linq;
+using LevyFlight.Domain.Algorithms;
+using LevyFlight.Domain.Modified.Factories;
+using Xunit;
 
 namespace LevyFlight.Tests
 {
@@ -13,19 +12,16 @@ namespace LevyFlight.Tests
 
         public AlgorithmPerformerTests()
         {
-            var settings = ModifiedAlgorithmSettings.Default;
-            var groups = new List<PollinatorsGroup>();
-            var variablesCount = 15;
-
-            for (int i = 0; i < 10; i++)
+            Func<double[], double> func = arguments =>
             {
-                groups.Add(new PollinatorsGroup(settings.PollinatorsCount, variablesCount));
-            }
+                return arguments.Sum(a => a * a);
+            };
 
-
-            // TODO: Finish tests
-            _performer = new AlgorithmPerformer(settings, groups.ToArray(), new GriewankFunctionStrategy(), null, null);
+            _performer = new AlgorithmCreator().Create(func, 15);
         }
+
+        [Fact]
+        public void 
 
         public void Dispose()
         {

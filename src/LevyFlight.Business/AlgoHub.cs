@@ -9,12 +9,10 @@ namespace LevyFlight.Business
     {
         public double FindMinimum(Func<double[], double> function, int variablesCount)
         {
-            var functionStrategy = MainFunction.CreateFromDelegate(function);
-
-            var algorithmPerformer = new AlgorithmCreator().Create(functionStrategy, variablesCount);
+            var algorithmPerformer = new AlgorithmCreator().Create(function, variablesCount);
             var resultPollinator = algorithmPerformer.Polinate();
 
-            return resultPollinator.CountFunction(functionStrategy, Solution.Current);
+            return resultPollinator.CountFunction(function, Solution.Current);
         }
     }
 }

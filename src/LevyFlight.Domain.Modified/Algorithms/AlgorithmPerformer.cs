@@ -1,30 +1,35 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using LevyFlight.Common.Misc;
-using LevyFlight.Domain.Algorithms;
 using LevyFlight.Domain.Modified.Entities;
 using LevyFlight.Domain.Modified.RuleArguments;
 using LevyFlight.Domain.Modified.Rules;
 using LevyFlight.Entities;
 using LevyFlight.Extensions;
-using LevyFlight.FunctionStrategies;
 
 namespace LevyFlight.Domain.Modified.Algorithms
 {
-    internal sealed class AlgorithmPerformer : AlgorithmPerformer<GlobalPollinationRuleArgument, LocalPollinationRuleArgument>
+    internal sealed class AlgorithmPerformer : Domain.Algorithms.AlgorithmPerformer
     {
+        private GlobalPollinationRule GlobalPollinationRule { get; }
+        private LocalPollinationRule LocalPollinationRule { get; }
+
         private readonly double _pReset;
 
         public AlgorithmPerformer(ModifiedAlgorithmSettings algorithmSettings, 
-            PollinatorsGroup[] groups, 
-            IFunctionStrategy functionStrategy, 
+            PollinatorsGroup[] groups,
+            Func<double[], double> functionStrategy, 
             GlobalPollinationRule globalPollinationRule, 
             LocalPollinationRule localPollinationRule) 
-            : base(algorithmSettings, groups, functionStrategy, globalPollinationRule, localPollinationRule)
+            : base(algorithmSettings, groups, functionStrategy)
         {
+            GlobalPollinationRule = globalPollinationRule;
+            LocalPollinationRule = localPollinationRule;
+
             _pReset = algorithmSettings.PReset;
         }
 
-        public override Pollinator Polinate()
+        public new Pollinator Polinate()
         {
             return base.Polinate();
         }

@@ -1,34 +1,25 @@
-﻿using LevyFlight.Common.Misc;
-using LevyFlight.Domain.RuleArguments;
-using LevyFlight.Domain.Rules;
+﻿using System;
+using LevyFlight.Common.Misc;
 using LevyFlight.Entities;
 using LevyFlight.Extensions;
-using LevyFlight.FunctionStrategies;
 
 namespace LevyFlight.Domain.Algorithms
 {
-    internal abstract class AlgorithmPerformer<TGpArgument, TLpArgument> where TGpArgument : RuleArgument
-        where TLpArgument : RuleArgument
+    internal abstract class AlgorithmPerformer
     {
         protected PollinatorsGroup[] Groups { get; }
         protected AlgorithmSettings AlgorithmSettings { get; }
-        protected IFunctionStrategy FunctionStrategy { get; }
-
-        protected Rule<TGpArgument> GlobalPollinationRule { get; }
-        protected Rule<TLpArgument> LocalPollinationRule { get; }
+        protected Func<double[], double> FunctionStrategy { get; }
 
         protected AlgorithmPerformer(AlgorithmSettings algorithmSettings, PollinatorsGroup[] groups, 
-            IFunctionStrategy functionStrategy, Rule<TGpArgument> globalPollinationRule, 
-            Rule<TLpArgument> localPollinationRule)
+            Func<double[], double> functionStrategy)
         {
             AlgorithmSettings = algorithmSettings;
             Groups = groups;
             FunctionStrategy = functionStrategy;
-            GlobalPollinationRule = globalPollinationRule;
-            LocalPollinationRule = localPollinationRule;
         }
 
-        public virtual Pollinator Polinate()
+        public Pollinator Polinate()
         {
             var t = 0;
 

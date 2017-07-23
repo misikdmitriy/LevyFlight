@@ -1,22 +1,16 @@
-﻿using System.Collections.Generic;
-using LevyFlight.Domain.Modified.Algorithms;
+﻿using System;
+using System.Collections.Generic;
 using LevyFlight.Domain.Modified.Entities;
-using LevyFlight.Domain.Modified.RuleArguments;
 using LevyFlight.Domain.Modified.Rules;
 using LevyFlight.Entities;
-using LevyFlight.FunctionStrategies;
+using AlgorithmPerformer = LevyFlight.Domain.Algorithms.AlgorithmPerformer;
 
 namespace LevyFlight.Domain.Modified.Factories
 {
-    internal sealed class AlgorithmCreator 
-        : Domain.Factories.AlgorithmCreator<AlgorithmPerformer, 
-            GlobalPollinationRuleArgument, LocalPollinationRuleArgument>
+    internal sealed class AlgorithmCreator : Domain.Factories.AlgorithmCreator
     {
-        public override AlgorithmPerformer Create(
-            IFunctionStrategy functionStrategy, int variablesCount)
+        public override AlgorithmPerformer Create(Func<double[], double> functionStrategy, int variablesCount)
         {
-            var factory = new RuleFactory();
-
             var settings = ModifiedAlgorithmSettings.Default;
 
             var groups = new List<PollinatorsGroup>();
@@ -26,9 +20,9 @@ namespace LevyFlight.Domain.Modified.Factories
                 groups.Add(new PollinatorsGroup(settings.PollinatorsCount, variablesCount));
             }
 
-            return new AlgorithmPerformer(ModifiedAlgorithmSettings.Default, groups.ToArray(), functionStrategy, 
-                factory.CreateGlobalPollinationRule() as GlobalPollinationRule, 
-                factory.CreateLocalPollinationRule() as LocalPollinationRule);
+            return new Algorithms.AlgorithmPerformer(ModifiedAlgorithmSettings.Default, groups.ToArray(), functionStrategy,
+                new GlobalPollinationRule(),
+                new LocalPollinationRule());
         }
     }
 }

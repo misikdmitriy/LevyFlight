@@ -1,26 +1,11 @@
 ﻿using LevyFlight.Domain.Modified.RuleArguments;
-using LevyFlight.Domain.Rules;
 using LevyFlight.Entities;
-using LevyFlight.FunctionStrategies;
 
 namespace LevyFlight.Domain.Modified.Rules
 {
-    internal sealed class GlobalPollinationRule : Rule<GlobalPollinationRuleArgument>
+    internal sealed class GlobalPollinationRule : IRule<GlobalPollinationRuleArgument>
     {
-        private readonly IFunctionStrategy _distanceFunctionStrategy;
-        private readonly IFunctionStrategy _lambdaFunctionStrategy;
-        private readonly IFunctionStrategy _mantegnaFunctionStrategy;
-
-        public GlobalPollinationRule(IFunctionStrategy distanceFunctionStrategy,
-            IFunctionStrategy lambdaFunctionStrategy,
-            IFunctionStrategy mantegnaFunctionStrategy)
-        {
-            _distanceFunctionStrategy = distanceFunctionStrategy;
-            _lambdaFunctionStrategy = lambdaFunctionStrategy;
-            _mantegnaFunctionStrategy = mantegnaFunctionStrategy;
-        }
-
-        public override void RecountPollinator(Pollinator pollinator, GlobalPollinationRuleArgument ruleArgument)
+        public void RecountPollinator(Pollinator pollinator, GlobalPollinationRuleArgument ruleArgument)
         {
             var bestPollinator = ruleArgument.BestPollinator;
             var worstPollinator = ruleArgument.WorstPollinator;
@@ -29,12 +14,12 @@ namespace LevyFlight.Domain.Modified.Rules
 
             for (var i = 0; i < pollinator.Size; i++)
             {
-                var distanceDifference = _distanceFunctionStrategy.Apply(worstPollinator.CurrentSolution) -
-                                         _distanceFunctionStrategy.Apply(pollinator.CurrentSolution);
+                var distanceDifference = FunctionStrategies.FunctionStrategies.DistanceFunction(worstPollinator.CurrentSolution) -
+                                         FunctionStrategies.FunctionStrategies.DistanceFunction(pollinator.CurrentSolution);
 
-                var lambda = _lambdaFunctionStrategy.Apply(new[] { distanceDifference });
+                var lambda = FunctionStrategies.FunctionStrategies.LambdaFunction(distanceDifference);
 
-                var rand = _mantegnaFunctionStrategy.Apply(new[] { lambda });
+                var rand = FunctionStrategies.FunctionStrategies.MantegnaFunction(lambda);
 
                 pollinator.NewSolution[i] = pollinator.CurrentSolution[i] + rand * (bestPollinator.CurrentSolution[i] -
                     pollinator.CurrentSolution[i]);

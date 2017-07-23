@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LevyFlight.Entities\LevyFlight.Entities.csproj" />
-    <ProjectReference Include="..\LevyFlight.FunctionStrategies\LevyFlight.FunctionStrategies.csproj" />
   </ItemGroup>
 
 </Project>

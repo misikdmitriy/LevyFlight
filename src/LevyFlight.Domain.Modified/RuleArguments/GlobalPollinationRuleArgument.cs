@@ -1,10 +1,9 @@
 ﻿using LevyFlight.Common.Check;
-using LevyFlight.Domain.RuleArguments;
 using LevyFlight.Entities;
 
 namespace LevyFlight.Domain.Modified.RuleArguments
 {
-    internal sealed class GlobalPollinationRuleArgument : RuleArgument
+    internal sealed class GlobalPollinationRuleArgument
     {
         public Pollinator BestPollinator { get; }
         public Pollinator WorstPollinator { get; }

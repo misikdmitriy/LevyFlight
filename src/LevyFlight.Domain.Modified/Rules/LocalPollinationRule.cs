@@ -1,13 +1,12 @@
 ﻿using LevyFlight.Common.Misc;
 using LevyFlight.Domain.Modified.RuleArguments;
-using LevyFlight.Domain.Rules;
 using LevyFlight.Entities;
 
 namespace LevyFlight.Domain.Modified.Rules
 {
-    internal sealed class LocalPollinationRule : Rule<LocalPollinationRuleArgument>
+    internal sealed class LocalPollinationRule : IRule<LocalPollinationRuleArgument>
     {
-        public override void RecountPollinator(Pollinator pollinator, LocalPollinationRuleArgument ruleArgument)
+        public void RecountPollinator(Pollinator pollinator, LocalPollinationRuleArgument ruleArgument)
         {
             var randomPollinator = ruleArgument.RandomPollinator;
 

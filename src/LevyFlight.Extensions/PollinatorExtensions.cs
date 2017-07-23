@@ -1,20 +1,19 @@
 ﻿using System;
 using LevyFlight.Entities;
-using LevyFlight.FunctionStrategies;
 
 namespace LevyFlight.Extensions
 {
     public static class PollinatorExtensions
     {
-        public static double CountFunction(this Pollinator pollinator, IFunctionStrategy functionStrategy, 
+        public static double CountFunction(this Pollinator pollinator, Func<double[], double> functionStrategy, 
             Solution solution)
         {
             switch (solution)
             {
                 case Solution.Current:
-                    return functionStrategy.Apply(pollinator.CurrentSolution);
+                    return functionStrategy(pollinator.CurrentSolution);
                 case Solution.NewSolution:
-                    return functionStrategy.Apply(pollinator.NewSolution);
+                    return functionStrategy(pollinator.NewSolution);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(solution), solution, null);
             }
@@ -35,7 +34,7 @@ namespace LevyFlight.Extensions
             }
         }
 
-        public static bool TryExchange(this Pollinator pollinator, IFunctionStrategy functionStrategy,
+        public static bool TryExchange(this Pollinator pollinator, Func<double[], double> functionStrategy,
             bool isMin = true)
         {
             if (isMin && pollinator.CountFunction(functionStrategy, Solution.Current) > pollinator.CountFunction(functionStrategy, Solution.NewSolution)

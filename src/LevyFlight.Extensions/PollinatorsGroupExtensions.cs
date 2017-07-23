@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Linq;
 using LevyFlight.Entities;
-using LevyFlight.FunctionStrategies;
 
 namespace LevyFlight.Extensions
 {
     public static class PollinatorsGroupExtensions
     {
         public static Pollinator GetBestSolution(this PollinatorsGroup[] pollinatorsGroups, 
-            IFunctionStrategy functionStrategy,
+            Func<double[], double> functionStrategy,
             bool isMin = true)
         {
             var bestSolution = pollinatorsGroups.First().First();
@@ -32,7 +31,7 @@ namespace LevyFlight.Extensions
         }
 
         public static Pollinator GetBestSolution(this PollinatorsGroup pollinatorsGroup,
-            IFunctionStrategy functionStrategy,
+            Func<double[], double> functionStrategy,
             bool isMin = true)
         {
             return GetBestSolution(new[] {pollinatorsGroup}, functionStrategy, isMin);
