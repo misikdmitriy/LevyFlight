@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using LevyFlight.Common.Misc;
 using LevyFlight.Entities;
 using LevyFlight.Extensions;
@@ -19,13 +20,13 @@ namespace LevyFlight.Domain.Algorithms
             FunctionStrategy = functionStrategy;
         }
 
-        public Pollinator Polinate()
+        public async Task<Pollinator> PolinateAsync()
         {
             var t = 0;
 
             while (t < AlgorithmSettings.MaxGeneration)
             {
-                PolinateOnce();
+                await PolinateOnceAsync();
 
                 ++t;
             }
@@ -33,24 +34,27 @@ namespace LevyFlight.Domain.Algorithms
             return Groups.GetBestSolution(FunctionStrategy, AlgorithmSettings.IsMin);
         }
 
-        private void PolinateOnce()
+        private async Task PolinateOnceAsync()
         {
-            foreach (var group in Groups)
+            await Task.Run(() =>
             {
-                foreach (var pollinator in group)
+                foreach (var group in Groups)
                 {
-                    if (RandomGenerator.Random.NextDouble() < AlgorithmSettings.P)
+                    foreach (var pollinator in group)
                     {
-                        GoFirstBranch(group, pollinator);
-                    }
-                    else
-                    {
-                        GoSecondBranch(group, pollinator);
-                    }
+                        if (RandomGenerator.Random.NextDouble() < AlgorithmSettings.P)
+                        {
+                            GoFirstBranch(group, pollinator);
+                        }
+                        else
+                        {
+                            GoSecondBranch(group, pollinator);
+                        }
 
-                    PostOperationAction(group, pollinator);
+                        PostOperationAction(group, pollinator);
+                    }
                 }
-            }
+            });
         }
 
         protected abstract void GoFirstBranch(PollinatorsGroup group, Pollinator pollinator);

@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("LevyFlight.Business")]
-[assembly: InternalsVisibleTo("LevyFlight.Tests")]
+[assembly: InternalsVisibleTo("LevyFlight.Domain.Modified.Tests")]
 
 namespace LevyFlight.Domain.Modified
 {
