@@ -34,7 +34,7 @@ namespace LevyFlight.Domain.Algorithms
             return Groups.GetBestSolution(FunctionStrategy, AlgorithmSettings.IsMin);
         }
 
-        private async Task PolinateOnceAsync()
+        public async Task PolinateOnceAsync()
         {
             await Task.Run(() =>
             {
