@@ -9,7 +9,7 @@ namespace LevyFlight.Business
 
     public class AlgoHub
     {
-        public async Task<double> FindMinimumAsync(Func<double[], double> function, int variablesCount)
+        public async Task<double> FindExtremeAsync(Func<double[], double> function, int variablesCount)
         {
             var algorithmPerformer = new AlgorithmCreator().Create(function, variablesCount);
             var resultPollinator = await algorithmPerformer.PolinateAsync();
