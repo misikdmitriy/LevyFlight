@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using LevyFlight.Common.Misc;
 using LevyFlight.Domain.Modified.Entities;
 using LevyFlight.Domain.Modified.RuleArguments;
@@ -17,12 +16,12 @@ namespace LevyFlight.Domain.Modified.Algorithms
 
         private readonly double _pReset;
 
-        public AlgorithmPerformer(ModifiedAlgorithmSettings algorithmSettings, 
-            PollinatorsGroup[] groups,
+        public AlgorithmPerformer(ModifiedAlgorithmSettings algorithmSettings,
+            int variablesCount,
             Func<double[], double> functionStrategy,
             IRule<GlobalPollinationRuleArgument> globalPollinationRule,
-            IRule<LocalPollinationRuleArgument> localPollinationRule) 
-            : base(algorithmSettings, groups, functionStrategy)
+            IRule<LocalPollinationRuleArgument> localPollinationRule)
+            : base(algorithmSettings, variablesCount, functionStrategy)
         {
             GlobalPollinationRule = globalPollinationRule;
             LocalPollinationRule = localPollinationRule;

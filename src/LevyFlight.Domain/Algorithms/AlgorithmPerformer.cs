@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using LevyFlight.Common.Misc;
 using LevyFlight.Entities;
@@ -12,11 +13,18 @@ namespace LevyFlight.Domain.Algorithms
         protected AlgorithmSettings AlgorithmSettings { get; }
         protected Func<double[], double> FunctionStrategy { get; }
 
-        protected AlgorithmPerformer(AlgorithmSettings algorithmSettings, PollinatorsGroup[] groups, 
+        protected AlgorithmPerformer(AlgorithmSettings algorithmSettings, int variablesCount, 
             Func<double[], double> functionStrategy)
         {
             AlgorithmSettings = algorithmSettings;
-            Groups = groups;
+
+            var groupsList = new List<PollinatorsGroup>();
+            for (var i = 0; i < algorithmSettings.GroupsCount; i++)
+            {
+                groupsList.Add(new PollinatorsGroup(algorithmSettings.PollinatorsCount, variablesCount));
+            }
+            Groups = groupsList.ToArray();
+
             FunctionStrategy = functionStrategy;
         }
 
