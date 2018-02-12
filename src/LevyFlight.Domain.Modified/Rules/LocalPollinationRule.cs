@@ -1,4 +1,5 @@
-﻿using LevyFlight.Common.Misc;
+﻿using System.Threading.Tasks;
+using LevyFlight.Common.Misc;
 using LevyFlight.Domain.Modified.RuleArguments;
 using LevyFlight.Entities;
 
@@ -6,19 +7,22 @@ namespace LevyFlight.Domain.Modified.Rules
 {
     internal sealed class LocalPollinationRule : IRule<LocalPollinationRuleArgument>
     {
-        public void RecountPollinator(Pollinator pollinator, LocalPollinationRuleArgument ruleArgument)
+        public async Task ApplyRuleAsync(Pollinator pollinator, LocalPollinationRuleArgument ruleArgument)
         {
             var randomPollinator = ruleArgument.RandomPollinator;
 
-            pollinator.NewSolution = new double[pollinator.Size];
-
-            for (var i = 0; i < pollinator.Size; i++)
+            await Task.Run(() =>
             {
-                var rand = RandomGenerator.Random.NextDouble();
+                pollinator.NewSolution = new double[pollinator.Size];
 
-                pollinator.NewSolution[i] = pollinator.CurrentSolution[i] + rand * (randomPollinator.CurrentSolution[i] - 
-                    pollinator.CurrentSolution[i]);
-            }
+                for (var i = 0; i < pollinator.Size; i++)
+                {
+                    var rand = RandomGenerator.Random.NextDouble();
+
+                    pollinator.NewSolution[i] = pollinator.CurrentSolution[i] + rand * (randomPollinator.CurrentSolution[i] -
+                                                                                        pollinator.CurrentSolution[i]);
+                }
+            });
         }
     }
 }

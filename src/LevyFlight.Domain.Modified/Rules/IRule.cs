@@ -1,9 +1,10 @@
-﻿using LevyFlight.Entities;
+﻿using System.Threading.Tasks;
+using LevyFlight.Entities;
 
 namespace LevyFlight.Domain.Modified.Rules
 {
     public interface IRule<in TRuleArgument>
     {
-        void RecountPollinator(Pollinator pollinator, TRuleArgument ruleArgument);
+        Task ApplyRuleAsync(Pollinator pollinator, TRuleArgument ruleArgument);
     }
 }

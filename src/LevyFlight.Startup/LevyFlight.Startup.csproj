@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LevyFlight.Business\LevyFlight.Business.csproj" />
+    <ProjectReference Include="..\LevyFlight.Examples\LevyFlight.Examples.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -44,7 +44,7 @@ namespace LevyFlight.Domain.Algorithms
 
         public async Task PolinateOnceAsync()
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 foreach (var group in Groups)
                 {
@@ -52,21 +52,21 @@ namespace LevyFlight.Domain.Algorithms
                     {
                         if (RandomGenerator.Random.NextDouble() < AlgorithmSettings.P)
                         {
-                            GoFirstBranch(group, pollinator);
+                            await GoFirstBranchAsync(group, pollinator);
                         }
                         else
                         {
-                            GoSecondBranch(group, pollinator);
+                            await GoSecondBranchAsync(group, pollinator);
                         }
 
-                        PostOperationAction(group, pollinator);
+                        await PostOperationActionAsync(group, pollinator);
                     }
                 }
             });
         }
 
-        protected abstract void GoFirstBranch(PollinatorsGroup group, Pollinator pollinator);
-        protected abstract void GoSecondBranch(PollinatorsGroup group, Pollinator pollinator);
-        protected abstract void PostOperationAction(PollinatorsGroup group, Pollinator pollinator);
+        protected abstract Task GoFirstBranchAsync(PollinatorsGroup group, Pollinator pollinator);
+        protected abstract Task GoSecondBranchAsync(PollinatorsGroup group, Pollinator pollinator);
+        protected abstract Task PostOperationActionAsync(PollinatorsGroup group, Pollinator pollinator);
     }
 }

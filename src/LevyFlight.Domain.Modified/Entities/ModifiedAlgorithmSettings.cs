@@ -6,14 +6,13 @@ namespace LevyFlight.Domain.Modified.Entities
     {
         public double PReset { get; set; }
 
-        public new static ModifiedAlgorithmSettings Default => new ModifiedAlgorithmSettings
+        public new static ModifiedAlgorithmSettings Default => new ModifiedAlgorithmSettings(20, true, 1000, 0.85, 10,
+            0.01);
+
+        public ModifiedAlgorithmSettings(int groupsCount, bool isMin, int maxGeneration, double p, int pollinatorsCount, 
+            double pReset) : base(groupsCount, isMin, maxGeneration, p, pollinatorsCount)
         {
-            GroupsCount = 20,
-            IsMin = true,
-            MaxGeneration = 1000,
-            P = 0.85,
-            PollinatorsCount = 10,
-            PReset = 0.01
-        };
+            PReset = pReset;
+        }
     }
 }
