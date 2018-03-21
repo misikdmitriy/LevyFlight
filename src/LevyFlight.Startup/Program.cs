@@ -8,8 +8,8 @@ namespace LevyFlight.Startup
     {
         public static void Main()
         {
-            var algoHub = new AlgoHub();
-            var result = algoHub.FindExtremeAsync(FunctionStrategies.GriewankFunction, 30).Result;
+            var hub = new AlgoHub();
+            var result = hub.FindExtremeAsync(FunctionStrategies.GriewankFunction, 30).Result;
 
             Console.WriteLine($"Result is {result}");
         }
