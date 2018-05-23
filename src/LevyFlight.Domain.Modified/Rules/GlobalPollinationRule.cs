@@ -14,23 +14,26 @@ namespace LevyFlight.Domain.Modified.Rules
 
             return Task.Run(() =>
             {
-                var values = new double[pollinator.Size];
+                var distanceDifference = worstPollinator.CountFunction(FunctionStrategies.FunctionStrategies.DistanceFunction) -
+                                         pollinator.CountFunction(FunctionStrategies.FunctionStrategies.DistanceFunction);
 
-                for (var i = 0; i < pollinator.Size; i++)
+                var lambda = FunctionStrategies.FunctionStrategies.LambdaFunction(distanceDifference);
+
+                var rand = FunctionStrategies.FunctionStrategies.MantegnaFunction(lambda);
+
+                var ruleVisitor = new TwoPollinatorsVisitor((first, second) =>
                 {
-                    var distanceDifference = worstPollinator.CountFunction(FunctionStrategies.FunctionStrategies.DistanceFunction) -
-                                             pollinator.CountFunction(FunctionStrategies.FunctionStrategies.DistanceFunction);
+                    var values = new double[pollinator.Size];
 
-                    var lambda = FunctionStrategies.FunctionStrategies.LambdaFunction(distanceDifference);
+                    for (var i = 0; i < pollinator.Size; i++)
+                    {
+                        values[i] = first[i] + rand * (second[i] - first[i]);
+                    }
 
-                    var rand = FunctionStrategies.FunctionStrategies.MantegnaFunction(lambda);
+                    return values;
+                });
 
-                    var ruleVisitor = new TwoPollinatorsVisitor((first, second) => first[i] + rand * (second[i] - first[i]));
-
-                    values[i] = ruleVisitor.Visit(pollinator, bestPollinator);
-                }
-
-                return new Pollinator(values);
+                return new Pollinator(ruleVisitor.Visit(pollinator, bestPollinator));
             });
         }
     }

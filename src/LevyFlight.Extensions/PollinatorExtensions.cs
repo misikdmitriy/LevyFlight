@@ -12,7 +12,7 @@ namespace LevyFlight.Extensions
 
         public static void ThrowExceptionIfValuesIncorrect(this Pollinator pollinator)
         {
-            Func<double[], double> act = doubles =>
+            pollinator.CountFunction(doubles =>
             {
                 foreach (var element in doubles)
                 {
@@ -28,20 +28,13 @@ namespace LevyFlight.Extensions
                 }
 
                 return 0.0;
-            };
-
-            new OnePollinatorVisitor(act).Visit(pollinator);
+            });
         }
 
-        public static int CompareTo(this Pollinator first, Pollinator second, Func<double[], double> functionStrategy, bool isMin = true)
+        public static int CompareTo(this Pollinator first, Pollinator second, Func<double[], double> functionStrategy)
         {
             var firstSolution = first.CountFunction(functionStrategy);
             var secondSolution = second.CountFunction(functionStrategy);
-
-            if (isMin)
-            {
-                return firstSolution < secondSolution ? 1 : (firstSolution > secondSolution ? -1 : 0);
-            }
 
             return firstSolution < secondSolution ? -1 : (firstSolution > secondSolution ? 1 : 0);
         }

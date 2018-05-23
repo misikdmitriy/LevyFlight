@@ -14,7 +14,7 @@ namespace LevyFlight.Domain.Algorithms
         protected AlgorithmSettings AlgorithmSettings { get; }
         protected Func<double[], double> FunctionStrategy { get; }
 
-        protected AlgorithmPerformer(AlgorithmSettings algorithmSettings, int variablesCount, 
+        protected AlgorithmPerformer(AlgorithmSettings algorithmSettings, int variablesCount,
             Func<double[], double> functionStrategy, IPollinatorGroupCreator pollinatorGroupCreator)
         {
             AlgorithmSettings = algorithmSettings;
@@ -46,23 +46,18 @@ namespace LevyFlight.Domain.Algorithms
                 {
                     foreach (var pollinator in group)
                     {
-                        if (RandomGenerator.Random.NextDouble() < AlgorithmSettings.P)
-                        {
-                            await GoFirstBranchAsync(group, pollinator);
-                        }
-                        else
-                        {
-                            await GoSecondBranchAsync(group, pollinator);
-                        }
+                        var nextPollinator = RandomGenerator.Random.NextDouble() < AlgorithmSettings.P
+                            ? await GoFirstBranchAsync(group, pollinator)
+                            : await GoSecondBranchAsync(group, pollinator);
 
-                        await PostOperationActionAsync(group, pollinator);
+                        await PostOperationActionAsync(group, pollinator, nextPollinator);
                     }
                 }
             });
         }
 
-        protected abstract Task GoFirstBranchAsync(PollinatorsGroup group, Pollinator pollinator);
-        protected abstract Task GoSecondBranchAsync(PollinatorsGroup group, Pollinator pollinator);
-        protected abstract Task PostOperationActionAsync(PollinatorsGroup group, Pollinator pollinator);
+        protected abstract Task<Pollinator> GoFirstBranchAsync(PollinatorsGroup group, Pollinator pollinator);
+        protected abstract Task<Pollinator> GoSecondBranchAsync(PollinatorsGroup group, Pollinator pollinator);
+        protected abstract Task PostOperationActionAsync(PollinatorsGroup group, Pollinator prev, Pollinator curr);
     }
 }

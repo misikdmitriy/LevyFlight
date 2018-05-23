@@ -37,7 +37,7 @@ namespace LevyFlight.Domain.Modified.Algorithms
             _pollinatorUpdater = pollinatorUpdater;
         }
 
-        protected override Task GoFirstBranchAsync(PollinatorsGroup @group, Pollinator pollinator)
+        protected override Task<Pollinator> GoFirstBranchAsync(PollinatorsGroup @group, Pollinator pollinator)
         {
             var bestPollinator = group.GetBestSolution(FunctionStrategy, AlgorithmSettings.IsMin);
             var worstPollinator = group.GetBestSolution(FunctionStrategy, AlgorithmSettings.IsMin);
@@ -46,7 +46,7 @@ namespace LevyFlight.Domain.Modified.Algorithms
             return _globalPollinationRule.ApplyRuleAsync(pollinator, ruleArgument);
         }
 
-        protected override Task GoSecondBranchAsync(PollinatorsGroup @group, Pollinator pollinator)
+        protected override Task<Pollinator> GoSecondBranchAsync(PollinatorsGroup @group, Pollinator pollinator)
         {
             var randomPollinator = group.ElementAt(RandomGenerator.Random.Next() % group.Count());
 
@@ -54,13 +54,26 @@ namespace LevyFlight.Domain.Modified.Algorithms
             return _localPollinationRule.ApplyRuleAsync(pollinator, ruleArgument);
         }
 
-        protected override Task PostOperationActionAsync(PollinatorsGroup @group, Pollinator pollinator)
+        protected override Task PostOperationActionAsync(PollinatorsGroup @group, Pollinator prev, Pollinator curr)
         {
-            pollinator.ThrowExceptionIfValuesIncorrect();
+            curr.ThrowExceptionIfValuesIncorrect();
+
+            Pollinator best;
+
+            if (prev.CompareTo(curr, FunctionStrategy) > -1 && AlgorithmSettings.IsMin || 
+                prev.CompareTo(curr, FunctionStrategy) < 1 && !AlgorithmSettings.IsMin)
+            {
+                group.Replace(prev, curr);
+                best = curr;
+            }
+            else
+            {
+                best = prev;
+            }
 
             if (RandomGenerator.Random.NextDouble() < _pReset)
             {
-                group.Replace(pollinator, _pollinatorUpdater.Update(pollinator));
+                group.Replace(best, _pollinatorUpdater.Update(best));
             }
 
             return Task.CompletedTask;

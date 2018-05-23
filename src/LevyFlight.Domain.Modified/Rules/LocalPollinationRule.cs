@@ -13,18 +13,20 @@ namespace LevyFlight.Domain.Modified.Rules
 
             return Task.Run(() =>
             {
-                var values = new double[pollinator.Size];
-
-                for (var i = 0; i < pollinator.Size; i++)
+                var ruleVisitor = new TwoPollinatorsVisitor((first, second) =>
                 {
-                    var rand = RandomGenerator.Random.NextDouble();
+                    var values = new double[pollinator.Size];
 
-                    var ruleVisitor = new TwoPollinatorsVisitor((first, second) => first[i] + rand * (second[i] - first[i]));
+                    for (var i = 0; i < pollinator.Size; i++)
+                    {
+                        var rand = RandomGenerator.Random.NextDouble();
+                        values[i] = first[i] + rand * (second[i] - first[i]);
+                    }
 
-                    values[i] = ruleVisitor.Visit(pollinator, randomPollinator);
-                }
+                    return values;
+                });
 
-                return new Pollinator(values);
+                return new Pollinator(ruleVisitor.Visit(pollinator, randomPollinator));
             });
         }
     }
