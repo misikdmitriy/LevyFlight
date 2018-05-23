@@ -1,6 +1,7 @@
 ﻿using System;
+using LevyFlight.Entities;
 
-namespace LevyFlight.Entities
+namespace LevyFlight.Logic.Visitors
 {
     public class OnePollinatorVisitor
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using LevyFlight.Entities;
+using LevyFlight.Logic.Visitors;
 
 namespace LevyFlight.Extensions
 {

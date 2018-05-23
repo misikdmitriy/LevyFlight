@@ -2,6 +2,7 @@
 using LevyFlight.Domain.Modified.RuleArguments;
 using LevyFlight.Entities;
 using LevyFlight.Extensions;
+using LevyFlight.Logic.Visitors;
 
 namespace LevyFlight.Domain.Modified.Rules
 {
