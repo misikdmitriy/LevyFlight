@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using LevyFlight.Common.Misc;
 using LevyFlight.Entities;
 using LevyFlight.Extensions;
+using LevyFlight.Logic.Factories.Contracts;
 
 namespace LevyFlight.Domain.Algorithms
 {
@@ -14,16 +15,13 @@ namespace LevyFlight.Domain.Algorithms
         protected Func<double[], double> FunctionStrategy { get; }
 
         protected AlgorithmPerformer(AlgorithmSettings algorithmSettings, int variablesCount, 
-            Func<double[], double> functionStrategy)
+            Func<double[], double> functionStrategy, IPollinatorGroupCreator pollinatorGroupCreator)
         {
             AlgorithmSettings = algorithmSettings;
 
-            var groupsList = new List<PollinatorsGroup>();
-            for (var i = 0; i < algorithmSettings.GroupsCount; i++)
-            {
-                groupsList.Add(new PollinatorsGroup(algorithmSettings.PollinatorsCount, variablesCount));
-            }
-            Groups = groupsList.ToArray();
+            Groups = Enumerable.Repeat(pollinatorGroupCreator.Create(algorithmSettings.PollinatorsCount, variablesCount),
+                algorithmSettings.GroupsCount)
+                .ToArray();
 
             FunctionStrategy = functionStrategy;
         }
@@ -32,11 +30,9 @@ namespace LevyFlight.Domain.Algorithms
         {
             var t = 0;
 
-            while (t < AlgorithmSettings.MaxGeneration)
+            while (t++ < AlgorithmSettings.MaxGeneration)
             {
                 await PolinateOnceAsync();
-
-                ++t;
             }
 
             return Groups.GetBestSolution(FunctionStrategy, AlgorithmSettings.IsMin);

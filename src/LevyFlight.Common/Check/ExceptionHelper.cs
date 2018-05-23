@@ -31,5 +31,13 @@ namespace LevyFlight.Common.Check
 
             return result;
         }
+
+        public static void ThrowExceptionIfNotEqual(object obj1, object obj2)
+        {
+            if (!Equals(obj1, obj2))
+            {
+                throw new Exception("Objects are not equal");
+            }
+        }
     }
 }

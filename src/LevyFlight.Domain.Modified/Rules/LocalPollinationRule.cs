@@ -7,21 +7,24 @@ namespace LevyFlight.Domain.Modified.Rules
 {
     internal sealed class LocalPollinationRule : IRule<LocalPollinationRuleArgument>
     {
-        public async Task ApplyRuleAsync(Pollinator pollinator, LocalPollinationRuleArgument ruleArgument)
+        public Task<Pollinator> ApplyRuleAsync(Pollinator pollinator, LocalPollinationRuleArgument ruleArgument)
         {
             var randomPollinator = ruleArgument.RandomPollinator;
 
-            await Task.Run(() =>
+            return Task.Run(() =>
             {
-                pollinator.NewSolution = new double[pollinator.Size];
+                var values = new double[pollinator.Size];
 
                 for (var i = 0; i < pollinator.Size; i++)
                 {
                     var rand = RandomGenerator.Random.NextDouble();
 
-                    pollinator.NewSolution[i] = pollinator.CurrentSolution[i] + rand * (randomPollinator.CurrentSolution[i] -
-                                                                                        pollinator.CurrentSolution[i]);
+                    var ruleVisitor = new TwoPollinatorsVisitor((first, second) => first[i] + rand * (second[i] - first[i]));
+
+                    values[i] = ruleVisitor.Visit(pollinator, randomPollinator);
                 }
+
+                return new Pollinator(values);
             });
         }
     }

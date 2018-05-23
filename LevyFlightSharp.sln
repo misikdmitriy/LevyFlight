@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.8
+VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C0A77922-0D13-4F50-8DDA-691AF2A9D937}"
 EndProject
@@ -21,9 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevyFlight.Extensions", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevyFlight.Business", "src\LevyFlight.Business\LevyFlight.Business.csproj", "{2E5B1AAC-7109-48DB-8557-6C5223CC7D38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevyFlight.AsyncHelpers", "src\LevyFlight.AsyncHelpers\LevyFlight.AsyncHelpers.csproj", "{81340BCF-E4D8-46C7-B7EB-608D4C8ABBD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevyFlight.Startup", "src\LevyFlight.Startup\LevyFlight.Startup.csproj", "{94D27E6A-0A42-4ACA-92AE-FC87B24B8EC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevyFlight.Startup", "src\LevyFlight.Startup\LevyFlight.Startup.csproj", "{94D27E6A-0A42-4ACA-92AE-FC87B24B8EC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevyFlight.Logic", "LevyFlight.Logic\LevyFlight.Logic.csproj", "{3B60C364-DE50-4109-A335-38DD8B4C9653}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,14 +59,14 @@ Global
 		{2E5B1AAC-7109-48DB-8557-6C5223CC7D38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E5B1AAC-7109-48DB-8557-6C5223CC7D38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E5B1AAC-7109-48DB-8557-6C5223CC7D38}.Release|Any CPU.Build.0 = Release|Any CPU
-		{81340BCF-E4D8-46C7-B7EB-608D4C8ABBD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{81340BCF-E4D8-46C7-B7EB-608D4C8ABBD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{81340BCF-E4D8-46C7-B7EB-608D4C8ABBD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{81340BCF-E4D8-46C7-B7EB-608D4C8ABBD1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{94D27E6A-0A42-4ACA-92AE-FC87B24B8EC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{94D27E6A-0A42-4ACA-92AE-FC87B24B8EC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94D27E6A-0A42-4ACA-92AE-FC87B24B8EC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94D27E6A-0A42-4ACA-92AE-FC87B24B8EC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B60C364-DE50-4109-A335-38DD8B4C9653}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B60C364-DE50-4109-A335-38DD8B4C9653}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B60C364-DE50-4109-A335-38DD8B4C9653}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B60C364-DE50-4109-A335-38DD8B4C9653}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,8 +79,8 @@ Global
 		{7C8B5D4B-9FF3-4E8F-9D38-377D5262695D} = {C0A77922-0D13-4F50-8DDA-691AF2A9D937}
 		{9B8610FD-AD4D-401A-B615-6F9CDF6E7F6A} = {C0A77922-0D13-4F50-8DDA-691AF2A9D937}
 		{2E5B1AAC-7109-48DB-8557-6C5223CC7D38} = {C0A77922-0D13-4F50-8DDA-691AF2A9D937}
-		{81340BCF-E4D8-46C7-B7EB-608D4C8ABBD1} = {C0A77922-0D13-4F50-8DDA-691AF2A9D937}
 		{94D27E6A-0A42-4ACA-92AE-FC87B24B8EC8} = {C0A77922-0D13-4F50-8DDA-691AF2A9D937}
+		{3B60C364-DE50-4109-A335-38DD8B4C9653} = {C0A77922-0D13-4F50-8DDA-691AF2A9D937}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {07FE371C-89C2-447F-9529-AA9A83FF129A}

@@ -1,5 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using LevyFlight.Common.Check;
 
 namespace LevyFlight.Entities
 {
@@ -7,9 +10,9 @@ namespace LevyFlight.Entities
     {
         private Pollinator[] Pollinators { get; }
 
-        public PollinatorsGroup(Pollinator[] pollinators)
+        public PollinatorsGroup(IEnumerable<Pollinator> pollinators)
         {
-            Pollinators = pollinators;
+            Pollinators = pollinators.ToArray();
         }
 
         public PollinatorsGroup(int sizeOfGroup, int variablesCount)
@@ -17,8 +20,15 @@ namespace LevyFlight.Entities
             Pollinators = new Pollinator[sizeOfGroup];
             for (var i = 0; i < sizeOfGroup; i++)
             {
-                Pollinators[i] = new Pollinator(variablesCount);
+                Pollinators[i] = new Pollinator(Enumerable.Repeat(0.0, variablesCount));
             }
+        }
+
+        public void Replace(Pollinator target, Pollinator source)
+        {
+            ExceptionHelper.ThrowExceptionIfNotEqual(target.Size, source.Size);
+
+            Pollinators[Array.IndexOf(Pollinators, target)] = source;
         }
 
         IEnumerator IEnumerable.GetEnumerator()

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using LevyFlight.Entities;
 using LevyFlight.Extensions;
 
 namespace LevyFlight.Business
@@ -14,7 +13,7 @@ namespace LevyFlight.Business
             var algorithmPerformer = new AlgorithmCreator().Create(function, variablesCount);
             var resultPollinator = await algorithmPerformer.PolinateAsync();
 
-            return resultPollinator.CountFunction(function, Solution.Current);
+            return resultPollinator.CountFunction(function);
         }
     }
 }

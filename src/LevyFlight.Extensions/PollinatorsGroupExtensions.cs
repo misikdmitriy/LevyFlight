@@ -11,13 +11,13 @@ namespace LevyFlight.Extensions
             bool isMin = true)
         {
             var bestSolution = pollinatorsGroups.First().First();
-            var best = bestSolution.CountFunction(functionStrategy, Solution.Current);
+            var best = bestSolution.CountFunction(functionStrategy);
 
             foreach (var group in pollinatorsGroups)
             {
                 foreach (var pollinator in group)
                 {
-                    var current = pollinator.CountFunction(functionStrategy, Solution.Current);
+                    var current = pollinator.CountFunction(functionStrategy);
 
                     if (isMin && current < best || !isMin && current > best)
                     {

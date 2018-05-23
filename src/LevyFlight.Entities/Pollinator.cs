@@ -1,56 +1,21 @@
-﻿using System;
-using LevyFlight.Common.Check;
-using LevyFlight.Common.Misc;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace LevyFlight.Entities
 {
     public class Pollinator
     {
-        public const double P = 0.01;
+        internal readonly double[] Values;
+        public int Size => Values.Length;
 
-        public int Size { get; }
-
-        public double[] CurrentSolution { get; set; }
-        public double[] NewSolution { get; set; }
-
-        public Pollinator(int size)
+        public Pollinator(IEnumerable<double> values)
         {
-            ExceptionHelper.ThrowExceptionIfNegativeOrZero(size, nameof(size));
-
-            Size = size;
-
-            CurrentSolution = new double[size];
-            NewSolution = new double[size];
-
-            for (var i = 0; i < size; i++)
-            {
-                CurrentSolution[i] = RandomGenerator.Random.NextDouble();
-            }
+            Values = values.ToArray();
         }
 
-        public string ToString(Solution solution)
+        public Pollinator Clone()
         {
-            switch (solution)
-            {
-                case Solution.Current:
-                    return ToString(CurrentSolution);
-                case Solution.NewSolution:
-                    return ToString(NewSolution);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(solution), solution, null);
-            }
-        }
-
-        private string ToString(double[] pollinator)
-        {
-            var result = "";
-            for (var i = 0; i < Size; i++)
-            {
-                result += $"{i}): {pollinator[i]:e2}; ";
-            }
-            return result;
+            return new Pollinator(Values);
         }
     }
-
-    
 }

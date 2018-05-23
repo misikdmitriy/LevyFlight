@@ -5,6 +5,6 @@ namespace LevyFlight.Domain.Modified.Rules
 {
     public interface IRule<in TRuleArgument>
     {
-        Task ApplyRuleAsync(Pollinator pollinator, TRuleArgument ruleArgument);
+        Task<Pollinator> ApplyRuleAsync(Pollinator pollinator, TRuleArgument ruleArgument);
     }
 }

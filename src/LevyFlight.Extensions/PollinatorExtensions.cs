@@ -5,46 +5,45 @@ namespace LevyFlight.Extensions
 {
     public static class PollinatorExtensions
     {
-        public static double CountFunction(this Pollinator pollinator, Func<double[], double> functionStrategy, 
-            Solution solution)
+        public static double CountFunction(this Pollinator pollinator, Func<double[], double> functionStrategy)
         {
-            switch (solution)
-            {
-                case Solution.Current:
-                    return functionStrategy(pollinator.CurrentSolution);
-                case Solution.NewSolution:
-                    return functionStrategy(pollinator.NewSolution);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(solution), solution, null);
-            }
+            return new OnePollinatorVisitor(functionStrategy).Visit(pollinator);
         }
 
         public static void ThrowExceptionIfValuesIncorrect(this Pollinator pollinator)
         {
-            foreach (var element in pollinator.CurrentSolution)
+            Func<double[], double> act = doubles =>
             {
-                if (double.IsNaN(element))
+                foreach (var element in doubles)
                 {
-                    throw new ArithmeticException("Got NaN");
+                    if (double.IsNaN(element))
+                    {
+                        throw new ArithmeticException("Got NaN");
+                    }
+
+                    if (double.IsInfinity(element))
+                    {
+                        throw new ArithmeticException("Got infinity");
+                    }
                 }
-                if (double.IsInfinity(element))
-                {
-                    throw new ArithmeticException("Got infinity");
-                }
-            }
+
+                return 0.0;
+            };
+
+            new OnePollinatorVisitor(act).Visit(pollinator);
         }
 
-        public static bool TryExchange(this Pollinator pollinator, Func<double[], double> functionStrategy,
-            bool isMin = true)
+        public static int CompareTo(this Pollinator first, Pollinator second, Func<double[], double> functionStrategy, bool isMin = true)
         {
-            if (isMin && pollinator.CountFunction(functionStrategy, Solution.Current) > pollinator.CountFunction(functionStrategy, Solution.NewSolution)
-                || !isMin && pollinator.CountFunction(functionStrategy, Solution.Current) < pollinator.CountFunction(functionStrategy, Solution.NewSolution))
+            var firstSolution = first.CountFunction(functionStrategy);
+            var secondSolution = second.CountFunction(functionStrategy);
+
+            if (isMin)
             {
-                pollinator.CurrentSolution = pollinator.NewSolution;
-                return true;
+                return firstSolution < secondSolution ? 1 : (firstSolution > secondSolution ? -1 : 0);
             }
-                
-            return false;
+
+            return firstSolution < secondSolution ? -1 : (firstSolution > secondSolution ? 1 : 0);
         }
     }
 }
