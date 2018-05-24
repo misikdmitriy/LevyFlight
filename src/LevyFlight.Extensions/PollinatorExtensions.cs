@@ -11,6 +11,27 @@ namespace LevyFlight.Extensions
             return new OnePollinatorVisitor(functionStrategy).Visit(pollinator);
         }
 
+        public static bool CheckWhetherValuesCorrect(this Pollinator pollinator)
+        {
+            return pollinator.CountFunction(doubles =>
+            {
+                foreach (var element in doubles)
+                {
+                    if (double.IsNaN(element))
+                    {
+                        return double.MaxValue;
+                    }
+
+                    if (double.IsInfinity(element))
+                    {
+                        return double.MaxValue;
+                    }
+                }
+
+                return 0.0;
+            }) < double.Epsilon;
+        }
+
         public static void ThrowExceptionIfValuesIncorrect(this Pollinator pollinator)
         {
             pollinator.CountFunction(doubles =>
