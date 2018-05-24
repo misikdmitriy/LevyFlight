@@ -19,9 +19,12 @@ namespace LevyFlight.Domain.Algorithms
         {
             AlgorithmSettings = algorithmSettings;
 
-            Groups = Enumerable.Repeat(pollinatorGroupCreator.Create(algorithmSettings.PollinatorsCount, variablesCount),
-                algorithmSettings.GroupsCount)
-                .ToArray();
+            Groups = new PollinatorsGroup[algorithmSettings.GroupsCount];
+
+            for (var i = 0; i < algorithmSettings.GroupsCount; i++)
+            {
+                Groups[i] = pollinatorGroupCreator.Create(algorithmSettings.PollinatorsCount, variablesCount);
+            }
 
             FunctionStrategy = functionStrategy;
         }
@@ -38,9 +41,9 @@ namespace LevyFlight.Domain.Algorithms
             return Groups.GetBestSolution(FunctionStrategy, AlgorithmSettings.IsMin);
         }
 
-        public async Task PolinateOnceAsync()
+        public Task PolinateOnceAsync()
         {
-            await Task.Run(async () =>
+            return Task.Run(async () =>
             {
                 foreach (var group in Groups)
                 {

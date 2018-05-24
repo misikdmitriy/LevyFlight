@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using LevyFlight.Common.Misc;
 using LevyFlight.Entities;
 using LevyFlight.Logic.Factories.Contracts;
@@ -9,7 +10,13 @@ namespace LevyFlight.Logic.Factories
     {
         public Pollinator Create(int variablesCount)
         {
-            return new Pollinator(Enumerable.Repeat(RandomGenerator.Random.NextDouble(), variablesCount));
+            var values = new double[variablesCount];
+            for (var i = 0; i < variablesCount; i++)
+            {
+                values[i] = RandomGenerator.Random.NextDouble();
+            }
+
+            return new Pollinator(values);
         }
     }
 }

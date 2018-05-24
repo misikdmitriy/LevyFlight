@@ -15,7 +15,13 @@ namespace LevyFlight.Logic.Factories
         
         public PollinatorsGroup Create(int groupSize, int variablesCount)
         {
-            return new PollinatorsGroup(Enumerable.Repeat(_pollinatorCreator.Create(variablesCount), groupSize));
+            var pollinators = new Pollinator[groupSize];
+            for (var i = 0; i < groupSize; i++)
+            {
+                pollinators[i] = _pollinatorCreator.Create(variablesCount);
+            }
+
+            return new PollinatorsGroup(pollinators);
         }
     }
 }

@@ -56,7 +56,14 @@ namespace LevyFlight.Domain.Modified.Algorithms
 
         protected override Task PostOperationActionAsync(PollinatorsGroup @group, Pollinator prev, Pollinator curr)
         {
-            curr.ThrowExceptionIfValuesIncorrect();
+            try
+            {
+                curr.ThrowExceptionIfValuesIncorrect();
+            }
+            catch (Exception)
+            {
+                return Task.CompletedTask;
+            }
 
             Pollinator best;
 
