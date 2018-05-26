@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using LevyFlight.Common.Misc;
+﻿using LevyFlight.Common.Misc;
 using LevyFlight.Entities;
 using LevyFlight.Logic.Factories.Contracts;
 

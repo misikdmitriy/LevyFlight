@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Linq;
 using LevyFlight.Entities;
-using LevyFlight.Logic.Visitors;
 
 namespace LevyFlight.Extensions
 {
@@ -8,49 +8,33 @@ namespace LevyFlight.Extensions
     {
         public static double CountFunction(this Pollinator pollinator, Func<double[], double> functionStrategy)
         {
-            return new OnePollinatorVisitor(functionStrategy).Visit(pollinator);
+            return functionStrategy(pollinator.ToArray());
         }
 
         public static bool CheckWhetherValuesCorrect(this Pollinator pollinator)
         {
-            return pollinator.CountFunction(doubles =>
+            foreach (var element in pollinator)
             {
-                foreach (var element in doubles)
+                if (double.IsNaN(element))
                 {
-                    if (double.IsNaN(element))
-                    {
-                        return double.MaxValue;
-                    }
-
-                    if (double.IsInfinity(element))
-                    {
-                        return double.MaxValue;
-                    }
+                    return false;
                 }
 
-                return 0.0;
-            }) < double.Epsilon;
+                if (double.IsInfinity(element))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public static void ThrowExceptionIfValuesIncorrect(this Pollinator pollinator)
         {
-            pollinator.CountFunction(doubles =>
+            if (!pollinator.CheckWhetherValuesCorrect())
             {
-                foreach (var element in doubles)
-                {
-                    if (double.IsNaN(element))
-                    {
-                        throw new ArithmeticException("Got NaN");
-                    }
-
-                    if (double.IsInfinity(element))
-                    {
-                        throw new ArithmeticException("Got infinity");
-                    }
-                }
-
-                return 0.0;
-            });
+                throw new ArgumentException($"Some values are NaN or +/- Infinity");
+            }
         }
 
         public static int CompareTo(this Pollinator first, Pollinator second, Func<double[], double> functionStrategy)

@@ -1,0 +1,13 @@
+language: csharp
+solution: LevyFlightSharp.sln
+mono: none
+dotnet: 2.0.3
+install:
+  - dotnet restore LevyFlightSharp.sln
+script:
+  - dotnet build
+  - dotnet test src/LevyFlight.Tests/LevyFlight.Tests.csproj
+branches:
+  only:
+    - gh-pages
+    - /.*/

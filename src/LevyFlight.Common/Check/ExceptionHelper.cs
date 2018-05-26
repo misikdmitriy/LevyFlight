@@ -4,7 +4,7 @@ namespace LevyFlight.Common.Check
 {
     public class ExceptionHelper
     {
-        public static void ThrowExceptionIfNull(object argument, string @nameof)
+        public static void ThrowExceptionIfNull(object argument, string nameof)
         {
             if (argument == null)
             {
@@ -12,7 +12,7 @@ namespace LevyFlight.Common.Check
             }
         }
 
-        public static void ThrowExceptionIfNegativeOrZero(int number, string @nameof)
+        public static void ThrowExceptionIfNegativeOrZero(int number, string nameof)
         {
             if (number <= 0)
             {

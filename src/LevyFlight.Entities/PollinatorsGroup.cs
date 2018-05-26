@@ -8,19 +8,19 @@ namespace LevyFlight.Entities
 {
     public class PollinatorsGroup : IEnumerable<Pollinator>
     {
-        private Pollinator[] Pollinators { get; }
+        private readonly Pollinator[] _pollinators;
 
         public PollinatorsGroup(IEnumerable<Pollinator> pollinators)
         {
-            Pollinators = pollinators.ToArray();
+            _pollinators = pollinators.ToArray();
         }
 
         public PollinatorsGroup(int sizeOfGroup, int variablesCount)
         {
-            Pollinators = new Pollinator[sizeOfGroup];
+            _pollinators = new Pollinator[sizeOfGroup];
             for (var i = 0; i < sizeOfGroup; i++)
             {
-                Pollinators[i] = new Pollinator(Enumerable.Repeat(0.0, variablesCount));
+                _pollinators[i] = new Pollinator(Enumerable.Repeat(0.0, variablesCount));
             }
         }
 
@@ -28,7 +28,7 @@ namespace LevyFlight.Entities
         {
             ExceptionHelper.ThrowExceptionIfNotEqual(target.Size, source.Size);
 
-            Pollinators[Array.IndexOf(Pollinators, target)] = source;
+            _pollinators[Array.IndexOf(_pollinators, target)] = source;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -38,11 +38,11 @@ namespace LevyFlight.Entities
 
         public IEnumerator<Pollinator> GetEnumerator()
         {
-            var iterator = Pollinators.GetEnumerator();
+            var enumerator = _pollinators.GetEnumerator();
 
-            while (iterator.MoveNext())
+            while (enumerator.MoveNext())
             {
-                yield return (Pollinator)iterator.Current;
+                yield return (Pollinator)enumerator.Current;
             }
         }
     }

@@ -37,7 +37,7 @@ namespace LevyFlight.Domain.Modified.Algorithms
             _pollinatorUpdater = pollinatorUpdater;
         }
 
-        protected override Task<Pollinator> GoFirstBranchAsync(PollinatorsGroup @group, Pollinator pollinator)
+        protected override Task<Pollinator> GoFirstBranchAsync(PollinatorsGroup group, Pollinator pollinator)
         {
             var bestPollinator = group.GetBestSolution(FunctionStrategy, AlgorithmSettings.IsMin);
             var worstPollinator = group.GetBestSolution(FunctionStrategy, AlgorithmSettings.IsMin);
@@ -46,7 +46,7 @@ namespace LevyFlight.Domain.Modified.Algorithms
             return _globalPollinationRule.ApplyRuleAsync(pollinator, ruleArgument);
         }
 
-        protected override Task<Pollinator> GoSecondBranchAsync(PollinatorsGroup @group, Pollinator pollinator)
+        protected override Task<Pollinator> GoSecondBranchAsync(PollinatorsGroup group, Pollinator pollinator)
         {
             var randomPollinator = group.ElementAt(RandomGenerator.Random.Next() % group.Count());
 
@@ -54,12 +54,9 @@ namespace LevyFlight.Domain.Modified.Algorithms
             return _localPollinationRule.ApplyRuleAsync(pollinator, ruleArgument);
         }
 
-        protected override Task PostOperationActionAsync(PollinatorsGroup @group, Pollinator prev, Pollinator curr)
+        protected override Task PostOperationActionAsync(PollinatorsGroup group, Pollinator prev, Pollinator curr)
         {
-            if (!curr.CheckWhetherValuesCorrect())
-            {
-                return Task.CompletedTask;
-            }
+            curr.ThrowExceptionIfValuesIncorrect();
 
             Pollinator best;
 

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using LevyFlight.Entities;
+﻿using LevyFlight.Entities;
 using LevyFlight.Logic.Factories.Contracts;
 
 namespace LevyFlight.Logic.Factories
