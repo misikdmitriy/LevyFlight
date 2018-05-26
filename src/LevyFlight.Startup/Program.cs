@@ -9,7 +9,7 @@ namespace LevyFlight.Startup
         public static void Main()
         {
             var hub = new AlgoHub();
-            var result = hub.FindExtremeAsync(FunctionStrategies.GriewankFunction, 30).Result;
+            var result = hub.FindExtremeAsync(FunctionStrategies.RastriginFunction, 30).Result;
 
             Console.WriteLine($"Result is {result}");
         }

@@ -6,7 +6,7 @@ namespace LevyFlight.Domain.Modified.Entities
     {
         public double PReset { get; set; }
 
-        public new static ModifiedAlgorithmSettings Default => new ModifiedAlgorithmSettings(20, true, 1000, 0.85, 10,
+        public new static ModifiedAlgorithmSettings Default => new ModifiedAlgorithmSettings(5, true, 10, 0.85, 5,
             0.01);
 
         public ModifiedAlgorithmSettings(int groupsCount, bool isMin, int maxGeneration, double p, int pollinatorsCount, 

@@ -37,6 +37,11 @@ namespace LevyFlight.Domain.Modified.Algorithms
             _pollinatorUpdater = pollinatorUpdater;
         }
 
+        protected override Task PreOperationActionAsync(PollinatorsGroup @group, Pollinator curr)
+        {
+            return Task.CompletedTask;
+        }
+
         protected override Task<Pollinator> GoFirstBranchAsync(PollinatorsGroup group, Pollinator pollinator)
         {
             var bestPollinator = group.GetBestSolution(FunctionStrategy, AlgorithmSettings.IsMin);
@@ -56,7 +61,10 @@ namespace LevyFlight.Domain.Modified.Algorithms
 
         protected override Task PostOperationActionAsync(PollinatorsGroup group, Pollinator prev, Pollinator curr)
         {
-            curr.ThrowExceptionIfValuesIncorrect();
+            if (!curr.CheckWhetherValuesCorrect())
+            {
+                return Task.CompletedTask;
+            }
 
             Pollinator best;
 
