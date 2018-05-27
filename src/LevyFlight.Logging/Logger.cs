@@ -1,10 +1,16 @@
-﻿using LevyFlight.Logging.Contracts;
+﻿using NLog;
+using ILogger = LevyFlight.Logging.Contracts.ILogger;
 
 namespace LevyFlight.Logging
 {
     public class Logger : ILogger
     {
         private readonly NLog.ILogger _logger;
+
+        static Logger()
+        {
+            LogManager.LoadConfiguration("NLog.config");
+        }
 
         public Logger(NLog.ILogger logger)
         {
