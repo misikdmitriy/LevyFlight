@@ -33,16 +33,15 @@ namespace LevyFlight.Extensions
         {
             if (!pollinator.CheckWhetherValuesCorrect())
             {
-                throw new ArgumentException($"Some values are NaN or +/- Infinity");
+                throw new ArgumentException("Some values are NaN or +/- Infinity");
             }
         }
 
-        public static int CompareTo(this Pollinator first, Pollinator second, Func<double[], double> functionStrategy)
+        public static string ToArrayRepresentation(this Pollinator pollinator)
         {
-            var firstSolution = first.CountFunction(functionStrategy);
-            var secondSolution = second.CountFunction(functionStrategy);
-
-            return firstSolution < secondSolution ? -1 : (firstSolution > secondSolution ? 1 : 0);
+            return pollinator.Aggregate(string.Empty, (s, d) => s + "; " + d.ToString("F5"))
+                .Trim(';')
+                .Trim();
         }
     }
 }

@@ -2,15 +2,27 @@
 using LevyFlight.Domain.Modified.RuleArguments;
 using LevyFlight.Entities;
 using LevyFlight.Extensions;
+using LevyFlight.Logging.Contracts;
 
 namespace LevyFlight.Domain.Modified.Rules
 {
     internal sealed class GlobalPollinationRule : IRule<GlobalPollinationRuleArgument>
     {
+        private readonly ILogger _logger;
+
+        public GlobalPollinationRule(ILogger logger)
+        {
+            _logger = logger;
+        }
+
         public Task<Pollinator> ApplyRuleAsync(Pollinator pollinator, GlobalPollinationRuleArgument ruleArgument)
         {
             var bestPollinator = ruleArgument.BestPollinator;
             var worstPollinator = ruleArgument.WorstPollinator;
+
+            _logger.Trace($"Best pollinator is {bestPollinator.ToArrayRepresentation()}");
+            _logger.Trace($"Worst pollinator is {worstPollinator.ToArrayRepresentation()}");
+            _logger.Trace($"Current pollinator is {pollinator.ToArrayRepresentation()}");
 
             return Task.Run(() =>
             {
@@ -22,7 +34,11 @@ namespace LevyFlight.Domain.Modified.Rules
 
                 var rand = FunctionStrategies.FunctionStrategies.MantegnaFunction(lambda);
 
-                return pollinator + rand * (bestPollinator - pollinator);
+                var result = pollinator + rand * (bestPollinator - pollinator);
+
+                _logger.Trace($"Global result pollinator is {result.ToArrayRepresentation()}");
+
+                return result;
             });
         }
     }

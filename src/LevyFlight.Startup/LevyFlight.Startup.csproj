@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\LevyFlight.Business\LevyFlight.Business.csproj" />
     <ProjectReference Include="..\LevyFlight.Examples\LevyFlight.Examples.csproj" />
   </ItemGroup>

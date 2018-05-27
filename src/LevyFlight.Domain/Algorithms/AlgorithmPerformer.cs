@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using LevyFlight.Common.Misc;
 using LevyFlight.Entities;
 using LevyFlight.Extensions;
+using LevyFlight.Logging.Contracts;
 using LevyFlight.Logic.Factories.Contracts;
 
 namespace LevyFlight.Domain.Algorithms
@@ -13,8 +14,11 @@ namespace LevyFlight.Domain.Algorithms
         protected AlgorithmSettings AlgorithmSettings { get; }
         protected Func<double[], double> FunctionStrategy { get; }
 
+        private readonly ILogger _logger;
+
         protected AlgorithmPerformer(AlgorithmSettings algorithmSettings, int variablesCount,
-            Func<double[], double> functionStrategy, IPollinatorGroupCreator pollinatorGroupCreator)
+            Func<double[], double> functionStrategy, IPollinatorGroupCreator pollinatorGroupCreator, 
+            ILogger logger)
         {
             AlgorithmSettings = algorithmSettings;
 
@@ -26,18 +30,26 @@ namespace LevyFlight.Domain.Algorithms
             }
 
             FunctionStrategy = functionStrategy;
+            _logger = logger;
         }
 
         public async Task<Pollinator> PolinateAsync()
         {
             var t = 0;
+            var bestSolution = Groups.GetBestSolution(FunctionStrategy, AlgorithmSettings.IsMin);
 
             while (t++ < AlgorithmSettings.MaxGeneration)
             {
+                _logger.Debug($"Start step {t - 1}");
                 await PolinateOnceAsync();
+
+                bestSolution = Groups.GetBestSolution(FunctionStrategy, AlgorithmSettings.IsMin);
+
+                _logger.Debug($"Best pollinator after step {t - 1} is {bestSolution.ToArrayRepresentation()}");
+                _logger.Debug($"Best solution after step {t - 1} is {bestSolution.CountFunction(FunctionStrategy)}");
             }
 
-            return Groups.GetBestSolution(FunctionStrategy, AlgorithmSettings.IsMin);
+            return bestSolution;
         }
 
         public Task PolinateOnceAsync()
@@ -63,6 +75,6 @@ namespace LevyFlight.Domain.Algorithms
         protected abstract Task PreOperationActionAsync(PollinatorsGroup group, Pollinator curr);
         protected abstract Task<Pollinator> GoFirstBranchAsync(PollinatorsGroup group, Pollinator pollinator);
         protected abstract Task<Pollinator> GoSecondBranchAsync(PollinatorsGroup group, Pollinator pollinator);
-        protected abstract Task PostOperationActionAsync(PollinatorsGroup group, Pollinator prev, Pollinator curr);
+        protected abstract Task PostOperationActionAsync(PollinatorsGroup group, Pollinator currentPollinator, Pollinator newPollinator);
     }
 }

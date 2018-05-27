@@ -7,6 +7,7 @@ using LevyFlight.Domain.Modified.RuleArguments;
 using LevyFlight.Domain.Modified.Rules;
 using LevyFlight.Entities;
 using LevyFlight.Extensions;
+using LevyFlight.Logging.Contracts;
 using LevyFlight.Logic.Factories.Contracts;
 
 namespace LevyFlight.Domain.Modified.Algorithms
@@ -15,26 +16,22 @@ namespace LevyFlight.Domain.Modified.Algorithms
     {
         private readonly IRule<GlobalPollinationRuleArgument> _globalPollinationRule;
         private readonly IRule<LocalPollinationRuleArgument> _localPollinationRule;
-        
-        private readonly IPollinatorUpdater _pollinatorUpdater;
+        private readonly IRule<ResetPollinationRuleArgument> _resetPollinationRule;
 
-        private readonly double _pReset;
 
         public AlgorithmPerformer(ModifiedAlgorithmSettings algorithmSettings,
             int variablesCount,
             Func<double[], double> functionStrategy,
             IPollinatorGroupCreator pollinatorGroupCreator,
-            IPollinatorUpdater pollinatorUpdater,
             IRule<GlobalPollinationRuleArgument> globalPollinationRule,
-            IRule<LocalPollinationRuleArgument> localPollinationRule)
-            : base(algorithmSettings, variablesCount, functionStrategy, pollinatorGroupCreator)
+            IRule<LocalPollinationRuleArgument> localPollinationRule, 
+            IRule<ResetPollinationRuleArgument> resetPollinationRule,
+            ILogger logger)
+            : base(algorithmSettings, variablesCount, functionStrategy, pollinatorGroupCreator, logger)
         {
             _globalPollinationRule = globalPollinationRule;
             _localPollinationRule = localPollinationRule;
-
-            _pReset = algorithmSettings.PReset;
-
-            _pollinatorUpdater = pollinatorUpdater;
+            _resetPollinationRule = resetPollinationRule;
         }
 
         protected override Task PreOperationActionAsync(PollinatorsGroup @group, Pollinator curr)
@@ -45,7 +42,7 @@ namespace LevyFlight.Domain.Modified.Algorithms
         protected override Task<Pollinator> GoFirstBranchAsync(PollinatorsGroup group, Pollinator pollinator)
         {
             var bestPollinator = group.GetBestSolution(FunctionStrategy, AlgorithmSettings.IsMin);
-            var worstPollinator = group.GetBestSolution(FunctionStrategy, AlgorithmSettings.IsMin);
+            var worstPollinator = group.GetBestSolution(FunctionStrategy, !AlgorithmSettings.IsMin);
 
             var ruleArgument = new GlobalPollinationRuleArgument(bestPollinator, worstPollinator);
             return _globalPollinationRule.ApplyRuleAsync(pollinator, ruleArgument);
@@ -59,32 +56,12 @@ namespace LevyFlight.Domain.Modified.Algorithms
             return _localPollinationRule.ApplyRuleAsync(pollinator, ruleArgument);
         }
 
-        protected override Task PostOperationActionAsync(PollinatorsGroup group, Pollinator prev, Pollinator curr)
+        protected override Task PostOperationActionAsync(PollinatorsGroup group, Pollinator currentPollinator, 
+            Pollinator newPollinator)
         {
-            if (!curr.CheckWhetherValuesCorrect())
-            {
-                return Task.CompletedTask;
-            }
+            var ruleArgument = new ResetPollinationRuleArgument(group, newPollinator);
 
-            Pollinator best;
-
-            if (prev.CompareTo(curr, FunctionStrategy) > -1 && AlgorithmSettings.IsMin || 
-                prev.CompareTo(curr, FunctionStrategy) < 1 && !AlgorithmSettings.IsMin)
-            {
-                group.Replace(prev, curr);
-                best = curr;
-            }
-            else
-            {
-                best = prev;
-            }
-
-            if (RandomGenerator.Random.NextDouble() < _pReset)
-            {
-                group.Replace(best, _pollinatorUpdater.Update(best));
-            }
-
-            return Task.CompletedTask;
+            return _resetPollinationRule.ApplyRuleAsync(currentPollinator, ruleArgument);
         }
     }
 }

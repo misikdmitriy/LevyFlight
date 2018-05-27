@@ -36,10 +36,5 @@ namespace LevyFlight.Extensions
         {
             return GetBestSolution(new[] {pollinatorsGroup}, functionStrategy, isMin);
         }
-
-        public static int IndexOf(this PollinatorsGroup group, Pollinator pollinator)
-        {
-            return Array.IndexOf(group.ToArray(), pollinator);
-        }
     }
 }
