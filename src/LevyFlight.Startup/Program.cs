@@ -1,7 +1,6 @@
 ﻿using System;
 using CommandLine;
 using LevyFlight.Business;
-using LevyFlight.Examples.FunctionStrategies;
 
 namespace LevyFlight.Startup
 {
@@ -16,7 +15,7 @@ namespace LevyFlight.Startup
         private static void Main(CommandLineArguments arguments)
         {
             var hub = new AlgoHub();
-            var result = hub.FindExtremeAsync(FunctionStrategies.RastriginFunction, arguments.VariablesCount, 
+            var result = hub.FindExtremeAsync(arguments.ToFunctionStrategy(), arguments.VariablesCount, 
                 arguments.ToModifiedAlgorithmSettings()).Result;
 
             Console.WriteLine($"Result is {result}");

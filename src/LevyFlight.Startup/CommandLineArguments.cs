@@ -1,5 +1,8 @@
-﻿using CommandLine;
+﻿using System;
+using System.Reflection;
+using CommandLine;
 using LevyFlight.Business;
+using LevyFlight.Examples.FunctionStrategies;
 
 namespace LevyFlight.Startup
 {
@@ -26,10 +29,29 @@ namespace LevyFlight.Startup
         [Option('v', "variables", Required = false, HelpText = "Variables count", Default = 30)]
         public int VariablesCount { get; set; }
 
+        [Option('f', "function", Required = false, HelpText = "Function name", Default = "Griewank")]
+        public string FunctionName { get; set; }
+
         internal ModifiedAlgorithmSettingsDto ToModifiedAlgorithmSettings()
         {
             return new ModifiedAlgorithmSettingsDto(GroupsCount, IsMin, MaxGeneration, 
                 P, PollinatorsCount, PReset);
+        }
+
+        internal Func<double[], double> ToFunctionStrategy()
+        {
+            var types = typeof(FunctionStrategies)
+                .GetFields(BindingFlags.Static | BindingFlags.Public);
+
+            foreach (var type in types)
+            {
+                if (type.Name.StartsWith(FunctionName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return (Func<double[], double>) type.GetValue(null);
+                }
+            }
+
+            throw new ArgumentException(nameof(FunctionName));
         }
     }
 }
