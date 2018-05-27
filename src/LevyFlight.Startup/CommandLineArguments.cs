@@ -11,7 +11,7 @@ namespace LevyFlight.Startup
         [Option('g', "groups", Required = false, HelpText = "Groups count", Default = 5)]
         public int GroupsCount { get; set; }
 
-        [Option('m', "ismin", Required = false, HelpText = "Is minimum", Default = true)]
+        [Option('m', "ismin", Required = false, HelpText = "Is minimum", Default = false)]
         public bool IsMin { get; set; }
 
         [Option('n', "generation", Required = false, HelpText = "Number of generations", Default = 30)]
