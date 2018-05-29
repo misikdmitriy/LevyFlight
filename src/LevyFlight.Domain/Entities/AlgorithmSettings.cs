@@ -1,4 +1,6 @@
-﻿namespace LevyFlight.Domain.Entities
+﻿using LevyFlight.Common.Check;
+
+namespace LevyFlight.Domain.Entities
 {
     public class AlgorithmSettings
     {
@@ -12,6 +14,12 @@
         public AlgorithmSettings(int groupsCount, bool isMin, int maxGeneration, double p,
             int pollinatorsCount, double pReset)
         {
+            ThrowIf.NotPositive(groupsCount, nameof(groupsCount));
+            ThrowIf.NotPositive(pollinatorsCount, nameof(pollinatorsCount));
+            ThrowIf.NotPositive(maxGeneration, nameof(maxGeneration));
+            ThrowIf.NotBetweenZeroAndOne(p, nameof(p));
+            ThrowIf.NotBetweenZeroAndOne(pReset, nameof(pReset));
+
             GroupsCount = groupsCount;
             IsMin = isMin;
             MaxGeneration = maxGeneration;

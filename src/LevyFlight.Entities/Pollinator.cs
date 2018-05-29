@@ -25,7 +25,7 @@ namespace LevyFlight.Entities
 
         public static Pollinator operator +(Pollinator first, Pollinator second)
         {
-            ExceptionHelper.ThrowExceptionIfNotEqual(first.Size, second.Size);
+            ThrowIf.NotEqual(first.Size, second.Size);
 
             var values = new double[first.Size];
 
@@ -39,7 +39,7 @@ namespace LevyFlight.Entities
 
         public static Pollinator operator -(Pollinator first, Pollinator second)
         {
-            ExceptionHelper.ThrowExceptionIfNotEqual(first.Size, second.Size);
+            ThrowIf.NotEqual(first.Size, second.Size);
 
             var values = new double[first.Size];
 
@@ -53,7 +53,7 @@ namespace LevyFlight.Entities
 
         public static Pollinator operator *(Pollinator pollinator, Pollinator second)
         {
-            ExceptionHelper.ThrowExceptionIfNotEqual(pollinator.Size, second.Size);
+            ThrowIf.NotEqual(pollinator.Size, second.Size);
 
             var values = new double[pollinator.Size];
 
@@ -67,7 +67,7 @@ namespace LevyFlight.Entities
 
         public static Pollinator operator /(Pollinator pollinator, Pollinator second)
         {
-            ExceptionHelper.ThrowExceptionIfNotEqual(pollinator.Size, second.Size);
+            ThrowIf.NotEqual(pollinator.Size, second.Size);
 
             var values = new double[pollinator.Size];
 

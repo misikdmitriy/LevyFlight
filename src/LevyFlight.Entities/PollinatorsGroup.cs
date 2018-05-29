@@ -17,6 +17,9 @@ namespace LevyFlight.Entities
 
         public PollinatorsGroup(int sizeOfGroup, int variablesCount)
         {
+            ThrowIf.NotPositive(sizeOfGroup, nameof(sizeOfGroup));
+            ThrowIf.NotPositive(variablesCount, nameof(variablesCount));
+
             _pollinators = new Pollinator[sizeOfGroup];
             for (var i = 0; i < sizeOfGroup; i++)
             {
@@ -26,7 +29,7 @@ namespace LevyFlight.Entities
 
         public void Replace(Pollinator target, Pollinator source)
         {
-            ExceptionHelper.ThrowExceptionIfNotEqual(target.Size, source.Size);
+            ThrowIf.NotEqual(target.Size, source.Size);
 
             _pollinators[Array.IndexOf(_pollinators, target)] = source;
         }

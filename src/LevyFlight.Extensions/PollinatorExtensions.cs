@@ -39,9 +39,7 @@ namespace LevyFlight.Extensions
 
         public static string ToArrayRepresentation(this Pollinator pollinator)
         {
-            return pollinator.Aggregate(string.Empty, (s, d) => s + "; " + d.ToString("F5"))
-                .Trim(';')
-                .Trim();
+            return string.Join(";", pollinator);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace LevyFlight.Startup
             var result = hub.FindExtremeAsync(arguments.ToFunctionStrategy(), arguments.VariablesCount, 
                 arguments.ToModifiedAlgorithmSettings()).Result;
 
-            Console.WriteLine($"Result is {result}");
+            Console.WriteLine($"Result is {string.Join(",", result)}");
         }
     }
 }

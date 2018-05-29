@@ -9,7 +9,7 @@ namespace LevyFlight.Domain.RuleArguments
 
         public LocalPollinationRuleArgument(Pollinator randomPollinator)
         {
-            ExceptionHelper.ThrowExceptionIfNull(randomPollinator, nameof(randomPollinator));
+            ThrowIf.Null(randomPollinator, nameof(randomPollinator));
 
             RandomPollinator = randomPollinator;
         }

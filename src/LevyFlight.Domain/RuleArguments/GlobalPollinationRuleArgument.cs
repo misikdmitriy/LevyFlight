@@ -10,8 +10,8 @@ namespace LevyFlight.Domain.RuleArguments
 
         public GlobalPollinationRuleArgument(Pollinator bestPollinator, Pollinator worstPollinator)
         {
-            ExceptionHelper.ThrowExceptionIfNull(bestPollinator, nameof(bestPollinator));
-            ExceptionHelper.ThrowExceptionIfNull(worstPollinator, nameof(worstPollinator));
+            ThrowIf.Null(bestPollinator, nameof(bestPollinator));
+            ThrowIf.Null(worstPollinator, nameof(worstPollinator));
 
             BestPollinator = bestPollinator;
             WorstPollinator = worstPollinator;

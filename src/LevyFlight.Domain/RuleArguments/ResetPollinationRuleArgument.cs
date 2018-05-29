@@ -1,4 +1,5 @@
-﻿using LevyFlight.Entities;
+﻿using LevyFlight.Common.Check;
+using LevyFlight.Entities;
 
 namespace LevyFlight.Domain.RuleArguments
 {
@@ -9,6 +10,9 @@ namespace LevyFlight.Domain.RuleArguments
 
         public ResetPollinationRuleArgument(PollinatorsGroup group, Pollinator newPollinator)
         {
+            ThrowIf.Null(group, nameof(group));
+            ThrowIf.Null(newPollinator, nameof(newPollinator));
+
             Group = group;
             NewPollinator = newPollinator;
         }

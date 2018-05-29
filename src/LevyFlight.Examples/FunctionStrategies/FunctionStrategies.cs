@@ -69,9 +69,9 @@ namespace LevyFlight.Examples.FunctionStrategies
 
             for (var i = 0; i < arguments.Length - 1; i++)
             {
-                sum += (arguments[i] - 1) * (arguments[i] - 1) +
+                sum += (1 - arguments[i]) * (1 - arguments[i]) +
                        100 * (arguments[i + 1] - arguments[i] * arguments[i]) *
-                       (arguments[i + 1] - arguments[i] * arguments[i]);
+                             (arguments[i + 1] - arguments[i] * arguments[i]);
             }
 
             return sum;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using LevyFlight.Domain.Factories;
 using LevyFlight.Extensions;
@@ -15,6 +16,16 @@ namespace LevyFlight.Business
             var resultPollinator = await algorithmPerformer.PolinateAsync();
 
             return resultPollinator.CountFunction(function);
+        }
+
+        public async Task<double[]> FindRootAsync(Func<double[], double> function, int variablesCount,
+            ModifiedAlgorithmSettingsDto algorithmSettings)
+        {
+            var algorithmPerformer = new AlgorithmCreator().Create(function, variablesCount,
+                algorithmSettings.ToModifiedAlgorithmSettings());
+            var resultPollinator = await algorithmPerformer.PolinateAsync();
+
+            return resultPollinator.ToArray();
         }
     }
 }
