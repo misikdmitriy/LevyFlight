@@ -14,7 +14,7 @@ namespace LevyFlight.Startup
 
         private static void Main(CommandLineArguments arguments)
         {
-            var hub = new AlgoHub();
+            var hub = new AlgorithmFacade();
             var result = hub.FindExtremeAsync(arguments.ToFunctionStrategy(), arguments.VariablesCount, 
                 arguments.ToModifiedAlgorithmSettings()).Result;
 

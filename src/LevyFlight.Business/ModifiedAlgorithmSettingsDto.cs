@@ -1,4 +1,4 @@
-﻿using LevyFlight.Domain.Modified.Entities;
+﻿using LevyFlight.Domain.Entities;
 
 namespace LevyFlight.Business
 {
@@ -22,9 +22,9 @@ namespace LevyFlight.Business
             PReset = pReset;
         }
 
-        internal ModifiedAlgorithmSettings ToModifiedAlgorithmSettings()
+        internal AlgorithmSettings ToModifiedAlgorithmSettings()
         {
-            return new ModifiedAlgorithmSettings(GroupsCount, IsMin, MaxGeneration, P, PollinatorsCount, PReset);
+            return new AlgorithmSettings(GroupsCount, IsMin, MaxGeneration, P, PollinatorsCount, PReset);
         }
     }
 }

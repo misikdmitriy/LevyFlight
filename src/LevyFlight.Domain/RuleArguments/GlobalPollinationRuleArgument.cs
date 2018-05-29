@@ -1,7 +1,7 @@
 ﻿using LevyFlight.Common.Check;
 using LevyFlight.Entities;
 
-namespace LevyFlight.Domain.Modified.RuleArguments
+namespace LevyFlight.Domain.RuleArguments
 {
     internal sealed class GlobalPollinationRuleArgument
     {

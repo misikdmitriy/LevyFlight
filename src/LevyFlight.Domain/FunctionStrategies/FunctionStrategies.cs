@@ -3,7 +3,7 @@ using System.Linq;
 using System.Numerics;
 using LevyFlight.Common.Misc;
 
-namespace LevyFlight.Domain.Modified.FunctionStrategies
+namespace LevyFlight.Domain.FunctionStrategies
 {
     internal static class FunctionStrategies
     {

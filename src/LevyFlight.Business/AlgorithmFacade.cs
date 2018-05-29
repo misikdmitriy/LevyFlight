@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using LevyFlight.Domain.Factories;
 using LevyFlight.Extensions;
 
 namespace LevyFlight.Business
 {
-    using AlgorithmCreator = Domain.Modified.Factories.AlgorithmCreator;
-
-    public class AlgoHub
+    public class AlgorithmFacade
     {
         public async Task<double> FindExtremeAsync(Func<double[], double> function, int variablesCount,
             ModifiedAlgorithmSettingsDto algorithmSettings)

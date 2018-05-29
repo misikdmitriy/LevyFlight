@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
 using LevyFlight.Common.Misc;
-using LevyFlight.Domain.Modified.RuleArguments;
+using LevyFlight.Domain.RuleArguments;
 using LevyFlight.Entities;
 using LevyFlight.Extensions;
 using LevyFlight.Logging.Contracts;
 
-namespace LevyFlight.Domain.Modified.Rules
+namespace LevyFlight.Domain.Rules
 {
     internal sealed class LocalPollinationRule : IRule<LocalPollinationRuleArgument>
     {

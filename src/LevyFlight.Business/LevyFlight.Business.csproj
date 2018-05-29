@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LevyFlight.Domain.Modified\LevyFlight.Domain.Modified.csproj" />
+    <ProjectReference Include="..\LevyFlight.Domain\LevyFlight.Domain.csproj" />
   </ItemGroup>
 
 </Project>

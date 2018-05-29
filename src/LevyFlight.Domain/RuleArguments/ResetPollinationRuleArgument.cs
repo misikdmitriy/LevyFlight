@@ -1,6 +1,6 @@
 ﻿using LevyFlight.Entities;
 
-namespace LevyFlight.Domain.Modified.RuleArguments
+namespace LevyFlight.Domain.RuleArguments
 {
     public class ResetPollinationRuleArgument
     {
