@@ -1,45 +1,27 @@
 ﻿using System;
-using System.Linq;
 using LevyFlight.Entities;
+using LevyFlight.Entities.Visitors;
 
 namespace LevyFlight.Extensions
 {
     public static class PollinatorExtensions
     {
+        private static readonly ToStringPollinatorVisitor ToStringPollinatorVisitor = new ToStringPollinatorVisitor();
+        private static readonly RootCheckerPollinatorVisitor RootCheckerPollinatorVisitor = new RootCheckerPollinatorVisitor();
+
         public static double CountFunction(this Pollinator pollinator, Func<double[], double> functionStrategy)
         {
-            return functionStrategy(pollinator.ToArray());
+            return pollinator.Accept(new CountFunctionPollinatorVisitor(functionStrategy));
         }
 
         public static bool CheckWhetherValuesCorrect(this Pollinator pollinator)
         {
-            foreach (var element in pollinator)
-            {
-                if (double.IsNaN(element))
-                {
-                    return false;
-                }
-
-                if (double.IsInfinity(element))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return pollinator.Accept(RootCheckerPollinatorVisitor);
         }
 
-        public static void ThrowExceptionIfValuesIncorrect(this Pollinator pollinator)
+        public static string ToString(this Pollinator pollinator)
         {
-            if (!pollinator.CheckWhetherValuesCorrect())
-            {
-                throw new ArgumentException("Some values are NaN or +/- Infinity");
-            }
-        }
-
-        public static string ToArrayRepresentation(this Pollinator pollinator)
-        {
-            return string.Join(";", pollinator);
+            return pollinator.Accept(ToStringPollinatorVisitor);
         }
     }
 }

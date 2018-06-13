@@ -37,7 +37,7 @@ namespace LevyFlight.Domain.Rules
             {
                 if (!current.CheckWhetherValuesCorrect())
                 {
-                    _logger.Error($"Pollinator got NaN or +/- Infinity. Pollinator - {current.ToArrayRepresentation()}");
+                    _logger.Error($"Pollinator got NaN or +/- Infinity. Pollinator - {PollinatorExtensions.ToString(current)}");
                     return pollinator;
                 }
 
@@ -62,13 +62,13 @@ namespace LevyFlight.Domain.Rules
 
                 if (RandomGenerator.Random.NextDouble() < _pReset)
                 {
-                    _logger.Trace($"Before pollinator reset is {best.ToArrayRepresentation()}");
+                    _logger.Trace($"Before pollinator reset is {PollinatorExtensions.ToString(best)}");
 
                     var generated = _pollinatorUpdater.Update(best);
                     group.Replace(best, generated);
                     best = generated;
 
-                    _logger.Trace($"After pollinator reset is {best.ToArrayRepresentation()}");
+                    _logger.Trace($"After pollinator reset is {PollinatorExtensions.ToString(best)}");
                 }
 
                 return best;

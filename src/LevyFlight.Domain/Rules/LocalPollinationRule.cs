@@ -20,14 +20,14 @@ namespace LevyFlight.Domain.Rules
         {
             var randomPollinator = ruleArgument.RandomPollinator;
 
-            _logger.Trace($"Random pollinator is {randomPollinator.ToArrayRepresentation()}");
-            _logger.Trace($"Current pollinator is {pollinator.ToArrayRepresentation()}");
+            _logger.Trace($"Random pollinator is {PollinatorExtensions.ToString(randomPollinator)}");
+            _logger.Trace($"Current pollinator is {PollinatorExtensions.ToString(pollinator)}");
 
             return Task.Run(() =>
             {
                 var rand = RandomGenerator.Random.NextDouble();
 
-                _logger.Trace($"Local result pollinator is {randomPollinator.ToArrayRepresentation()}");
+                _logger.Trace($"Local result pollinator is {PollinatorExtensions.ToString(randomPollinator)}");
 
                 return pollinator + rand * randomPollinator - pollinator;
             });

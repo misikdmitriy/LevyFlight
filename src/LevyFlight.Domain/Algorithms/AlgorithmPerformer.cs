@@ -63,7 +63,7 @@ namespace LevyFlight.Domain.Algorithms
 
                 bestSolution = _groups.GetBestSolution(_functionStrategy, _algorithmSettings.IsMin);
 
-                _logger.Debug($"Best pollinator after step {t} is {bestSolution.ToArrayRepresentation()}");
+                _logger.Debug($"Best pollinator after step {t} is {PollinatorExtensions.ToString(bestSolution)}");
                 _logger.Debug($"Best solution after step {t} is {bestSolution.CountFunction(_functionStrategy)}");
             }
 

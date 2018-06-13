@@ -20,9 +20,9 @@ namespace LevyFlight.Domain.Rules
             var bestPollinator = ruleArgument.BestPollinator;
             var worstPollinator = ruleArgument.WorstPollinator;
 
-            _logger.Trace($"Best pollinator is {bestPollinator.ToArrayRepresentation()}");
-            _logger.Trace($"Worst pollinator is {worstPollinator.ToArrayRepresentation()}");
-            _logger.Trace($"Current pollinator is {pollinator.ToArrayRepresentation()}");
+            _logger.Trace($"Best pollinator is {PollinatorExtensions.ToString(bestPollinator)}");
+            _logger.Trace($"Worst pollinator is {PollinatorExtensions.ToString(worstPollinator)}");
+            _logger.Trace($"Current pollinator is {PollinatorExtensions.ToString(pollinator)}");
 
             return Task.Run(() =>
             {
@@ -36,7 +36,7 @@ namespace LevyFlight.Domain.Rules
 
                 var result = pollinator + rand * (bestPollinator - pollinator);
 
-                _logger.Trace($"Global result pollinator is {result.ToArrayRepresentation()}");
+                _logger.Trace($"Global result pollinator is {PollinatorExtensions.ToString(result)}");
 
                 return result;
             });

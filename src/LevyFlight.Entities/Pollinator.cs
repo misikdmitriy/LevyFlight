@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LevyFlight.Common.Check;
+using LevyFlight.Entities.Contracts;
 
 namespace LevyFlight.Entities
 {
@@ -111,6 +112,15 @@ namespace LevyFlight.Entities
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        #endregion
+
+        #region Visitor implementation
+
+        public T Accept<T>(IPollinatorVisitor<T> visitor)
+        {
+            return visitor.Visit(this);
         }
 
         #endregion
