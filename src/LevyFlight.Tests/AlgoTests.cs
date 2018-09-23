@@ -43,8 +43,8 @@ namespace LevyFlight.Tests
         }
 
         [Theory]
-        [InlineData(30, 30, 0.0, 1e-5)]
-        [InlineData(30, 40, 0.0, 1e-8)]
+        [InlineData(30, 30, 0.0, 1e-4)]
+        [InlineData(30, 40, 0.0, 1e-7)]
         public void RastriginFunction(int variablesCount, int steps, double expected, double eps)
         {
             AssertFuncion(FunctionStrategies.RastriginFunction, variablesCount, steps, expected, eps);
