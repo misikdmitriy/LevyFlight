@@ -5,11 +5,10 @@ using LevyFlight.Business;
 using LevyFlight.Examples.FunctionStrategies;
 using Shouldly;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace LevyFlight.Tests
 {
-    public class AlgoTests : IDisposable
+    public class AlgoTests
     {
         private const int RepeatTest = 500;
         private const double MaxDeviation = 1e-4;
@@ -24,18 +23,6 @@ namespace LevyFlight.Tests
                 Delta = delta;
                 Step = step;
             }
-        }
-
-        private readonly ITestOutputHelper _output;
-
-        public AlgoTests(ITestOutputHelper output)
-        {
-            _output = output;
-        }
-
-        public void Dispose()
-        {
-            _output.WriteLine("Test finished");
         }
 
         [Theory]
