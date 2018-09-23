@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Accord.Math" Version="3.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\LevyFlight.Common\LevyFlight.Common.csproj" />
     <ProjectReference Include="..\LevyFlight.Entities\LevyFlight.Entities.csproj" />
     <ProjectReference Include="..\LevyFlight.Extensions\LevyFlight.Extensions.csproj" />

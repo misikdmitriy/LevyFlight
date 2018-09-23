@@ -15,6 +15,8 @@ namespace LevyFlight.Domain.Algorithms
 {
     internal sealed class AlgorithmPerformer : IAlgorithmPerformer
     {
+        public event OnStepFinished StepFinished;
+
         private readonly PollinatorsGroup[] _groups;
         private readonly AlgorithmSettings _algorithmSettings;
         private readonly Func<double[], double> _functionStrategy;
@@ -56,12 +58,14 @@ namespace LevyFlight.Domain.Algorithms
             var t = 0;
             var bestSolution = _groups.GetBestSolution(_functionStrategy, _algorithmSettings.IsMin);
 
-            while (t++ < _algorithmSettings.MaxGeneration)
+            while (++t <= _algorithmSettings.MaxGeneration)
             {
                 _logger.Debug($"Start step {t}");
                 await PolinateOnceAsync();
 
                 bestSolution = _groups.GetBestSolution(_functionStrategy, _algorithmSettings.IsMin);
+
+                OnStepFinished(new StepFinishedArgs(bestSolution, t));
 
                 _logger.Debug($"Best pollinator after step {t} is {PollinatorExtensions.ToString(bestSolution)}");
                 _logger.Debug($"Best solution after step {t} is {bestSolution.CountFunction(_functionStrategy)}");
@@ -111,6 +115,11 @@ namespace LevyFlight.Domain.Algorithms
             var ruleArgument = new ResetPollinationRuleArgument(group, newPollinator);
 
             return _resetPollinationRule.ApplyRuleAsync(currentPollinator, ruleArgument);
+        }
+
+        private void OnStepFinished(StepFinishedArgs args)
+        {
+            StepFinished?.Invoke(this, args);
         }
     }
 }
