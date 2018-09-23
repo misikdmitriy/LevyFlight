@@ -60,7 +60,7 @@ namespace LevyFlight.Tests
 
         [Theory]
         [InlineData(30, 20, 0.0, 1e-4)]
-        [InlineData(30, 30, 0.0, 1e-8)]
+        [InlineData(30, 30, 0.0, 1e-7)]
         public void SphereFunction(int variablesCount, int steps, double expected, double eps)
         {
             AssertFuncion(FunctionStrategies.SphereFunction, variablesCount, steps, expected, eps);
