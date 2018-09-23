@@ -5,10 +5,11 @@ using LevyFlight.Business;
 using LevyFlight.Examples.FunctionStrategies;
 using Shouldly;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace LevyFlight.Tests
 {
-    public class AlgoTests
+    public class AlgoTests : IDisposable
     {
         private const int RepeatTest = 500;
         private const double MaxDeviation = 1e-4;
@@ -25,8 +26,19 @@ namespace LevyFlight.Tests
             }
         }
 
+        private readonly ITestOutputHelper _output;
+
+        public AlgoTests(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
+        public void Dispose()
+        {
+            _output.WriteLine("Test finished");
+        }
+
         [Theory]
-        [InlineData(30, 10, 0.0, 1e-2)]
         [InlineData(30, 20, 0.0, 1e-5)]
         [InlineData(30, 30, 0.0, 1e-8)]
         public void GriewankFunction(int variablesCount, int steps, double expected, double eps)
@@ -35,7 +47,6 @@ namespace LevyFlight.Tests
         }
 
         [Theory]
-        [InlineData(30, 20, 0.0, 1e-2)]
         [InlineData(30, 30, 0.0, 1e-4)]
         [InlineData(30, 40, 0.0, 1e-5)]
         [InlineData(30, 50, 0.0, 1e-7)]
@@ -45,7 +56,6 @@ namespace LevyFlight.Tests
         }
 
         [Theory]
-        [InlineData(30, 20, 0.0, 1e-2)]
         [InlineData(30, 30, 0.0, 1e-5)]
         [InlineData(30, 40, 0.0, 1e-8)]
         public void RastriginFunction(int variablesCount, int steps, double expected, double eps)
