@@ -95,9 +95,8 @@ namespace LevyFlight.Domain.Algorithms
         private Task<Pollinator> GlobalPollinationAsync(PollinatorsGroup group, Pollinator pollinator)
         {
             var bestPollinator = group.GetBestSolution(_functionStrategy, _algorithmSettings.IsMin);
-            var worstPollinator = group.GetBestSolution(_functionStrategy, !_algorithmSettings.IsMin);
 
-            var ruleArgument = new GlobalPollinationRuleArgument(bestPollinator, worstPollinator);
+            var ruleArgument = new GlobalPollinationRuleArgument(bestPollinator);
             return _globalPollinationRule.ApplyRuleAsync(pollinator, ruleArgument);
         }
 

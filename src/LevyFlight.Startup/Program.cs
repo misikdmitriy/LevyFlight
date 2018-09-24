@@ -1,7 +1,7 @@
 ﻿using System;
 using CommandLine;
-using LevyFlight.Business;
 using LevyFlight.Domain.Contracts;
+using LevyFlight.TestHelper;
 
 namespace LevyFlight.Startup
 {

@@ -15,9 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LevyFlight.Business\LevyFlight.Business.csproj" />
     <ProjectReference Include="..\LevyFlight.Entities\LevyFlight.Entities.csproj" />
     <ProjectReference Include="..\LevyFlight.Examples\LevyFlight.Examples.csproj" />
+    <ProjectReference Include="..\LevyFlight.TestHelper\LevyFlight.TestHelper.csproj" />
   </ItemGroup>
 
 </Project>

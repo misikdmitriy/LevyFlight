@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using CommandLine;
-using LevyFlight.Business;
+using LevyFlight.Domain.Entities;
 using LevyFlight.Examples.FunctionStrategies;
 
 namespace LevyFlight.Startup
@@ -32,9 +32,9 @@ namespace LevyFlight.Startup
         [Option('f', "function", Required = false, HelpText = "Function name", Default = "Griewank")]
         public string FunctionName { get; set; }
 
-        internal ModifiedAlgorithmSettingsDto ToModifiedAlgorithmSettings()
+        internal AlgorithmSettings ToModifiedAlgorithmSettings()
         {
-            return new ModifiedAlgorithmSettingsDto(GroupsCount, IsMin, MaxGeneration, 
+            return new AlgorithmSettings(GroupsCount, IsMin, MaxGeneration, 
                 P, PollinatorsCount, PReset);
         }
 

@@ -2,23 +2,24 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LevyFlight.Domain.Contracts;
+using LevyFlight.Domain.Entities;
 using LevyFlight.Domain.Factories;
 using LevyFlight.Extensions;
 
-namespace LevyFlight.Business
+namespace LevyFlight.TestHelper
 {
-    public class AlgorithmFacade
+    internal class AlgorithmFacade
     {
         private readonly IAlgorithmPerformer _algorithmPerformer;
         private readonly Func<double[], double> _function;
 
         public AlgorithmFacade(Func<double[], double> function, int variablesCount,
-            ModifiedAlgorithmSettingsDto algorithmSettings)
+            AlgorithmSettings algorithmSettings)
         {
             _function = function;
 
             _algorithmPerformer = new AlgorithmCreator().Create(function, variablesCount,
-                algorithmSettings.ToModifiedAlgorithmSettings());
+                algorithmSettings);
         }
 
         public event OnStepFinished StepFinished
