@@ -11,7 +11,7 @@ namespace LevyFlight.Tests
     public class AlgoTests
     {
         private const int RepeatTest = 500;
-        private const double MaxDeviation = 1e-4;
+        private const double MinDeviation = 1e-4;
 
         private class FailResult
         {
@@ -34,7 +34,7 @@ namespace LevyFlight.Tests
         }
 
         [Theory]
-        [InlineData(30, 30, 0.0, 1e-4)]
+        [InlineData(30, 30, 0.0, 1e-3)]
         [InlineData(30, 40, 0.0, 1e-5)]
         [InlineData(30, 50, 0.0, 1e-7)]
         public void AckleyFunction(int variablesCount, int steps, double expected, double eps)
@@ -106,7 +106,7 @@ namespace LevyFlight.Tests
                                     $"{nameof(eps)} = {eps}");
             }
 
-            (all.Average() / eps).ShouldBeGreaterThan(MaxDeviation, 
+            (all.Average() / eps).ShouldBeGreaterThan(MinDeviation, 
                 "Assertion EPS is too big. Decrese EPS");
         }
 
