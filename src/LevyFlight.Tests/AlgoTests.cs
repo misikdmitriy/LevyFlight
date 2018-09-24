@@ -11,7 +11,7 @@ namespace LevyFlight.Tests
     public class AlgoTests
     {
         private const int RepeatTest = 500;
-        private const double MinDeviation = 1e-4;
+        private const double MinDeviation = 1e-5;
 
         private class FailResult
         {
