@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using LevyFlight.Common.Misc;
 using LevyFlight.Domain.RuleArguments;
 using LevyFlight.Entities;
 using LevyFlight.Extensions;
@@ -58,10 +59,8 @@ namespace LevyFlight.Domain.Rules
 				{
 					best = pollinator;
 				}
-
-				var random = new Random((int)DateTime.Now.Ticks);
-
-				if (random.NextDouble() < _pReset)
+                
+				if (RandomGenerator.Random.NextDouble() < _pReset)
 				{
 					_logger.Trace($"Before pollinator reset is {PollinatorExtensions.ToString(best)}");
 

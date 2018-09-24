@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Accord.Math;
+using LevyFlight.Common.Misc;
 using LevyFlight.Extensions;
 
 namespace LevyFlight.Domain.FunctionStrategies
@@ -33,8 +34,7 @@ namespace LevyFlight.Domain.FunctionStrategies
 
 		public static Func<double, double> MantegnaFunction = argument =>
 		{
-			var random = new Random((int)DateTime.Now.Ticks);
-
+		    var random = RandomGenerator.Random;
 			var sigmaX = Gamma.Function(argument + 1) * Math.Sin(Math.PI * argument / 2);
 			var divider = Gamma.Function(argument / 2) * argument * Math.Pow(2.0, (argument - 1) / 2);
 			sigmaX /= divider;

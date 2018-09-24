@@ -1,5 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using LevyFlight.Common.Misc;
 using LevyFlight.Domain.RuleArguments;
 using LevyFlight.Entities;
 using LevyFlight.Extensions;
@@ -25,8 +25,7 @@ namespace LevyFlight.Domain.Rules
 
 			return Task.Run(() =>
 			{
-				var random = new Random((int)DateTime.Now.Ticks);
-				var rand = random.NextDouble();
+				var rand = RandomGenerator.Random.NextDouble();
 
 				var result = pollinator + rand * randomPollinator - pollinator;
 

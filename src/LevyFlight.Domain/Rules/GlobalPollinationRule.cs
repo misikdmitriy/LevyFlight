@@ -31,7 +31,7 @@ namespace LevyFlight.Domain.Rules
 
 				var rand = FunctionStrategies.FunctionStrategies.MantegnaFunction(lambda);
 
-				var result = pollinator + rand * (bestPollinator - pollinator);
+				var result = pollinator + rand * (pollinator - bestPollinator);
 				
 				_logger.Trace($"Global result pollinator is {PollinatorExtensions.ToString(result)}");
 

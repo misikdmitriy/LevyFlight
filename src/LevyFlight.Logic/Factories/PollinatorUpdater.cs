@@ -1,5 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using LevyFlight.Common.Misc;
 using LevyFlight.Entities;
 using LevyFlight.Logic.Factories.Contracts;
 
@@ -9,12 +9,10 @@ namespace LevyFlight.Logic.Factories
 	{
 		public Pollinator Update(Pollinator pollinator)
 		{
-			var random = new Random((int) DateTime.Now.Ticks);
-
 			var values = pollinator.ToArray();
 
-			var i = random.Next() % pollinator.Size;
-			values[i] = random.NextDouble();
+			var i = RandomGenerator.Random.Next() % pollinator.Size;
+			values[i] = RandomGenerator.Random.NextDouble();
 
 			return new Pollinator(values);
 		}
