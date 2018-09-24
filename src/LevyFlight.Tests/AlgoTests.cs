@@ -12,7 +12,7 @@ namespace LevyFlight.Tests
 	public class AlgoTests
 	{
 		private const int RepeatTest = 500;
-		private const double MinDeviation = 1e-3;
+		private const double MinDeviation = 1e-4;
 
 		private class FailResult
 		{
@@ -64,7 +64,7 @@ namespace LevyFlight.Tests
 		[Theory]
 		[InlineData(30, 20, 0.0, 1e-4)]
 		[InlineData(30, 30, 0.0, 1e-6)]
-		[InlineData(30, 40, 0.0, 1e-9)]
+		[InlineData(30, 40, 0.0, 1e-10)]
 		public void SphereFunction(int variablesCount, int steps, double expected, double eps)
 		{
 			AssertFuncion(FunctionStrategies.SphereFunction, variablesCount, steps, expected, eps);
