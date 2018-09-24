@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LevyFlight.Common.Misc;
 using LevyFlight.Domain.Contracts;
 using LevyFlight.Domain.Entities;
 using LevyFlight.Domain.RuleArguments;
@@ -13,112 +13,122 @@ using LevyFlight.Logic.Factories.Contracts;
 
 namespace LevyFlight.Domain.Algorithms
 {
-    internal sealed class AlgorithmPerformer : IAlgorithmPerformer
-    {
-        public event OnStepFinished StepFinished;
+	internal sealed class AlgorithmPerformer : IAlgorithmPerformer
+	{
+		public event OnStepFinished StepFinished;
 
-        private readonly PollinatorsGroup[] _groups;
-        private readonly AlgorithmSettings _algorithmSettings;
-        private readonly Func<double[], double> _functionStrategy;
+		private readonly PollinatorsGroup[] _groups;
+		private readonly AlgorithmSettings _algorithmSettings;
+		private readonly Func<double[], double> _functionStrategy;
 
-        private readonly ILogger _logger;
+		private readonly ILogger _logger;
 
-        private readonly IRule<GlobalPollinationRuleArgument> _globalPollinationRule;
-        private readonly IRule<LocalPollinationRuleArgument> _localPollinationRule;
-        private readonly IRule<ResetPollinationRuleArgument> _resetPollinationRule;
+		private readonly IRule<GlobalPollinationRuleArgument> _globalPollinationRule;
+		private readonly IRule<LocalPollinationRuleArgument> _localPollinationRule;
+		private readonly IRule<ResetPollinationRuleArgument> _resetPollinationRule;
 
-        public AlgorithmPerformer(AlgorithmSettings algorithmSettings,
-            int variablesCount,
-            Func<double[], double> functionStrategy,
-            IPollinatorGroupCreator pollinatorGroupCreator,
-            IRule<GlobalPollinationRuleArgument> globalPollinationRule,
-            IRule<LocalPollinationRuleArgument> localPollinationRule, 
-            IRule<ResetPollinationRuleArgument> resetPollinationRule,
-            ILogger logger)
-        {
-            _algorithmSettings = algorithmSettings;
+		public AlgorithmPerformer(AlgorithmSettings algorithmSettings,
+			int variablesCount,
+			Func<double[], double> functionStrategy,
+			IPollinatorGroupCreator pollinatorGroupCreator,
+			IRule<GlobalPollinationRuleArgument> globalPollinationRule,
+			IRule<LocalPollinationRuleArgument> localPollinationRule,
+			IRule<ResetPollinationRuleArgument> resetPollinationRule,
+			ILogger logger)
+		{
+			_algorithmSettings = algorithmSettings;
 
-            _groups = new PollinatorsGroup[algorithmSettings.GroupsCount];
+			_groups = new PollinatorsGroup[algorithmSettings.GroupsCount];
 
-            for (var i = 0; i < algorithmSettings.GroupsCount; i++)
-            {
-                _groups[i] = pollinatorGroupCreator.Create(algorithmSettings.PollinatorsCount, variablesCount);
-            }
+			for (var i = 0; i < algorithmSettings.GroupsCount; i++)
+			{
+				_groups[i] = pollinatorGroupCreator.Create(algorithmSettings.PollinatorsCount, variablesCount);
+			}
 
-            _functionStrategy = functionStrategy;
-            _logger = logger;
+			_functionStrategy = functionStrategy;
+			_logger = logger;
 
-            _globalPollinationRule = globalPollinationRule;
-            _localPollinationRule = localPollinationRule;
-            _resetPollinationRule = resetPollinationRule;
-        }
+			_globalPollinationRule = globalPollinationRule;
+			_localPollinationRule = localPollinationRule;
+			_resetPollinationRule = resetPollinationRule;
+		}
 
-        public async Task<Pollinator> PolinateAsync()
-        {
-            var t = 0;
-            var bestSolution = _groups.GetBestSolution(_functionStrategy, _algorithmSettings.IsMin);
+		public async Task<Pollinator> PolinateAsync()
+		{
+			var t = 0;
+			var bestSolution = _groups.GetBestSolution(_functionStrategy, _algorithmSettings.IsMin);
 
-            while (++t <= _algorithmSettings.MaxGeneration)
-            {
-                _logger.Debug($"Start step {t}");
-                await PolinateOnceAsync();
+			while (++t <= _algorithmSettings.MaxGeneration)
+			{
+				_logger.Debug($"Start step {t}");
+				await PolinateOnceAsync();
 
-                bestSolution = _groups.GetBestSolution(_functionStrategy, _algorithmSettings.IsMin);
+				bestSolution = _groups.GetBestSolution(_functionStrategy, _algorithmSettings.IsMin);
 
-                OnStepFinished(new StepFinishedArgs(bestSolution, t));
+				OnStepFinished(new StepFinishedArgs(bestSolution, t));
 
-                _logger.Debug($"Best pollinator after step {t} is {PollinatorExtensions.ToString(bestSolution)}");
-                _logger.Debug($"Best solution after step {t} is {bestSolution.CountFunction(_functionStrategy)}");
-            }
+				_logger.Debug($"Best pollinator after step {t} is {PollinatorExtensions.ToString(bestSolution)}");
+				_logger.Debug($"Best solution after step {t} is {bestSolution.CountFunction(_functionStrategy)}");
+			}
 
-            return bestSolution;
-        }
+			return bestSolution;
+		}
 
-        public Task PolinateOnceAsync()
-        {
-            return Task.Run(async () =>
-            {
-                foreach (var group in _groups)
-                {
-                    foreach (var pollinator in group)
-                    {
-                        var nextPollinator = RandomGenerator.Random.NextDouble() < _algorithmSettings.P
-                            ? await GlobalPollinationAsync(group, pollinator)
-                            : await LocalPollinationAsync(group, pollinator);
+		public Task PolinateOnceAsync()
+		{
+			var result = new List<Task>();
 
-                        await PostOperationActionAsync(group, pollinator, nextPollinator);
-                    }
-                }
-            });
-        }
+			foreach (var group in _groups)
+			{
+				var task = Task.Run(async () =>
+				{
+					var random = new Random((int)DateTime.Now.Ticks);
 
-        private Task<Pollinator> GlobalPollinationAsync(PollinatorsGroup group, Pollinator pollinator)
-        {
-            var bestPollinator = group.GetBestSolution(_functionStrategy, _algorithmSettings.IsMin);
+					foreach (var pollinator in group)
+					{
+						var nextPollinator = random.NextDouble() < _algorithmSettings.P
+							? await GlobalPollinationAsync(group, pollinator)
+							: await LocalPollinationAsync(group, pollinator);
 
-            var ruleArgument = new GlobalPollinationRuleArgument(bestPollinator);
-            return _globalPollinationRule.ApplyRuleAsync(pollinator, ruleArgument);
-        }
+						await PostOperationActionAsync(group, pollinator, nextPollinator);
+					}
+				});
 
-        private Task<Pollinator> LocalPollinationAsync(PollinatorsGroup group, Pollinator pollinator)
-        {
-            var randomPollinator = group.ElementAt(RandomGenerator.Random.Next() % group.Count());
+				result.Add(task);
+			}
 
-            var ruleArgument = new LocalPollinationRuleArgument(randomPollinator);
-            return _localPollinationRule.ApplyRuleAsync(pollinator, ruleArgument);
-        }
+			return Task.WhenAll(result);
+		}
 
-        private Task PostOperationActionAsync(PollinatorsGroup group, Pollinator currentPollinator, 
-            Pollinator newPollinator)
-        {
-            var ruleArgument = new ResetPollinationRuleArgument(group, newPollinator);
+		private Task<Pollinator> GlobalPollinationAsync(PollinatorsGroup group, Pollinator pollinator)
+		{
+			var bestPollinator = group.GetBestSolution(_functionStrategy, _algorithmSettings.IsMin);
 
-            return _resetPollinationRule.ApplyRuleAsync(currentPollinator, ruleArgument);
-        }
+			var ruleArgument = new GlobalPollinationRuleArgument(bestPollinator);
+			return _globalPollinationRule.ApplyRuleAsync(pollinator, ruleArgument);
+		}
 
-        private void OnStepFinished(StepFinishedArgs args)
-        {
-            StepFinished?.Invoke(this, args);
-        }
-    }
+		private Task<Pollinator> LocalPollinationAsync(PollinatorsGroup group, Pollinator pollinator)
+		{
+			var random = new Random((int)DateTime.Now.Ticks);
+
+			var randomPollinator = group.ElementAt(random.Next() % group.Count());
+
+			var ruleArgument = new LocalPollinationRuleArgument(randomPollinator);
+			return _localPollinationRule.ApplyRuleAsync(pollinator, ruleArgument);
+		}
+
+		private Task PostOperationActionAsync(PollinatorsGroup group, Pollinator currentPollinator,
+			Pollinator newPollinator)
+		{
+			var ruleArgument = new ResetPollinationRuleArgument(group, newPollinator);
+
+			return _resetPollinationRule.ApplyRuleAsync(currentPollinator, ruleArgument);
+		}
+
+		private void OnStepFinished(StepFinishedArgs args)
+		{
+			StepFinished?.Invoke(this, args);
+		}
+	}
 }

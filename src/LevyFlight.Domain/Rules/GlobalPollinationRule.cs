@@ -32,7 +32,7 @@ namespace LevyFlight.Domain.Rules
 				var rand = FunctionStrategies.FunctionStrategies.MantegnaFunction(lambda);
 
 				var result = pollinator + rand * (bestPollinator - pollinator);
-
+				
 				_logger.Trace($"Global result pollinator is {PollinatorExtensions.ToString(result)}");
 
 				return result;

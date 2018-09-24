@@ -1,20 +1,22 @@
-﻿using System.Linq;
-using LevyFlight.Common.Misc;
+﻿using System;
+using System.Linq;
 using LevyFlight.Entities;
 using LevyFlight.Logic.Factories.Contracts;
 
 namespace LevyFlight.Logic.Factories
 {
-    public class PollinatorUpdater : IPollinatorUpdater
-    {
-        public Pollinator Update(Pollinator pollinator)
-        {
-            var values = pollinator.ToArray();
+	public class PollinatorUpdater : IPollinatorUpdater
+	{
+		public Pollinator Update(Pollinator pollinator)
+		{
+			var random = new Random((int) DateTime.Now.Ticks);
 
-            var i = RandomGenerator.Random.Next() % pollinator.Size;
-            values[i] = RandomGenerator.Random.NextDouble();
+			var values = pollinator.ToArray();
 
-            return new Pollinator(values);
-        }
-    }
+			var i = random.Next() % pollinator.Size;
+			values[i] = random.NextDouble();
+
+			return new Pollinator(values);
+		}
+	}
 }
