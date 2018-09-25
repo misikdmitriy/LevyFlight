@@ -12,7 +12,7 @@ namespace LevyFlight.Tests
 	public class AlgoTests
 	{
 		private const int RepeatTest = 500;
-		private const double MinDeviation = 1e-4;
+		private const double MinDeviation = 1e-5;
 
 		private class FailResult
 		{
@@ -28,7 +28,7 @@ namespace LevyFlight.Tests
 
 		[Theory]
 		[InlineData(30, 20, 0.0, 1e-5)]
-		[InlineData(30, 30, 0.0, 1e-8)]
+		[InlineData(30, 30, 0.0, 1e-7)]
 		public void GriewankFunction(int variablesCount, int steps, double expected, double eps)
 		{
 			AssertFuncion(FunctionStrategies.GriewankFunction, variablesCount, steps, expected, eps);
@@ -38,16 +38,16 @@ namespace LevyFlight.Tests
 		[InlineData(30, 30, 0.0, 1e-3)]
 		[InlineData(30, 40, 0.0, 1e-5)]
 		[InlineData(30, 50, 0.0, 1e-6)]
-		[InlineData(30, 60, 0.0, 1e-8)]
+		[InlineData(30, 60, 0.0, 1e-7)]
 		public void AckleyFunction(int variablesCount, int steps, double expected, double eps)
 		{
 			AssertFuncion(FunctionStrategies.AckleyFunctionStrategy, variablesCount, steps, expected, eps);
 		}
 
 		[Theory]
-		[InlineData(30, 30, 0.0, 1e-4)]
-		[InlineData(30, 40, 0.0, 1e-6)]
-		[InlineData(30, 50, 0.0, 1e-8)]
+		[InlineData(30, 30, 0.0, 1e-3)]
+		[InlineData(30, 40, 0.0, 1e-5)]
+		[InlineData(30, 50, 0.0, 1e-9)]
 		public void RastriginFunction(int variablesCount, int steps, double expected, double eps)
 		{
 			AssertFuncion(FunctionStrategies.RastriginFunction, variablesCount, steps, expected, eps);
@@ -55,7 +55,7 @@ namespace LevyFlight.Tests
 
 		[Theory]
 		// ToDo: will be good to improve
-		[InlineData(30, 15, 0.0, 29)]
+		[InlineData(30, 20, 0.0, 29)]
 		public void RosenbrockFunction(int variablesCount, int steps, double expected, double eps)
 		{
 			AssertFuncion(FunctionStrategies.RosenbrockFunction, variablesCount, steps, expected, eps);
@@ -68,6 +68,14 @@ namespace LevyFlight.Tests
 		public void SphereFunction(int variablesCount, int steps, double expected, double eps)
 		{
 			AssertFuncion(FunctionStrategies.SphereFunction, variablesCount, steps, expected, eps);
+		}
+
+		[Theory]
+		// ToDo: will be good to improve
+		[InlineData(20, 0.0, 4.0)]
+		public void BileFunction(int steps, double expected, double eps)
+		{
+			AssertFuncion(FunctionStrategies.BileFunction, 2, steps, expected, eps);
 		}
 
 		private void AssertFuncion(Func<double[], double> func, 
