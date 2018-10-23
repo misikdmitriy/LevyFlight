@@ -46,7 +46,7 @@ namespace LevyFlight.Tests
 
 		[Theory]
 		[InlineData(30, 30, 0.0, 1e-3)]
-		[InlineData(30, 40, 0.0, 1e-5)]
+		[InlineData(30, 40, 0.0, 1e-6)]
 		[InlineData(30, 50, 0.0, 1e-9)]
 		public void RastriginFunction(int variablesCount, int steps, double expected, double eps)
 		{
@@ -76,6 +76,13 @@ namespace LevyFlight.Tests
 		public void BileFunction(int steps, double expected, double eps)
 		{
 			AssertFuncion(FunctionStrategies.BileFunction, 2, steps, expected, eps);
+		}
+
+		[Theory]
+		[InlineData(30, 90, 0.0, 1e-2)]
+		public void Z1Function(int variablesCount, int steps, double expected, double eps)
+		{
+			AssertFuncion(FunctionStrategies.Z1, variablesCount, steps, expected, eps);
 		}
 
 		private void AssertFuncion(Func<double[], double> func, 
@@ -124,7 +131,8 @@ namespace LevyFlight.Tests
 
 		private AlgorithmSettings Create(int steps)
 		{
-			return new AlgorithmSettings(5, true, steps, 0.85, 5, 0.01);
+			return new AlgorithmSettings(AlgorithmSettings.DefaultGroupsCount, true, steps, AlgorithmSettings.DefaultP, 
+				AlgorithmSettings.DefaultPollinatorsCount, AlgorithmSettings.DefaultPReset);
 		}
 	}
 }

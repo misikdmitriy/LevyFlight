@@ -4,8 +4,14 @@ namespace LevyFlight.Domain.Entities
 {
 	public class AlgorithmSettings
 	{
-		public static readonly AlgorithmSettings DefaultMin = new AlgorithmSettings(5, true, 50, 0.85, 5, 0.01);
-		public static readonly AlgorithmSettings DefaultMax = new AlgorithmSettings(5, false, 50, 0.85, 5, 0.01);
+		public const int DefaultGroupsCount = 2;
+		public const int DefaultPollinatorsCount = 25;
+		public const int DefaultMaxGeneration = 30;
+		public const double DefaultP = 0.91;
+		public const double DefaultPReset = 0.01;
+
+		public static readonly AlgorithmSettings DefaultMin = new AlgorithmSettings(DefaultGroupsCount, true, DefaultMaxGeneration, DefaultP, DefaultPollinatorsCount, DefaultPReset);
+		public static readonly AlgorithmSettings DefaultMax = new AlgorithmSettings(DefaultGroupsCount, false, DefaultMaxGeneration, DefaultP, DefaultPollinatorsCount, DefaultPReset);
 
 		public int GroupsCount { get; }
 		public bool IsMin { get; }

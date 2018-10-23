@@ -4,7 +4,7 @@ using LevyFlight.Common.Misc;
 
 namespace LevyFlight.Examples.FunctionStrategies
 {
-    public class MultifunctionStrategy
+    internal class MultifunctionStrategy
     {
         private readonly Func<double[], double>[] _functors;
         private readonly double[] _weights;
@@ -20,8 +20,11 @@ namespace LevyFlight.Examples.FunctionStrategies
 
             for (var i = 0; i < Count; i++)
             {
-                _weights[i] = random.NextDouble();
-            }
+	            while (Math.Abs(_weights[i]) <= 1e-5)
+	            {
+		            _weights[i] = random.NextDouble();
+				}
+			}
 
             var k = 1 / _weights.Sum();
 

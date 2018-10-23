@@ -8,22 +8,22 @@ namespace LevyFlight.Startup
 {
     public class CommandLineArguments
     {
-        [Option('g', "groups", Required = false, HelpText = "Groups count", Default = 5)]
+        [Option('g', "groups", Required = false, HelpText = "Groups count", Default = AlgorithmSettings.DefaultGroupsCount)]
         public int GroupsCount { get; set; }
 
         [Option('m', "ismin", Required = false, HelpText = "Is minimum", Default = false)]
         public bool IsMin { get; set; }
 
-        [Option('n', "generation", Required = false, HelpText = "Number of generations", Default = 30)]
+        [Option('n', "generation", Required = false, HelpText = "Number of generations", Default = AlgorithmSettings.DefaultMaxGeneration)]
         public int MaxGeneration { get; set; }
 
-        [Option('p', "probability", Required = false, HelpText = "Probability", Default = 0.85)]
+        [Option('p', "probability", Required = false, HelpText = "Probability", Default = AlgorithmSettings.DefaultP)]
         public double P { get; set; }
 
-        [Option('c', "pollinators", Required = false, HelpText = "Pollinators count", Default = 5)]
+        [Option('c', "pollinators", Required = false, HelpText = "Pollinators count", Default = AlgorithmSettings.DefaultPollinatorsCount)]
         public int PollinatorsCount { get; set; }
 
-        [Option('r', "reset", Required = false, HelpText = "Reset probability", Default = 0.01)]
+        [Option('r', "reset", Required = false, HelpText = "Reset probability", Default = AlgorithmSettings.DefaultPReset)]
         public double PReset { get; set; }
 
         [Option('v', "variables", Required = false, HelpText = "Variables count", Default = 30)]
