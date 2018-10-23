@@ -118,18 +118,18 @@ namespace LevyFlight.Examples.FunctionStrategies
 				+ (2.625 - arguments[0] + arguments[0] * arguments[1] * arguments[1] * arguments[1]) * (2.625 - arguments[0] + arguments[0] * arguments[1] * arguments[1] * arguments[1]);
 		};
 
-        #endregion
+		#endregion
 
-        #region Multicriteria
+		#region Multicriteria
 
-	    #region F1
+		#region F1
 
-	    public static Func<double[], double> ZDT11 = arguments =>
+		private static readonly Func<double[], double> Zdt11 = arguments =>
 	    {
 	        return arguments[0];
 	    };
 
-	    public static Func<double[], double> ZDT12 = arguments =>
+		private static readonly Func<double[], double> Zdt12 = arguments =>
 	    {
 	        if (arguments[0] < 0.0)
 	        {
@@ -141,24 +141,28 @@ namespace LevyFlight.Examples.FunctionStrategies
 	        return sum * (1 - Math.Sqrt(arguments[0] / sum));
 	    };
 
-	    #endregion
+		public static Func<double[], double> Z1 = new MultifunctionStrategy(Zdt11, Zdt12);
 
-        #region F2
+		#endregion
 
-        public static Func<double[], double> ZDT21 = arguments =>
+		#region F2
+
+		private static readonly Func<double[], double> Zdt21 = arguments =>
 	    {
 	        return arguments[0];
 	    };
 
-	    public static Func<double[], double> ZDT22 = arguments =>
+		private static readonly Func<double[], double> Zdt22 = arguments =>
 	    {
 	        var sum = 1.0 + 9.0 * arguments.Skip(1).Sum() / (arguments.Length - 1.0);
 
 	        return sum * (1 - arguments[0] / sum) * (1 - arguments[0] / sum);
 	    };
 
-	    #endregion
+		public static Func<double[], double> Z2 = new MultifunctionStrategy(Zdt21, Zdt22);
 
-	    #endregion
+		#endregion
+
+		#endregion
 	}
 }
