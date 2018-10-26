@@ -6,7 +6,7 @@ install:
   - dotnet restore LevyFlightSharp.sln
 script:
   - dotnet build
-  - travis_wait 150 dotnet test src/LevyFlight.Tests/LevyFlight.Tests.csproj
+  - dotnet test --filter Category=Unit
 branches:
   only:
     - gh-pages

@@ -6,8 +6,9 @@ using Xunit;
 
 namespace LevyFlight.Tests
 {
+	[Trait("Category", "Unit")]
     public class PollinatorsTests
-    {
+	{
         [Fact]
         public void EqualsShouldReturnTrueIfPollinatorsAreEqual()
         {

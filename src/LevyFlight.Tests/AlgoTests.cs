@@ -9,6 +9,7 @@ using Xunit;
 
 namespace LevyFlight.Tests
 {
+	[Trait("Category", "Integration")]
 	public class AlgoTests
 	{
 		private const int RepeatTest = 500;
