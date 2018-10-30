@@ -10,24 +10,16 @@ namespace LevyFlight.Extensions
             Func<double[], double> functionStrategy,
             bool isMin = true)
         {
-            var bestSolution = pollinatorsGroups.First().First();
-            var best = bestSolution.CountFunction(functionStrategy);
+	        if (isMin)
+	        {
+				return pollinatorsGroups.SelectMany(x => x)
+					.OrderBy(x => x.CountFunction(functionStrategy))
+					.First();
+			}
 
-            foreach (var group in pollinatorsGroups)
-            {
-                foreach (var pollinator in group)
-                {
-                    var current = pollinator.CountFunction(functionStrategy);
-
-                    if (isMin && current < best || !isMin && current > best)
-                    {
-                        bestSolution = pollinator;
-                        best = current;
-                    }
-                }
-            }
-
-            return bestSolution;
+	        return pollinatorsGroups.SelectMany(x => x)
+		        .OrderByDescending(x => x.CountFunction(functionStrategy))
+		        .First();
         }
 
         public static Pollinator GetBestSolution(this PollinatorsGroup pollinatorsGroup,
