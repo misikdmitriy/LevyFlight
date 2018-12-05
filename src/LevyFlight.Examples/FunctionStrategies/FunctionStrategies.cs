@@ -11,7 +11,7 @@ namespace LevyFlight.Examples.FunctionStrategies
 		/// <summary>
 		/// Griewank functor with extremum f(0, 0, ..., 0) = 0
 		/// </summary>
-		public static Func<double[], double> GriewankFunction = arguments =>
+		public static Func<double[], double> Griewank = arguments =>
 		{
 			var sum1 = 0.0;
 			var sum2 = 1.0;
@@ -34,7 +34,7 @@ namespace LevyFlight.Examples.FunctionStrategies
 		/// <summary>
 		/// Ackley functor with extremum f(0, 0, ..., 0) = 0
 		/// </summary>
-		public static Func<double[], double> AckleyFunctionStrategy = arguments =>
+		public static Func<double[], double> Ackley = arguments =>
 		{
 			var sum1 = 0.0;
 			var sum2 = 0.0;
@@ -59,7 +59,7 @@ namespace LevyFlight.Examples.FunctionStrategies
 		/// <summary>
 		/// Rastrigin functor with extremum f(0, 0, ..., 0) = 0
 		/// </summary>
-		public static Func<double[], double> RastriginFunction = arguments =>
+		public static Func<double[], double> Rastrigin = arguments =>
 		{
 			var a = 10.0;
 			var an = arguments.Length * a;
@@ -76,7 +76,7 @@ namespace LevyFlight.Examples.FunctionStrategies
 		/// <summary>
 		/// Rosenbrock functor with extremum f(1, 1, ..., 1) = 0
 		/// </summary>
-		public static Func<double[], double> RosenbrockFunction = arguments =>
+		public static Func<double[], double> Rosenbrock = arguments =>
 		{
 			var sum = 0.0;
 
@@ -97,7 +97,7 @@ namespace LevyFlight.Examples.FunctionStrategies
 		/// <summary>
 		/// Sphere functor with extremum f(0, 0, ..., 0) = 0
 		/// </summary>
-		public static Func<double[], double> SphereFunction = arguments =>
+		public static Func<double[], double> Sphere = arguments =>
 		{
 			return arguments.Select(a => a * a).Sum();
 		};
@@ -109,7 +109,7 @@ namespace LevyFlight.Examples.FunctionStrategies
 		/// <summary>
 		/// Bile functor with extremum f(3, 0.5) = 0
 		/// </summary>
-		public static Func<double[], double> BileFunction = arguments =>
+		public static Func<double[], double> Bile = arguments =>
 		{
 			ThrowIf.NotEqual(arguments.Length, 2);
 
@@ -118,18 +118,18 @@ namespace LevyFlight.Examples.FunctionStrategies
 				+ (2.625 - arguments[0] + arguments[0] * arguments[1] * arguments[1] * arguments[1]) * (2.625 - arguments[0] + arguments[0] * arguments[1] * arguments[1] * arguments[1]);
 		};
 
-		#endregion
+        #endregion
 
-		#region Multicriteria
+        #region Multicriteria
 
-		#region F1
+        #region F1
 
-		private static readonly Func<double[], double> Zdt11 = arguments =>
+	    public static readonly Func<double[], double> Zdt11 = arguments =>
 	    {
 	        return arguments[0];
 	    };
 
-		private static readonly Func<double[], double> Zdt12 = arguments =>
+	    public static readonly Func<double[], double> Zdt12 = arguments =>
 	    {
 	        if (arguments[0] < 0.0)
 	        {
@@ -141,25 +141,21 @@ namespace LevyFlight.Examples.FunctionStrategies
 	        return sum * (1 - Math.Sqrt(arguments[0] / sum));
 	    };
 
-		public static Func<double[], double> Z1 = new MultifunctionStrategy(Zdt11, Zdt12);
+        #endregion
 
-		#endregion
+        #region F2
 
-		#region F2
-
-		private static readonly Func<double[], double> Zdt21 = arguments =>
+	    public static readonly Func<double[], double> Zdt21 = arguments =>
 	    {
 	        return arguments[0];
 	    };
 
-		private static readonly Func<double[], double> Zdt22 = arguments =>
+	    public static readonly Func<double[], double> Zdt22 = arguments =>
 	    {
 	        var sum = 1.0 + 9.0 * arguments.Skip(1).Sum() / (arguments.Length - 1.0);
 
 	        return sum * (1 - arguments[0] / sum) * (1 - arguments[0] / sum);
 	    };
-
-		public static Func<double[], double> Z2 = new MultifunctionStrategy(Zdt21, Zdt22);
 
 		#endregion
 

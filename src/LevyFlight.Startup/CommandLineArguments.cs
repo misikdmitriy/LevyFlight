@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using CommandLine;
 using LevyFlight.Domain.Entities;
@@ -29,12 +31,15 @@ namespace LevyFlight.Startup
         [Option('v', "variables", Required = false, HelpText = "Variables count", Default = 30)]
         public int VariablesCount { get; set; }
 
-        [Option('f', "function", Required = false, HelpText = "Function name", Default = "Griewank")]
-        public string FunctionName { get; set; }
+        [Option('f', "functions", Required = true, HelpText = "Function name(s)", Min = 1, Max = 10)]
+        public IEnumerable<string> FunctionNames { get; set; }
+
+        [Option('s', "strategy", Required = false, HelpText = "Multicriteria scalarization strategy", Default = "product")]
+        public string MulticriteriaStrategyName { get; set; }
 
         internal AlgorithmSettings ToModifiedAlgorithmSettings()
         {
-            return new AlgorithmSettings(GroupsCount, IsMin, MaxGeneration, 
+            return new AlgorithmSettings(GroupsCount, IsMin, MaxGeneration,
                 P, PollinatorsCount, PReset);
         }
 
@@ -43,15 +48,50 @@ namespace LevyFlight.Startup
             var types = typeof(FunctionStrategies)
                 .GetFields(BindingFlags.Static | BindingFlags.Public);
 
-            foreach (var type in types)
+            var functions = new List<Func<double[], double>>();
+
+            foreach (var functionName in FunctionNames)
             {
-                if (type.Name.StartsWith(FunctionName, StringComparison.OrdinalIgnoreCase))
+                foreach (var type in types)
                 {
-                    return (Func<double[], double>) type.GetValue(null);
+                    if (type.Name.Equals(functionName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        functions.Add((Func<double[], double>)type.GetValue(null));
+                        break;
+                    }
                 }
             }
 
-            throw new ArgumentException(nameof(FunctionName));
+            if (functions.Count != FunctionNames.Count())
+            {
+                throw new ArgumentException(nameof(FunctionNames));
+            }
+
+            if (functions.Count == 1)
+            {
+                return functions.Single();
+            }
+
+            return GetMultifunctionStrategy(functions.ToArray());
+        }
+
+        private WeightedMultifunctionStrategy GetMultifunctionStrategy(params Func<double[], double>[] functions)
+        {
+            var types = typeof(WeightedMultifunctionStrategy)
+                .Assembly
+                .GetTypes()
+                .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(WeightedMultifunctionStrategy)));
+
+            foreach (var type in types)
+            {
+                if (type.GetMulticriteriaStrategyName().Equals(MulticriteriaStrategyName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return (WeightedMultifunctionStrategy)Activator
+                        .CreateInstance(type, functions);
+                }
+            }
+
+            throw new ArgumentException(nameof(MulticriteriaStrategyName));
         }
     }
 }

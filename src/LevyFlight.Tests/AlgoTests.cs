@@ -32,7 +32,7 @@ namespace LevyFlight.Tests
 		[InlineData(30, 30, 0.0, 1e-7)]
 		public void GriewankFunction(int variablesCount, int steps, double expected, double eps)
 		{
-			AssertFuncion(FunctionStrategies.GriewankFunction, variablesCount, steps, expected, eps);
+			AssertFuncion(FunctionStrategies.Griewank, variablesCount, steps, expected, eps);
 		}
 
 		[Theory]
@@ -42,7 +42,7 @@ namespace LevyFlight.Tests
 		[InlineData(30, 60, 0.0, 1e-7)]
 		public void AckleyFunction(int variablesCount, int steps, double expected, double eps)
 		{
-			AssertFuncion(FunctionStrategies.AckleyFunctionStrategy, variablesCount, steps, expected, eps);
+			AssertFuncion(FunctionStrategies.Ackley, variablesCount, steps, expected, eps);
 		}
 
 		[Theory]
@@ -51,7 +51,7 @@ namespace LevyFlight.Tests
 		[InlineData(30, 50, 0.0, 1e-9)]
 		public void RastriginFunction(int variablesCount, int steps, double expected, double eps)
 		{
-			AssertFuncion(FunctionStrategies.RastriginFunction, variablesCount, steps, expected, eps);
+			AssertFuncion(FunctionStrategies.Rastrigin, variablesCount, steps, expected, eps);
 		}
 
 		[Theory]
@@ -59,7 +59,7 @@ namespace LevyFlight.Tests
 		[InlineData(30, 20, 0.0, 29)]
 		public void RosenbrockFunction(int variablesCount, int steps, double expected, double eps)
 		{
-			AssertFuncion(FunctionStrategies.RosenbrockFunction, variablesCount, steps, expected, eps);
+			AssertFuncion(FunctionStrategies.Rosenbrock, variablesCount, steps, expected, eps);
 		}
 
 		[Theory]
@@ -68,7 +68,7 @@ namespace LevyFlight.Tests
 		[InlineData(30, 40, 0.0, 1e-10)]
 		public void SphereFunction(int variablesCount, int steps, double expected, double eps)
 		{
-			AssertFuncion(FunctionStrategies.SphereFunction, variablesCount, steps, expected, eps);
+			AssertFuncion(FunctionStrategies.Sphere, variablesCount, steps, expected, eps);
 		}
 
 		[Theory]
@@ -76,14 +76,16 @@ namespace LevyFlight.Tests
 		[InlineData(20, 0.0, 4.0)]
 		public void BileFunction(int steps, double expected, double eps)
 		{
-			AssertFuncion(FunctionStrategies.BileFunction, 2, steps, expected, eps);
+			AssertFuncion(FunctionStrategies.Bile, 2, steps, expected, eps);
 		}
 
 		[Theory]
 		[InlineData(30, 90, 0.0, 1e-2)]
 		public void Z1Function(int variablesCount, int steps, double expected, double eps)
 		{
-			AssertFuncion(FunctionStrategies.Z1, variablesCount, steps, expected, eps);
+            var strategy = new WeightedProductStrategy(FunctionStrategies.Zdt11, 
+                FunctionStrategies.Zdt12);
+			AssertFuncion(strategy, variablesCount, steps, expected, eps);
 		}
 
 		private void AssertFuncion(Func<double[], double> func, 
