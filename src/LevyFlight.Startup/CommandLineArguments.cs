@@ -31,7 +31,7 @@ namespace LevyFlight.Startup
         [Option('v', "variables", Required = false, HelpText = "Variables count", Default = 30)]
         public int VariablesCount { get; set; }
 
-        [Option('f', "functions", Required = true, HelpText = "Function name(s)", Min = 1, Max = 10)]
+        [Option('f', "functions", Required = false, HelpText = "Function name(s)", Min = 1, Max = 10, Default = new[] { "griewank" })]
         public IEnumerable<string> FunctionNames { get; set; }
 
         [Option('s', "strategy", Required = false, HelpText = "Multicriteria scalarization strategy", Default = "product")]
